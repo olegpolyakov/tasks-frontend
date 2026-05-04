@@ -1,50 +1,57 @@
 import { useState } from 'react';
 
-import type { Tag } from '@olegpolyakov/tasks/core';
 import { Button, type ButtonProps,Checkbox, Dialog, Flex, Text } from 'kantanui';
 
 import { useTagsContext } from '../../contexts';
 
-export default function TagDeleteAction({ tag, ...props }: { tag: Tag } & ButtonProps) {
+export default function TagDeleteAction({
+    tagId,
+    onDeleted,
+    ...props
+}: {
+    tagId: string;
+    onDeleted?: (tagId: string) => void;
+} & ButtonProps) {
     const { deleteTag } = useTagsContext();
 
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [deleteTasks, setDeleteTasks] = useState(false);
 
-    return (
-        <>
-            <Button
-                title="Delete tag"
-                onClick={() => setDialogOpen(true)}
-                {...props}
-            />
+    const handleDelete = () => {
+        deleteTag(tagId, { deleteTasks });
+        setDialogOpen(false);
+        onDeleted?.(tagId);
+    };
 
-            <Dialog
-                open={isDialogOpen}
-                title="Delete tag"
-                onClose={() => setDialogOpen(false)}
-            >
-                <Flex column gap="s">
-                    <Text content="Are you sure you want to delete this tag?" />
+    return (<>
+        <Button
+            title="Delete tag"
+            onClick={() => setDialogOpen(true)}
+            {...props}
+        />
 
-                    <Checkbox
-                        label="Delete tasks?"
-                        checked={deleteTasks}
-                        onChange={() => setDeleteTasks(v => !v)}
-                    />
+        <Dialog
+            open={isDialogOpen}
+            title="Delete tag"
+            onClose={() => setDialogOpen(false)}
+        >
+            <Flex column gap="s">
+                <Text content="Are you sure you want to delete this tag?" />
 
-                    <Button
-                        content="Delete"
-                        fluid
-                        color="danger"
-                        variant="tinted"
-                        onClick={() => {
-                            deleteTag(tag.id, { deleteTasks });
-                            setDialogOpen(false);
-                        }}
-                    />
-                </Flex>
-            </Dialog>
-        </>
-    );
+                <Checkbox
+                    label="Delete tasks?"
+                    checked={deleteTasks}
+                    onChange={() => setDeleteTasks(v => !v)}
+                />
+
+                <Button
+                    content="Delete"
+                    fluid
+                    color="danger"
+                    variant="tinted"
+                    onClick={handleDelete}
+                />
+            </Flex>
+        </Dialog>
+    </>);
 }

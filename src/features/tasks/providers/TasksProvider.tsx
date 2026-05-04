@@ -1,12 +1,12 @@
 import { ReactNode, useMemo } from 'react';
 
-import { TasksContext } from '../contexts';
+import { TasksContext, TasksContextValue } from '../contexts';
 import { useTasks } from '../hooks';
 
 export default function TasksProvider({
     children
 }: {
-    children: ReactNode
+    children: ReactNode | ((value: TasksContextValue) => ReactNode);
 }) {
     const {
         tasks,
@@ -32,7 +32,10 @@ export default function TasksProvider({
 
     return (
         <TasksContext.Provider value={value}>
-            {children}
+            {typeof children === 'function'
+                ? children(value)
+                : children
+            }
         </TasksContext.Provider>
     );
 }

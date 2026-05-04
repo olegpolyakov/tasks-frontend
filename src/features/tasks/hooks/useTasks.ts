@@ -33,7 +33,7 @@ export default function useTasks() {
     const toggleTask = useCallback(async (id: string, completed: boolean) => {
         const updatedTask = await api.toggleTask(id, completed);
 
-        setTasks(prevTasks => prevTasks.map(task => task.id === id ? updatedTask : task));
+        setTasks(tasks => tasks.map(task => task.id === id ? updatedTask : task));
 
         return updatedTask;
     }, [setTasks]);
@@ -41,7 +41,7 @@ export default function useTasks() {
     const deleteTask = useCallback(async (id: string) => {
         await api.deleteTask(id);
 
-        setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+        setTasks(tasks => tasks.filter(task => task.id !== id));
     }, [setTasks]);
 
     return {

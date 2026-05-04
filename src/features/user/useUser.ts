@@ -14,7 +14,7 @@ export default function useUser() {
             setLoading(false);
         }).catch((error: { message: string }) => {
             console.error('Authentication error:', error.message);
-            setError(error.message);
+            setError(`Authentication error: ${error.message}`);
             setLoading(false);
         });
     }, []);

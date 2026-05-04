@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
 
-export type TaskContext = {
+export type TaskContextValue = {
     task: Task;
     setTask: (task: Task) => void;
     unsetTask: () => void;
@@ -11,7 +11,7 @@ export type TaskContext = {
     deleteTask: () => Promise<void>;
 };
 
-const TaskContext = createContext<TaskContext>(null! as TaskContext);
+const TaskContext = createContext<TaskContextValue>(null! as TaskContextValue);
 
 export function useTaskContext() {
     const context = useContext(TaskContext);

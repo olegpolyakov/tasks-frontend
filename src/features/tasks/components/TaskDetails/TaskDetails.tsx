@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Checkbox, Field, Heading, Icon, Input, Textarea } from 'kantanui';
+import { Button, Checkbox, Field, Heading, Input, Text, Textarea } from 'kantanui';
 
 import type { Task } from '@olegpolyakov/tasks-core';
 
@@ -8,6 +8,7 @@ import Editable from '@/shared/components/Editable';
 
 import { TaskTags } from '../../components';
 import TaskPriority from '../TaskPriority';
+import TaskRecurrence from '../TaskRecurrence';
 
 import styles from './TaskDetails.module.scss';
 
@@ -19,6 +20,7 @@ export default function TaskDetails({
     onUpdate: (id: string, data: Partial<Task>) => void;
 }) {
     const [content, setContent] = useState(task.content || '');
+    const [hasTime, setHasTime] = useState(false);
 
     return (
         <div className={styles.root}>
@@ -41,36 +43,57 @@ export default function TaskDetails({
             </div>
 
             <div className={styles.content}>
-                <Field label="Due Date">
-                    <Input
-                        type="datetime-local"
-                        start={<Icon name="calendar_month" />}
-                        placeholder="Due Date"
-                        value={task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 16) : ''}
-                        onChange={({ value }) => onUpdate(task.id, { dueDate: new Date(value) })}
-                    />
-                </Field>
-
-
                 <TaskPriority
                     priority={task.priority}
                     onChange={priority => onUpdate(task.id, { priority })}
                 />
 
+                <Field label="Due Date">
+                    <Input
+                        type={hasTime ? 'datetime-local' : 'date'}
+                        value={!task.dueDate
+                            ? ''
+                            : hasTime
+                                ? new Date(task.dueDate).toISOString().slice(0, 16)
+                                : new Date(task.dueDate).toISOString().slice(0, 10)
+                        }
+                        end={
+                            <Button
+                                title={hasTime ? 'Remove time' : 'Add time'}
+                                icon={hasTime ? 'alarm_off' : 'alarm'}
+                                size="s"
+                                onClick={() => setHasTime(!hasTime)}
+                            />
+                        }
+                        onChange={({ value }) => onUpdate(task.id, { dueDate: new Date(value) })}
+                    />
+                </Field>
+
+                <TaskRecurrence
+                    recurrence={task.recurrence}
+                    onChange={recurrence => onUpdate(task.id, { recurrence })}
+                />
+
                 <TaskTags
                     task={task}
-                    onUpdate={onUpdate}
+                    onChange={tagIds => onUpdate(task.id, { tagIds })}
                 />
                 
                 <Field label="Description">
                     <Textarea
                         value={content}
-                        onChange={({ value = '' }) => {
-                            setContent(value);
-                        }}
+                        onChange={({ value = '' }) => setContent(value)}
                         onBlur={() => onUpdate(task.id, { content })}
                     />
                 </Field>
+
+                {task.createdAt && (
+                    <Text
+                        content={`Created: ${new Date(task.createdAt).toLocaleDateString()}`}
+                        size="xs"
+                        color="secondary"
+                    />
+                )}
             </div>
         </div>
     );

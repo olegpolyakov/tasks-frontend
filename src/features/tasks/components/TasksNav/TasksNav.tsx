@@ -8,32 +8,12 @@ import { filters } from '../../logic/filter';
 export default function TasksNav() {
     const { tasks } = useTasksContext();
 
-    const todayCount = tasks.filter(filters.today).length;
-    const inboxCount = tasks.filter(filters.inbox).length;
-    const allCount = tasks.length;
+    const incompleteTasks = tasks.filter(t => !t.completed);
+    const inboxCount = incompleteTasks.filter(filters.inbox).length;
+    const todayCount = incompleteTasks.filter(filters.today).length;    
 
     return (
         <List as="nav" gap="s">
-            <NavLink to="/today">
-                {({ isActive }) => (
-                    <Item
-                        icon="today"
-                        content="Today"
-                        end={
-                            <Badge
-                                content={todayCount}
-                                size="s"
-                                variant="tinted"
-                            />
-                        }
-                        variant="plain"
-                        shape="rounded-s"
-                        active={isActive}
-                        interactive
-                    />
-                )}
-            </NavLink>
-                
             <NavLink to="/inbox">
                 {({ isActive }) => (
                     <Item
@@ -53,6 +33,26 @@ export default function TasksNav() {
                     />
                 )}
             </NavLink>
+            
+            <NavLink to="/today">
+                {({ isActive }) => (
+                    <Item
+                        icon="today"
+                        content="Today"
+                        end={
+                            <Badge
+                                content={todayCount}
+                                size="s"
+                                variant="tinted"
+                            />
+                        }
+                        variant="plain"
+                        shape="rounded-s"
+                        active={isActive}
+                        interactive
+                    />
+                )}
+            </NavLink>
 
             <NavLink to="/all">
                 {({ isActive }) => (
@@ -61,7 +61,7 @@ export default function TasksNav() {
                         content="All"
                         end={
                             <Badge
-                                content={allCount}
+                                content={tasks.length}
                                 size="s"
                                 variant="tinted"
                             />

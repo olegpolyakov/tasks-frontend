@@ -1,20 +1,10 @@
 import { DragDropProvider, type DragEndEvent } from '@dnd-kit/react';
-import { isSortable, useSortable } from '@dnd-kit/react/sortable';
-import { Badge, Box, Checkbox, Flex, Item, List, Pill, type PillProps,Text } from 'kantanui';
+import { isSortable } from '@dnd-kit/react/sortable';
+import { List } from 'kantanui';
 
-import { type Task, TaskPriority } from '@olegpolyakov/tasks-core';
+import type { Task } from '@olegpolyakov/tasks-core';
 
-const priorityColors = {
-    [TaskPriority.Low]: 'success',
-    [TaskPriority.Medium]: 'brand',
-    [TaskPriority.High]: 'danger'
-};
-
-const priorityLabels = {
-    [TaskPriority.Low]: 'Low',
-    [TaskPriority.Medium]: 'Medium',
-    [TaskPriority.High]: 'High'
-};
+import TaskItem from '../TaskItem';
 
 export default function TasksList({
     tasks,
@@ -30,7 +20,7 @@ export default function TasksList({
     onDelete: (id: string) => void;
     onReorder?: (tasks: Task[]) => void;
 }) {
-    const handleDragEnd: DragEndEvent = event => {
+    const handleDragEnd = (event: DragEndEvent) => {
         if (event.canceled) return;
 
         const { source } = event.operation;
@@ -65,77 +55,5 @@ export default function TasksList({
                 ))}
             </List>
         </DragDropProvider>
-    );
-}
-
-function TaskItem({
-    task,
-    index,
-    selected,
-    onSelect,
-    onToggle,
-    ...props
-}: {
-    task: Task;
-    index: number;
-    selected: boolean;
-    onSelect: (task: Task) => void;
-    onToggle: (id: string, completed: boolean) => void;
-}) {
-    const { ref } = useSortable({ id: task.id, index });
-    
-    return (
-        <Item
-            ref={ref}
-            content={
-                <Flex column gap="xxs">
-                    <Text
-                        as="span"
-                        start={
-                            <Checkbox
-                                checked={task.completed}
-                                onChange={() => onToggle(task.id, !task.completed)}
-                                onClick={event => event.stopPropagation()}
-                            />
-                        }
-                        content={task.title}
-                        color={task.completed ? 'tertiary' : 'primary'}
-                        strikethrough={task.completed}
-                    />
-
-                    <Box style={{ marginLeft: '1.75rem' }}>
-                        <Flex gap="xs">
-                            {task.dueDate && (
-                                <Text
-                                    content={new Date(task.dueDate).toLocaleDateString()}
-                                    size="xs"
-                                    color="secondary"
-                                />
-                            )}
-
-                            {task.priority !== undefined && (
-                                <Pill
-                                    start={
-                                        <Badge
-                                            color={priorityColors[task.priority] as PillProps['color']}
-                                            size="s"
-                                        />
-                                    }
-                                    content={priorityLabels[task.priority]}
-                                    color={priorityColors[task.priority] as PillProps['color']}
-                                    size="s"
-                                    variant="tinted"
-                                />
-                            )}
-                        </Flex>
-                    </Box>
-                </Flex>
-            }
-            shape="rounded-s"
-            variant="plain"
-            active={selected}
-            onClick={() => onSelect(task)}
-            {...props}
-        />
     );
 }

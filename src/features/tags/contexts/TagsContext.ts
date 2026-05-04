@@ -2,18 +2,14 @@ import { createContext, useContext } from 'react';
 
 import type { Tag } from '@olegpolyakov/tasks/core';
 
-export type TagsContext = {
+export type TagsContextValue = {
     tags: Tag[];
-    createTag: (data: Partial<Tag>) => Promise<void>;
-    updateTag: (id: string, data: Partial<Tag>) => Promise<void>;
+    createTag: (data: Partial<Tag>) => Promise<Tag>;
+    updateTag: (id: string, data: Partial<Tag>) => Promise<Tag>;
     deleteTag: (id: string, options?: { deleteTasks?: boolean }) => Promise<void>;
-
-    isTagDialogOpen: boolean;
-    openTagDialog: (tag: Tag | null) => void;
-    closeTagDialog: () => void;
 };
 
-const TagsContext = createContext<TagsContext>(null! as TagsContext);
+const TagsContext = createContext<TagsContextValue>(null! as TagsContextValue);
 
 export function useTagsContext() {
     const context = useContext(TagsContext);

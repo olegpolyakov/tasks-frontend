@@ -25,15 +25,15 @@ export default function useTags() {
     const updateTag = useCallback(async (id: string, data: Partial<Tag>) => {
         const updatedTag = await api.updateTag(id, data);
 
-        setTags(prevTags => prevTags.map(tag => tag.id === id ? updatedTag : tag));
+        setTags(tags => tags.map(tag => tag.id === updatedTag.id ? updatedTag : tag));
 
         return updatedTag;
     }, [setTags]);
 
     const deleteTag = useCallback(async (id: string) => {
         await api.deleteTag(id);
-
-        setTags(prevTags => prevTags.filter(tag => tag.id !== id));
+        
+        setTags(tags => tags.filter(tag => tag.id !== id));
     }, [setTags]);
 
     return {

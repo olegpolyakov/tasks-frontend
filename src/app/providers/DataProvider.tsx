@@ -1,4 +1,3 @@
-import { ListsProvider } from '@/features/lists';
 import { SettingsProvider } from '@/features/settings';
 import { TagsProvider } from '@/features/tags';
 import { TasksProvider } from '@/features/tasks';
@@ -10,9 +9,7 @@ export default function DataProvider({ children }: {children: React.ReactNode}) 
             <SettingsProvider>
                 <TasksProvider>
                     <TagsProvider>
-                        <ListsProvider>
-                            {children}
-                        </ListsProvider>
+                        {children}
                     </TagsProvider>
                 </TasksProvider>
             </SettingsProvider>

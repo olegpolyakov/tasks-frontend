@@ -1,57 +1,24 @@
 import type { Tag } from '@olegpolyakov/tasks-core';
 
 import { API_URL } from '@/shared/constants';
+import http from '@/shared/http';
 
 export async function fetchTags() {
-    const response = await fetch(`${API_URL}/tags`);
-    
-    if (!response.ok) {
-        throw new Error('Failed to fetch tags');
-    }
-
-    return response.json() as Promise<Tag[]>;
+    return http.get<Tag[]>(`${API_URL}/tags`);
 }
 
 export async function fetchTag(id: string): Promise<Tag> {
-    return fetch(`${API_URL}/tags/${id}`).then(res => res.json());
+    return http.get<Tag>(`${API_URL}/tags/${id}`);
 }
 
-export async function createTag({ name }: Partial<Tag>) {
-    const response = await fetch(`${API_URL}/tags`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to create tag');
-    }
-
-    return response.json();
+export async function createTag(data: Partial<Tag>) {
+    return http.post<Partial<Tag>, Tag>(`${API_URL}/tags`, data);
 }
 
 export async function updateTag(id: string, data: Partial<Tag>) {
-    const response = await fetch(`${API_URL}/tags/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to update tag');
-    }
-
-    return response.json();
+    return http.put<Partial<Tag>, Tag>(`${API_URL}/tags/${id}`, data);
 }
 
 export async function deleteTag(id: string, { deleteTasks = false }: { deleteTasks?: boolean } = {}) {
-    const response = await fetch(`${API_URL}/tags/${id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deleteTasks })
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to delete tag');
-    }
+    return http.delete(`${API_URL}/tags/${id}`, { body: JSON.stringify({ deleteTasks }) });
 }

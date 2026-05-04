@@ -1,0 +1,44 @@
+.root {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+        color: #3170D8;
+    }
+}
+
+.disabled,
+.disabled:hover {
+    color: #D4D4DA;
+    cursor: default;
+}
+
+.hasEvents {
+    &:after {
+        content: '';
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #4285F4;
+    }
+}
+
+.selected {
+    border-radius: 38px;
+    background-color: #DDEBFF;
+    color: #4285F4;
+}

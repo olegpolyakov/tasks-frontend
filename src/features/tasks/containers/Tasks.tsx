@@ -1,8 +1,8 @@
 import { useMatch } from 'react-router-dom';
 
-import { TasksView } from '../components';
 import { filters } from '../logic/filter';
 import { TaskProvider } from '../providers';
+import { TasksView } from '../views';
 
 const headings: Record<string, string> = {
     today: 'Today',

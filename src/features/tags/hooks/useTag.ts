@@ -4,10 +4,14 @@ import { useAtom } from 'jotai';
 
 import type { Tag } from '@olegpolyakov/tasks/core';
 
+import { useSettingsContext } from '@/features/settings';
+
 import * as api from '../api';
 import { tagAtom } from '../atoms';
 
 export default function useTag(tagId: string) {
+    const { settings, updateSettings } = useSettingsContext();
+    
     const [tag, setTag] = useAtom(tagAtom);
 
     useEffect(() => {
@@ -21,11 +25,22 @@ export default function useTag(tagId: string) {
 
     const deleteTag = useCallback(async () => {
         await api.deleteTag(tagId);
+
+        const tagsOrder = settings.tagsOrder.filter(id => id !== tagId);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { [tagId]: _, ...tasksOrder } = settings.tasksOrder;
+
+        await updateSettings({
+            tagsOrder,
+            tasksOrder
+        });
+
         setTag(null);
-    }, [tagId, setTag]);
+    }, [tagId, settings, updateSettings, setTag]);
 
     return {
         tag,
+        setTag,
         updateTag,
         deleteTag
     };

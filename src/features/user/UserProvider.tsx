@@ -9,7 +9,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
     const value = useMemo(() => ({ user: user! }), [user]);
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div>{error}</div>;
     }
 
     if (isLoading) {

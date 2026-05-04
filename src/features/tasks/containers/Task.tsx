@@ -1,5 +1,5 @@
-import { TaskView } from '../components';
 import { TaskProvider } from '../providers';
+import { TaskView } from '../views';
 
 export default function Task() {
     return (

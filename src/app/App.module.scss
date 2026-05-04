@@ -1,14 +1,10 @@
 .root {
     height: 100dvh;
     display: grid;
-    grid-template-columns: min-content auto;
+    grid-template-columns: 150px auto;
     overflow: hidden;
 }
 
 .heading {
     padding: var(--kui-space-m) 0;
-}
-
-.logo {
-    width: 36px;
 }

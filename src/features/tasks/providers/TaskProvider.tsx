@@ -2,12 +2,12 @@ import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
 
-import { TaskContext, useTasksContext } from '../contexts';
+import { TaskContext, TaskContextValue, useTasksContext } from '../contexts';
 
 export default function TaskProvider({
     children
 }: {
-    children: ReactNode
+    children: ReactNode | ((value: TaskContextValue) => ReactNode);
 }) {
     const {
         tasks,
@@ -68,7 +68,10 @@ export default function TaskProvider({
 
     return (
         <TaskContext.Provider value={value}>
-            {children}
+            {typeof children === 'function'
+                ? children(value)
+                : children
+            }
         </TaskContext.Provider>
     );
 }

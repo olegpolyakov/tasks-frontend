@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
 
-export type TasksContext = {
+export type TasksContextValue = {
     heading?: string;
     tasks: Task[];
     createTask: (data: Partial<Task>) => Promise<Task>;
@@ -11,7 +11,7 @@ export type TasksContext = {
     deleteTask: (id: string) => Promise<void>;
 };
 
-const TasksContext = createContext<TasksContext>(null! as TasksContext);
+const TasksContext = createContext<TasksContextValue>(null! as TasksContextValue);
 
 export function useTasksContext() {
     const context = useContext(TasksContext);

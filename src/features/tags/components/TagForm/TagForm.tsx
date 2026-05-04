@@ -1,7 +1,10 @@
 import { useState } from 'react';
 
-import type { Tag } from '@olegpolyakov/core';
 import { Button, Flex, Input } from 'kantanui';
+
+import type { Tag } from '@olegpolyakov/tasks/core';
+
+import EntityIcon from '@/shared/components/EntityIcon';
 
 export default function TagForm({
     data,
@@ -28,6 +31,7 @@ export default function TagForm({
             <Input
                 label="Icon"
                 value={icon}
+                end={icon && <EntityIcon icon={icon} />}
                 onChange={({ value }) => setIcon(value)}
             />
 

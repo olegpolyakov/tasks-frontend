@@ -1,44 +1,38 @@
 import { useParams } from 'react-router-dom';
 
-import { ButtonGroup } from 'kantanui';
-
 import { TaskProvider, TasksView } from '@/features/tasks';
 import EntityIcon from '@/shared/components/EntityIcon';
 
 import { TagDeleteAction, TagEditAction } from '../components';
-import { useTag } from '../hooks';
-import { TagTasksProvider } from '../providers';
+import { TagProvider } from '../providers';
 
 export default function Tag() {
     const { tagId = '' } = useParams();
-    const { tag } = useTag(tagId);
-
-    if (!tag) return null;
     
     return (
-        <TagTasksProvider tag={tag}>
-            <TaskProvider>
-                <TasksView
-                    id={tag.id}
-                    heading={{
-                        start: <EntityIcon icon={tag.icon || 'tag'} />,
-                        content: tag.name
-                    }}
-                    actions={
-                        <ButtonGroup gap="s">
+        <TagProvider tagId={tagId}>
+            {({ tag }) => (
+                <TaskProvider>
+                    <TasksView
+                        id={tagId}
+                        heading={{
+                            start: <EntityIcon icon={tag.icon || 'tag'} />,
+                            content: tag.name
+                        }}
+                        actions={<>
                             <TagEditAction
-                                tag={tag}
+                                tagId={tag.id}
                                 icon="edit"
                             />
 
                             <TagDeleteAction
-                                tag={tag}
+                                tagId={tag.id}
                                 icon="delete"
                             />
-                        </ButtonGroup>
-                    }
-                />
-            </TaskProvider>
-        </TagTasksProvider>
+                        </>}
+                    />
+                </TaskProvider>
+            )}
+        </TagProvider>
     );
 }

@@ -2,47 +2,40 @@ import { useCallback } from 'react';
 
 import type { Tag, Task } from '@olegpolyakov/tasks-core';
 
-import { tagsApi, TagsInput } from '@/features/tags';
+import { TagsInput, useTagsContext } from '@/features/tags';
 
 export default function TaskTags({
     task,
-    onUpdate
+    onChange
 }:{
     task: Task,
-    onUpdate: (id: string, data: Partial<Task>) => void
+    onChange: (tagIds: string[]) => void
 }) {
+    const { createTag } = useTagsContext();
+
     const handleAdd = useCallback(async (tag: Partial<Tag>) => {
-        await tagsApi.createTag(tag)
-            .then(newTag => {
-                onUpdate(task.id, {
-                    tagIds: [...task.tagIds, newTag.id]
-                });
-            }).catch(error => {
-                console.error('Failed to create tag:', error);
-            });
-    }, [task, onUpdate]);
+        const newTag = await createTag(tag);
+
+        onChange([...task.tagIds, newTag.id]);
+    }, [task, createTag, onChange]);
 
     const handleChange = useCallback(async (tags: Partial<Tag>[]) => {
-        console.log('Selected tags:', tags);
         const newTagIds = tags.map(tag => tag.id).filter(id => id !== undefined) as string[];
-        onUpdate(task.id, {
-            tagIds: newTagIds
-        });
-    }, [task, onUpdate]);
+
+        onChange(newTagIds);
+    }, [onChange]);
 
     const handleRemove = useCallback(async (tag: Tag) => {
-        onUpdate(task.id, {
-            tagIds: task.tagIds.filter(id => id !== tag.id)
-        });
-    }, [task, onUpdate]);
+        onChange(task.tagIds.filter(id => id !== tag.id));
+    }, [task, onChange]);
 
     return (
         <div>
             <TagsInput
                 tags={task.tags}
                 onAdd={handleAdd}
-                onRemove={handleRemove}
                 onChange={handleChange}
+                onRemove={handleRemove}
             />
         </div>
     );
