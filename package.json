@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@olegpolyakov/frontend": "^0.7.0",
+    "@olegpolyakov/tasks-core": "github:olegpolyakov/tasks-core",
     "@dnd-kit/react": "^0.4.0",
     "jotai": "^2.19.0",
     "kantanui": "^0.3.1",
