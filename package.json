@@ -11,16 +11,16 @@
     "lint": "eslint ./src"
   },
   "dependencies": {
+    "@olegpolyakov/frontend": "^0.7.0",
     "@dnd-kit/react": "^0.4.0",
     "jotai": "^2.19.0",
-    "kantanui": "^0.2.3",
+    "kantanui": "^0.3.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@olegpolyakov/frontend": "^0.1.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/uuid": "^10.0.0",
