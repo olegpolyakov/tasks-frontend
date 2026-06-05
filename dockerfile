@@ -7,7 +7,7 @@ COPY package*.json ./
 
 RUN --mount=type=secret,id=GHP_TOKEN,env=GHP_TOKEN \
     npm config set //npm.pkg.github.com/:_authToken=$GHP_TOKEN && \
-    npm ci --include=dev
+    npm i --include=dev
 RUN npm run build
 
 FROM nginx:1.27-alpine
