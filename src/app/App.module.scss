@@ -8,3 +8,13 @@
 .heading {
     padding: var(--kui-space-m) 0;
 }
+
+.sidebar {
+    border-right: 1px solid var(--kui-border-secondary-color);
+    padding: 0 var(--kui-space-xs);
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+}
