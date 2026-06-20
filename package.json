@@ -1,6 +1,6 @@
 {
-  "name": "@olegpolyakov/tasks-web-app",
-  "version": "1.0.0",
+  "name": "@olegpolyakov/tasks-frontend",
+  "version": "0.1.0",
   "author": "Oleg Poliakov <olegpoliakov@outlook.com>",
   "description": "",
   "type": "module",
@@ -11,8 +11,9 @@
     "lint": "eslint ./src"
   },
   "dependencies": {
-    "@olegpolyakov/frontend": "^0.7.0",
-    "@olegpolyakov/tasks-core": "^0.1.0",
+    "@olegpolyakov/core": "^0.6.0",
+    "@olegpolyakov/frontend": "^0.9.1",
+    "@olegpolyakov/tasks-core": "^0.2.0",
     "@dnd-kit/react": "^0.4.0",
     "jotai": "^2.19.0",
     "kantanui": "^0.3.1",
