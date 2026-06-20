@@ -1,3 +1,14 @@
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+
+interface ImportMetaEnv {
+  readonly VITE_DOMAIN: string;
+  readonly VITE_APP_DOMAIN: string;
+  readonly VITE_API_URL: string;
+  readonly VITE_AUTH_URL: string;
+}
+
 declare module '*.module.scss' {
   const content: { readonly [className: string]: string };
   export default content;
