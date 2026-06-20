@@ -1,14 +1,12 @@
 .root {
     height: 100%;
-    display: grid;
-    grid-template-columns: auto min-content;
-    grid-template-areas: "m d";
+    display: flex;
     overflow: hidden;
 }
 
 .main {
+    flex: 1;
     height: 100%;
-    grid-area: m;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
