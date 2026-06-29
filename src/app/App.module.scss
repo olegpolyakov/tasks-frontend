@@ -1,17 +1,8 @@
-.root {
-    height: 100dvh;
-    display: grid;
-    grid-template-columns: 150px auto;
-    overflow: hidden;
-}
-
-.heading {
-    padding: var(--kui-space-m) 0;
-}
-
 .sidebar {
-    border-right: 1px solid var(--kui-border-secondary-color);
-    padding: 0 var(--kui-space-xs);
+    padding: var(--kui-space-s) var(--kui-space-xs);
+    display: flex;
+    flex-direction: column;
+    gap: var(--kui-space-s);
 
     a {
         text-decoration: none;

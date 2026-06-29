@@ -1,7 +1,7 @@
 import type { Tag } from '@olegpolyakov/tasks-core';
 import http from '@olegpolyakov/frontend/clients/http';
 
-import { API_URL } from '@/shared/env';
+import { API_URL } from '@/env';
 
 export async function fetchTags() {
     return http.get<Tag[]>(`${API_URL}/tags`);

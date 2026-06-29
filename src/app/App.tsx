@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Button, Heading, Text } from 'kantanui';
 
-import AppShell from '@olegpolyakov/frontend/components/AppShell';
+import { AppContent, AppDrawer, AppShell } from '@olegpolyakov/frontend/app';
 
 import { Tag, TagCreateAction, TagsNav } from '@/features/tags';
 import { Tasks, TasksNav } from '@/features/tasks';
@@ -14,11 +14,10 @@ import styles from './App.module.scss';
 export default function App() {
     return (
         <AppDataProvider>
-            <AppShell>
-                <div className={styles.root}>
+            <AppShell name="Tasks">
+                <AppDrawer>
                     <div className={styles.sidebar}>
                         <Heading
-                            className={styles.heading}
                             content="Tasks"
                             end={
                                 <Button
@@ -39,26 +38,26 @@ export default function App() {
                         />
                         <TagsNav />
                     </div>
+                </AppDrawer>
 
-                    <div className={styles.content}>
-                        <Routes>
-                            <Route
-                                index
-                                element={<Navigate to="/today" replace />}
-                            />
+                <AppContent>
+                    <Routes>
+                        <Route
+                            index
+                            element={<Navigate to="/today" replace />}
+                        />
 
-                            <Route
-                                path="/:filter"
-                                element={<Tasks />}
-                            />
+                        <Route
+                            path="/:filter"
+                            element={<Tasks />}
+                        />
 
-                            <Route
-                                path="/tags/:tagId"
-                                element={<Tag />}
-                            />
-                        </Routes>
-                    </div>
-                </div>
+                        <Route
+                            path="/tags/:tagId"
+                            element={<Tag />}
+                        />
+                    </Routes>
+                </AppContent>
             </AppShell>
         </AppDataProvider>
     );
