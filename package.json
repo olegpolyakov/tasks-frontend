@@ -23,7 +23,6 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@olegpolyakov/tasks-core": "file://../core",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/uuid": "^10.0.0",
