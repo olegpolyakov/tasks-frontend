@@ -2,31 +2,33 @@ import { type ReactNode, useCallback, useMemo } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
 import { Button, ButtonGroup, Flex, Heading, type HeadingProps, State } from '@olegpolyakov/ui-components';
+import { useAppContext } from '@olegpolyakov/frontend/app';
 
 import { useSettingsContext } from '@/features/settings';
 
 import NoTasksImage from '../../assets/no-tasks.svg';
+import { TaskInput, TasksSort } from '../../components';
 import TasksTree from '../../components/TasksTree';
 import { useTaskContext, useTasksContext } from '../../contexts';
-import { filterAndSortTasks } from '../../helpers';
 import { useTasksSort } from '../../hooks';
+import { filters, filterTasks } from '../../logic/filter';
+import { sortTasks } from '../../logic/sort';
 import TaskView from '../TaskView';
 
 import styles from './TasksView.module.scss';
-
-const defaultFilter = () => true;
 
 export default function TasksView({
     id,
     heading = 'Tasks',
     actions,
-    filter = defaultFilter
+    filter = filters.all
 }: {
     id: string;
     heading?: string | HeadingProps;
     actions?: ReactNode;
     filter?: (task: Task) => boolean;
 }) {
+    const { openDrawer } = useAppContext();
     const {
         tasks,
         createTask,
@@ -72,14 +74,25 @@ export default function TasksView({
     }, [updateSettings, settings.tasksOrder, id, updateTask, clearSort]);
     
     const tasksKey = useMemo(() => tasks.map(t => t.id).join(','), [tasks]);
+    const filteredAndSortedTasks = useMemo(() => {
+        return sortTasks(filterTasks(tasks, filter), sort, settings.tasksOrder?.[id]);
+    }, [tasks, filter, sort, settings.tasksOrder, id]);
 
     return (
         <div className={styles.root}>
             <div className={styles.main}>
                 <div className={styles.header}>
-                    <Heading
-                        {...(typeof heading === 'string' ? { content: heading } : heading)}
-                    />
+                    <Flex align="center" gap="m">
+                        <Button
+                            className={styles.menu}
+                            icon="menu"
+                            onClick={openDrawer}
+                        />
+                    
+                        <Heading
+                            {...(typeof heading === 'string' ? { content: heading } : heading)}
+                        />
+                    </Flex>
 
                     <div className={styles.actions}>
                         <ButtonGroup gap="s">

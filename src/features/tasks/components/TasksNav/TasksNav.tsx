@@ -1,11 +1,13 @@
 import { NavLink } from 'react-router-dom';
 
 import { Badge, Item, List } from '@olegpolyakov/ui-components';
+import { useAppContext } from '@olegpolyakov/frontend/app';
 
 import { useTasksContext } from '../../contexts';
 import { filters } from '../../logic/filter';
 
 export default function TasksNav() {
+    const { closeDrawer } = useAppContext();
     const { tasks } = useTasksContext();
 
     const incompleteTasks = tasks.filter(t => !t.completed);
@@ -30,6 +32,7 @@ export default function TasksNav() {
                         shape="rounded-s"
                         active={isActive}
                         interactive
+                        onClick={closeDrawer}
                     />
                 )}
             </NavLink>
@@ -50,6 +53,7 @@ export default function TasksNav() {
                         shape="rounded-s"
                         active={isActive}
                         interactive
+                        onClick={closeDrawer}
                     />
                 )}
             </NavLink>
@@ -70,6 +74,7 @@ export default function TasksNav() {
                         variant="plain"
                         active={isActive}
                         interactive
+                        onClick={closeDrawer}
                     />
                 )}
             </NavLink>

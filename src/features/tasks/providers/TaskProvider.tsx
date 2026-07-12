@@ -20,6 +20,18 @@ export default function TaskProvider({
 
     const task = tasks.find(t => t.id === taskId) || null;
 
+    const setTask = useCallback((arg: string | Task) => {
+        if (typeof arg === 'string') {
+            setTaskId(arg);
+        } else {
+            setTaskId(arg.id);
+        }
+    }, []);
+
+    const unsetTask = useCallback(() => {
+        setTaskId(null);
+    }, []);
+
     const updateTask = useCallback(async (data: Partial<Task>) => {
         if (!task) return;
 
@@ -37,18 +49,6 @@ export default function TaskProvider({
 
         await _deleteTask(task.id);
     }, [task, _deleteTask]);
-
-    const setTask = useCallback((arg: string | Task) => {
-        if (typeof arg === 'string') {
-            setTaskId(arg);
-        } else {
-            setTaskId(arg.id);
-        }
-    }, []);
-
-    const unsetTask = useCallback(() => {
-        setTaskId(null);
-    }, []);
 
     const value = useMemo(() => ({
         task: task!,

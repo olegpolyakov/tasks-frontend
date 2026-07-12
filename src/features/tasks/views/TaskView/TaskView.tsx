@@ -44,11 +44,7 @@ export default function TaskView() {
                     color="danger"
                     variant="tinted"
                     fluid
-                    onClick={() => {
-                        if (confirm('Are you sure you want to delete this task?')) {
-                            deleteTask();
-                        }
-                    }}
+                    onClick={deleteTask}
                 />
 
                 <Button 

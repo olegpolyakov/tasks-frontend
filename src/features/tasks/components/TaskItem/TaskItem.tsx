@@ -1,7 +1,5 @@
-import { useSortable } from '@dnd-kit/react/sortable';
-import { Badge, Box, Checkbox, Flex, Icon, Item, Pill, type PillProps, Text } from 'kantanui';
-
 import { type Task, TaskPriority } from '@olegpolyakov/tasks-core';
+import { Badge, Box, Checkbox, Flex, Icon, Item, Pill, type PillProps, Text } from '@olegpolyakov/ui-components';
 
 const priorityColors = {
     [TaskPriority.Low]: 'success',
@@ -17,81 +15,90 @@ const priorityLabels = {
 
 export default function TaskItem({
     task,
-    index,
     selected,
     onSelect,
     onToggle,
+    onDelete,
     ...props
 }: {
     task: Task;
-    index: number;
-    selected: boolean;
-    onSelect: (task: Task) => void;
-    onToggle: (id: string, completed: boolean) => void;
+    selected?: boolean;
+    onSelect?: (task: Task) => void;
+    onDelete?: (id: string) => void;
+    onToggle?: (id: string, completed: boolean) => void;
 }) {
-    const { ref } = useSortable({ id: task.id, index });
-    
     return (
         <Item
-            ref={ref}
-            content={
-                <Flex column gap="xxs">
-                    <Text
-                        as="span"
-                        start={
-                            <Checkbox
-                                checked={task.completed}
-                                onChange={() => onToggle(task.id, !task.completed)}
-                                onClick={event => event.stopPropagation()}
-                            />
-                        }
-                        content={task.title}
-                        color={task.completed ? 'tertiary' : 'primary'}
-                        strikethrough={task.completed}
-                    />
-
-                    <Box style={{ marginLeft: '1.75rem' }}>
-                        <Flex gap="xs">
-                            {task.priority !== undefined && (
-                                <Pill
-                                    start={
-                                        <Badge
-                                            color={priorityColors[task.priority] as PillProps['color']}
-                                            size="s"
-                                        />
-                                    }
-                                    content={priorityLabels[task.priority]}
-                                    color={priorityColors[task.priority] as PillProps['color']}
-                                    size="s"
-                                    variant="tinted"
-                                />
-                            )}
-
-                            {task.dueDate && (
-                                <Text
-                                    content={new Date(task.dueDate).toLocaleDateString()}
-                                    size="xs"
-                                    color="secondary"
-                                />
-                            )}
-
-                            {task.content && (
-                                <Icon
-                                    title={task.content.length > 100 ? task.content.slice(0, 100) + '...' : task.content}
-                                    name="notes"
-                                    size="s"
-                                    color="secondary"
-                                />
-                            )}
-                        </Flex>
-                    </Box>
-                </Flex>
-            }
             shape="rounded-s"
             variant="plain"
             active={selected}
-            onClick={() => onSelect(task)}
+            interactive
+            onClick={() => onSelect?.(task)}
             {...props}
-        />
+        >
+            <Flex column gap="xxs">
+                <Text
+                    as="span"
+                    start={
+                        <Checkbox
+                            checked={task.completed}
+                            onChange={() => onToggle?.(task.id, !task.completed)}
+                            onClick={event => event.stopPropagation()}
+                        />
+                    }
+                    content={task.title}
+                    color={task.completed ? 'tertiary' : 'primary'}
+                    strikethrough={task.completed}
+                />
+
+                <Box style={{ marginLeft: '1.75rem' }}>
+                    <Flex gap="xs">
+                        {task.priority !== undefined && (
+                            <Pill
+                                start={
+                                    <Badge
+                                        color={priorityColors[task.priority] as PillProps['color']}
+                                        size="s"
+                                    />
+                                }
+                                content={priorityLabels[task.priority]}
+                                title="Priority"
+                                color={priorityColors[task.priority] as PillProps['color']}
+                                size="s"
+                                variant="tinted"
+                            />
+                        )}
+
+                        {task.dueDate && (
+                            <Text
+                                content={new Date(task.dueDate).toLocaleDateString()}
+                                title="Due date"
+                                color="secondary"
+                                size="xs"
+                            />
+                        )}
+
+                        {task.childrenIds.length > 0 &&
+                            <Text
+                                start={<Icon color="secondary" name="checklist" size="s" />}
+                                content={task.childrenIds.length}
+                                color="secondary"
+                                size="xs"
+                                title={`${task.childrenIds.length} subtasks`}
+                            />
+                        }
+
+                        {task.content && (
+                            <Icon
+                                title={task.content.length > 100 ? task.content.slice(0, 100) + '...' : task.content}
+                                name="notes"
+                                size="s"
+                                color="secondary"
+                            />
+                        )}
+                    </Flex>
+                </Box>
+            </Flex>
+        </Item>
     );
 }
