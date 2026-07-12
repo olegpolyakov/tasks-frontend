@@ -6,7 +6,7 @@ import { Button, ButtonGroup, Flex, Heading, type HeadingProps, State } from '@o
 import { useSettingsContext } from '@/features/settings';
 
 import NoTasksImage from '../../assets/no-tasks.svg';
-import { TaskInput, TasksList, TasksSort } from '../../components';
+import TasksTree from '../../components/TasksTree';
 import { useTaskContext, useTasksContext } from '../../contexts';
 import { filterAndSortTasks } from '../../helpers';
 import { useTasksSort } from '../../hooks';
@@ -30,6 +30,7 @@ export default function TasksView({
     const {
         tasks,
         createTask,
+        updateTask,
         toggleTask,
         deleteTask
     } = useTasksContext();
@@ -54,12 +55,23 @@ export default function TasksView({
                 [id]: tasksInOrder.map(task => task.id)
             }
         });
+
+        tasksInOrder.forEach(updateTaskChildren);
+
         clearSort();
-    }, [updateSettings, settings.tasksOrder, id, clearSort]);
+
+        async function updateTaskChildren(task: Task) {
+            const childrenIds = task.children.map(t => t.id);
+
+            if (task.childrenIds.join(',') !== childrenIds.join(',')) {
+                await updateTask(task.id, { childrenIds });
+            }
+
+            task.children.forEach(updateTaskChildren);
+        }        
+    }, [updateSettings, settings.tasksOrder, id, updateTask, clearSort]);
     
-    const filteredAndSortedTasks = useMemo(() =>
-        filterAndSortTasks(tasks, filter, sort, settings.tasksOrder?.[id]),
-    [tasks, filter, sort, settings.tasksOrder, id]);
+    const tasksKey = useMemo(() => tasks.map(t => t.id).join(','), [tasks]);
 
     return (
         <div className={styles.root}>
@@ -87,7 +99,8 @@ export default function TasksView({
                 <div className={styles.body}>
                     {filteredAndSortedTasks.length > 0 ?
                         <div className={styles.content}>
-                            <TasksList
+                            <TasksTree
+                                key={tasksKey}
                                 tasks={filteredAndSortedTasks}
                                 selectedTask={selectedTask}
                                 onSelect={setTask}
