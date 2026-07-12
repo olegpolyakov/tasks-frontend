@@ -1,3 +1,5 @@
+@use 'pkg:@olegpolyakov/ui-components/styles/media';
+
 .root {
     height: 100%;
     display: flex;
@@ -25,23 +27,29 @@
     justify-content: space-between;
     position: sticky;
     top: 0;
-    padding: var(--kui-space-m);
+    padding: var(--ui-space-m);
     backdrop-filter: blur(10px);
     z-index: 1;
 }
 
 .content {
-    padding: var(--kui-space-xs);
+    padding: var(--ui-space-xs);
 }
 
 .footer {
     position: sticky;
     bottom: 0;
-    padding: var(--kui-space-m);
+    padding: var(--ui-space-m);
     backdrop-filter: blur(10px);
     z-index: 1;
 }
 
 .empty {
     margin: auto;
+}
+
+.menu {
+    @include media.from(m) {
+        display: none;
+    }
 }

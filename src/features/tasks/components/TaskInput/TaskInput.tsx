@@ -1,6 +1,6 @@
 import { SubmitEvent, useState } from 'react';
 
-import { Input } from 'kantanui';
+import { Input } from '@olegpolyakov/ui-components';
 
 export default function TaskInput({ onSubmit }: { onSubmit?: (data: {title: string}) => void }) {
     const [title, setTitle] = useState('');

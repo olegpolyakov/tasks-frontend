@@ -1,8 +1,7 @@
 import { type ReactNode, useCallback, useMemo } from 'react';
 
-import { ButtonGroup, Heading, type HeadingProps, State } from 'kantanui';
-
 import type { Task } from '@olegpolyakov/tasks-core';
+import { Button, ButtonGroup, Flex, Heading, type HeadingProps, State } from '@olegpolyakov/ui-components';
 
 import { useSettingsContext } from '@/features/settings';
 

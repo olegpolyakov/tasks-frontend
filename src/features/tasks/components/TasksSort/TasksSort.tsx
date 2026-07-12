@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Icon, Menu } from 'kantanui';
+import { Button, ButtonGroup, Icon, Menu } from '@olegpolyakov/ui-components';
 
 const sortNames: Record<string, string> = {
     dueDate: 'Due date',

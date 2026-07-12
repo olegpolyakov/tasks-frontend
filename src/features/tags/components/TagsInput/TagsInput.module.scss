@@ -1,11 +1,11 @@
 .root {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--kui-space-xxs);
+    gap: var(--ui-space-xxs);
 }
 
 .input {
-    font-family: var(--kui-font-family);
+    font-family: var(--ui-font-family);
     flex: 1 0 auto;
     border: none;
     background: none;

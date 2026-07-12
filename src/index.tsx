@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './app';
 
-import 'kantanui/styles';
+import '@olegpolyakov/ui-components/styles';
 
 import './index.scss';
 

@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 
-import { Button, Field, Flex, Item, List, Pill, Popover } from 'kantanui';
 import { v4 as uuid } from 'uuid';
 
 import type { Tag } from '@olegpolyakov/tasks-core';
+import { Button, Field, Flex, Item, List, Pill, Popover } from '@olegpolyakov/ui-components';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 import { useTagsContext } from '../../contexts';

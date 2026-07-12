@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 
-import { Badge, Item, List } from 'kantanui';
-
+import { Badge, Item, List } from '@olegpolyakov/ui-components';
+import { useAppContext } from '@olegpolyakov/frontend/app';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 import { useTasksContext } from '@/features/tasks';
@@ -11,6 +11,7 @@ import { useTagsContext } from '../../contexts';
 import styles from './TagsNav.module.scss';
 
 export default function TagsNav() {
+    const { closeDrawer } = useAppContext();
     const { tasks } = useTasksContext();
     const { tags } = useTagsContext();
 
@@ -38,6 +39,7 @@ export default function TagsNav() {
                             shape="rounded-s"
                             active={isActive}
                             interactive
+                            onClick={closeDrawer}
                         />
                     )}
                 </NavLink>

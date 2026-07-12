@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-import { Badge, Item, List } from 'kantanui';
+import { Badge, Item, List } from '@olegpolyakov/ui-components';
 
 import { useTasksContext } from '../../contexts';
 import { filters } from '../../logic/filter';

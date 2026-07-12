@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { Button, Checkbox, Field, Heading, Input, Text, Textarea } from 'kantanui';
-
 import type { Task } from '@olegpolyakov/tasks-core';
+import { Button, Checkbox, Field, Heading, Input, Text, Textarea } from '@olegpolyakov/ui-components';
 import Editable from '@olegpolyakov/frontend/components/Editable';
 
 import { TaskTags } from '../../components';

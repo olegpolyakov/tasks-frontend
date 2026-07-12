@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Button, ButtonGroup, Drawer } from 'kantanui';
-
+import { Button, ButtonGroup, Drawer } from '@olegpolyakov/ui-components';
 import { useIsMobile } from '@olegpolyakov/frontend/hooks/mq';
 
 import { TaskDetails } from '../../components';

@@ -3,12 +3,12 @@
     max-width: 360px;
     display: flex;
     flex-direction: column;
-    gap: var(--kui-space-m);
+    gap: var(--ui-space-m);
 }
 
 .content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: var(--kui-space-s);
+    gap: var(--ui-space-s);
 }

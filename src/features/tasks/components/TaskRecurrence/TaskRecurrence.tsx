@@ -1,6 +1,5 @@
-import { Button, Field, Popover, Select, Text } from 'kantanui';
-
 import { type RecurrenceData, RecurrenceFrequency } from '@olegpolyakov/core';
+import { Button, Field, Popover, Select, Text } from '@olegpolyakov/ui-components';
 
 import DailyRecurrenceSettings, { getDailyRecurrenceDescription } from './DailyRecurrenceSettings';
 import MonthlyRecurrenceSettings, { getMonthlyRecurrenceDescription } from './MonthlyRecurrenceSettings';
@@ -29,6 +28,7 @@ const frequencyDescriptions = {
 };
 
 const frequencyOptions = Object.entries(frequencyLabels).map(([value, label]) => ({
+    key: value,
     value: value as RecurrenceFrequency,
     label
 }));

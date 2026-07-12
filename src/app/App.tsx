@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { Button, Heading, Text } from 'kantanui';
-
+import { Button, Heading, Text } from '@olegpolyakov/ui-components';
 import { AppContent, AppDrawer, AppShell } from '@olegpolyakov/frontend/app';
 
 import { Tag, TagCreateAction, TagsNav } from '@/features/tags';

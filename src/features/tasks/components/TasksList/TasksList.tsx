@@ -1,8 +1,8 @@
 import { DragDropProvider, type DragEndEvent } from '@dnd-kit/react';
 import { isSortable } from '@dnd-kit/react/sortable';
-import { List } from 'kantanui';
 
 import type { Task } from '@olegpolyakov/tasks-core';
+import { List } from '@olegpolyakov/ui-components';
 
 import TaskItem from '../TaskItem';
 
@@ -11,6 +11,7 @@ export default function TasksList({
     selectedTask,
     onSelect,
     onToggle,
+    onDelete,
     onReorder
 }: {
     tasks: Task[];
@@ -42,15 +43,22 @@ export default function TasksList({
         <DragDropProvider
             onDragEnd={handleDragEnd}
         >
-            <List gap="s" shape="rounded-m" variant="plain" interactive>
-                {tasks?.map((task, index) => (
+            <List
+                as="div"
+                gap="s"
+                shape="rounded-m"
+                variant="plain"
+                interactive
+            >
+                {tasks.map((task, index) => (
                     <TaskItem
                         key={task.id}
-                        task={task}
+                        task={task as unknown as Task}
                         index={index}
                         selected={selectedTask?.id === task.id}
                         onSelect={onSelect}
                         onToggle={onToggle}
+                        onDelete={onDelete}
                     />
                 ))}
             </List>
