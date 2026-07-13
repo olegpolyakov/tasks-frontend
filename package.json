@@ -1,8 +1,8 @@
 {
   "name": "@olegpolyakov/tasks-frontend",
   "version": "0.1.0",
-  "author": "Oleg Poliakov <olegpoliakov@outlook.com>",
   "description": "",
+  "author": "Oleg Poliakov <olegpoliakov@outlook.com>",
   "type": "module",
   "scripts": {
     "compile": "tsc --noEmit",
