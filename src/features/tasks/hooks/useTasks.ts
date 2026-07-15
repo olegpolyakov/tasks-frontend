@@ -1,23 +1,23 @@
 import { useCallback, useEffect } from 'react';
 
-import { useAtom } from 'jotai';
-
 import { Task } from '@olegpolyakov/tasks-core';
 
 import { toRecord } from '@/utils';
 
-import * as api from '../api';
-import { tasksAtom } from '../atoms';
 import { getAllChildren } from '../logic/children';
+import { useTasksState } from '../state';
+
+import useTasksApi from './useTasksApi';
 
 export default function useTasks() {
-    const [tasks, setTasks] = useAtom(tasksAtom);
+    const api = useTasksApi();
+    const [tasks, setTasks] = useTasksState();
 
     useEffect(() => {
         api.fetchTasks().then(tasks => {
             setTasks(tasks);
         });
-    }, [setTasks]);
+    }, [api, setTasks]);
 
     const createTask = useCallback(async (data: Partial<Task>) => {
         const createdTask = await api.createTask(data);
@@ -25,7 +25,7 @@ export default function useTasks() {
         setTasks(tasks => [...tasks, createdTask]);
 
         return createdTask;
-    }, [setTasks]);
+    }, [api, setTasks]);
 
     const updateTask = useCallback(async (id: string, data: Partial<Task>) => {
         const updatedTask = await api.updateTask(id, data);
@@ -33,7 +33,7 @@ export default function useTasks() {
         setTasks(prevTasks => prevTasks.map(task => task.id === id ? updatedTask : task));
 
         return updatedTask;
-    }, [setTasks]);
+    }, [api, setTasks]);
 
     const toggleTask = useCallback(async (id: string, completed: boolean) => {
         const tasksRecord = toRecord(tasks);
@@ -66,7 +66,7 @@ export default function useTasks() {
     
             return updatedTask;
         }
-    }, [tasks, setTasks]);
+    }, [api, tasks, setTasks]);
 
     const deleteTask = useCallback(async (id: string) => {       
         const tasksRecord = toRecord(tasks);
@@ -97,7 +97,7 @@ export default function useTasks() {
 
             setTasks(tasks => tasks.filter(task => task.id !== id));
         }
-    }, [tasks, setTasks]);
+    }, [api, tasks, setTasks]);
 
     return {
         tasks,
