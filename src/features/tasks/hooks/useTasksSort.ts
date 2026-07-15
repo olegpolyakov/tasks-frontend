@@ -1,21 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import type { Task } from '@olegpolyakov/tasks-core';
-
 import { useSettingsContext } from '@/features/settings';
 
-type Sorts = Record<string, (a: Task, b: Task) => number>;
-
-const sorts: Sorts =  {
-    dueDate: (a, b) => {
-        if (!a.dueDate) return 1;
-        if (!b.dueDate) return -1;
-
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-    },
-    priority: (a, b) => b.priority - a.priority,
-    createdAt: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-};
+import { type Sorts, sorts } from '../logic/sort';
 
 export default function useTasksSort(id: string) {
     const { settings, updateSettings } = useSettingsContext();

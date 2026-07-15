@@ -1,9 +1,16 @@
 import type { Task } from '@olegpolyakov/tasks-core';
 
-export const filters: Record<string, (task: Task) => boolean> = {
-    all: () => true,
-    inbox: task => task.tagIds.length === 0,
-    today: task => new Date(task.dueDate || '').toDateString() === new Date().toDateString()
+export type Sorts = Record<string, (a: Task, b: Task) => number>;
+
+export const sorts: Sorts =  {
+    dueDate: (a, b) => {
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
+
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+    },
+    priority: (a, b) => b.priority - a.priority,
+    createdAt: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 };
 
 export function sortTasks(
