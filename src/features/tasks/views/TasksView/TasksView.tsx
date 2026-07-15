@@ -1,7 +1,7 @@
 import { type ReactNode, useCallback, useMemo } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
-import { Button, ButtonGroup, Flex, Heading, type HeadingProps, State } from '@olegpolyakov/ui-components';
+import { Button, ButtonGroup, Flex, Heading, HeadingProps, State, TreeItem } from '@olegpolyakov/ui-components';
 import { useAppContext } from '@olegpolyakov/frontend/app';
 
 import { useSettingsContext } from '@/features/settings';
@@ -50,33 +50,41 @@ export default function TasksView({
         clearSort
     } = useTasksSort(id);
 
-    const reorderTasks = useCallback((tasksInOrder: Task[]) => {
+    const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {
         updateSettings({
             tasksOrder: {
                 ...settings.tasksOrder,
-                [id]: tasksInOrder.map(task => task.id)
+                [id]: itemsInOrder.map(item => item.id)
             }
         });
 
-        tasksInOrder.forEach(updateTaskChildren);
+        itemsInOrder.forEach(updateTaskChildren);
 
         clearSort();
 
-        async function updateTaskChildren(task: Task) {
-            const childrenIds = task.children.map(t => t.id);
+        async function updateTaskChildren(item: TreeItem) {
+            const task = tasks.find(t => t.id === item.id);
+
+            if (!task) return;
+
+            const childrenIds = item.children.map(child => child.id);
 
             if (task.childrenIds.join(',') !== childrenIds.join(',')) {
                 await updateTask(task.id, { childrenIds });
             }
 
-            task.children.forEach(updateTaskChildren);
+            item.children.forEach(updateTaskChildren);
         }        
-    }, [updateSettings, settings.tasksOrder, id, updateTask, clearSort]);
+    }, [updateSettings, settings.tasksOrder, id, updateTask, clearSort, tasks]);
     
-    const tasksKey = useMemo(() => tasks.map(t => t.id).join(','), [tasks]);
     const filteredAndSortedTasks = useMemo(() => {
         return sortTasks(filterTasks(tasks, filter), sort, settings.tasksOrder?.[id]);
     }, [tasks, filter, sort, settings.tasksOrder, id]);
+    const tasksTreeKey = useMemo(() => {
+        return filteredAndSortedTasks
+            .map(task => `${task.id}:${task.childrenIds.join('.')}`)
+            .join('|');
+    }, [filteredAndSortedTasks]);
 
     return (
         <div className={styles.root}>
@@ -113,7 +121,7 @@ export default function TasksView({
                     {filteredAndSortedTasks.length > 0 ?
                         <div className={styles.content}>
                             <TasksTree
-                                key={tasksKey}
+                                key={tasksTreeKey}
                                 tasks={filteredAndSortedTasks}
                                 selectedTask={selectedTask}
                                 onSelect={setTask}
