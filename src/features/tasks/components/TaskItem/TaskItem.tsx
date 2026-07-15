@@ -21,6 +21,7 @@ export default function TaskItem({
     onDelete,
     ...props
 }: {
+    ref?: (element: Element | null) => void;
     task: Task;
     selected?: boolean;
     onSelect?: (task: Task) => void;
