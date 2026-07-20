@@ -15,7 +15,7 @@
     "@olegpolyakov/core": "^0.6.0",
     "@olegpolyakov/frontend": "^0.13.2",
     "@olegpolyakov/tasks-core": "^0.3.0",
-    "@olegpolyakov/ui-components": "^0.5.2",
+    "@olegpolyakov/ui": "^0.6.0",
     "jotai": "^2.19.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

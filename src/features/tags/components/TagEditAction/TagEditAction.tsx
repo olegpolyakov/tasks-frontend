@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import type { Tag } from '@olegpolyakov/tasks-core';
-import { Button, type ButtonProps, Dialog } from '@olegpolyakov/ui-components';
+import { Button, type ButtonProps, Dialog } from '@olegpolyakov/ui';
 
 import { TagForm } from '../..';
 import { useTagContext, useTagsContext } from '../../contexts';

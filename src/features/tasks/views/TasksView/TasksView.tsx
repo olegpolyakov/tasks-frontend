@@ -1,7 +1,7 @@
 import { type ReactNode, useCallback, useMemo } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
-import { Button, ButtonGroup, Flex, Heading, HeadingProps, State, TreeItem } from '@olegpolyakov/ui-components';
+import { Button, ButtonGroup, Flex, Heading, HeadingProps, State, TreeItem } from '@olegpolyakov/ui';
 import { useAppContext } from '@olegpolyakov/frontend/app';
 
 import { useSettingsContext } from '@/features/settings';

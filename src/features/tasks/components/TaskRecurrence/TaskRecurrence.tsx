@@ -1,5 +1,5 @@
 import { type RecurrenceData, RecurrenceFrequency } from '@olegpolyakov/core';
-import { Button, Field, Popover, Select, Text } from '@olegpolyakov/ui-components';
+import { Button, Field, Popover, Select, Text } from '@olegpolyakov/ui';
 
 import DailyRecurrenceSettings, { getDailyRecurrenceDescription } from './DailyRecurrenceSettings';
 import MonthlyRecurrenceSettings, { getMonthlyRecurrenceDescription } from './MonthlyRecurrenceSettings';

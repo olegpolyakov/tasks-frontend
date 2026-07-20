@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import type { Tag } from '@olegpolyakov/tasks-core';
-import { Button, Flex, Input } from '@olegpolyakov/ui-components';
+import { Button, Flex, Input } from '@olegpolyakov/ui';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 export default function TagForm({

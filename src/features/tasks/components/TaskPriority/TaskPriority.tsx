@@ -1,5 +1,5 @@
 import { TaskPriority as TaskPriorityEnum } from '@olegpolyakov/tasks-core';
-import { Badge, Field, Pill, PillGroup } from '@olegpolyakov/ui-components';
+import { Badge, Field, Pill, PillGroup } from '@olegpolyakov/ui';
 
 export default function TaskPriority({
     priority,

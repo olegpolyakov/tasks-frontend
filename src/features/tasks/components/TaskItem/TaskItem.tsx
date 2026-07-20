@@ -1,5 +1,5 @@
 import { type Task, TaskPriority } from '@olegpolyakov/tasks-core';
-import { Badge, Box, Checkbox, Flex, Icon, Item, Pill, type PillProps, Text } from '@olegpolyakov/ui-components';
+import { Badge, Box, Checkbox, Flex, Icon, Item, Pill, type PillProps, Text } from '@olegpolyakov/ui';
 
 const priorityColors = {
     [TaskPriority.Low]: 'success',

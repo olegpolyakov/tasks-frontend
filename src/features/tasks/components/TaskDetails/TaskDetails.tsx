@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
-import { Button, Checkbox, Field, Heading, Input, Text, Textarea } from '@olegpolyakov/ui-components';
+import { Button, Checkbox, Field, Heading, Input, Text, Textarea } from '@olegpolyakov/ui';
 import Editable from '@olegpolyakov/frontend/components/Editable';
 
 import { TaskTags } from '../../components';

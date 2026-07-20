@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, type ButtonProps, Checkbox, Dialog, Flex, Text } from '@olegpolyakov/ui-components';
+import { Button, type ButtonProps, Checkbox, Dialog, Flex, Text } from '@olegpolyakov/ui';
 
 import { useTagsContext } from '../../contexts';
 

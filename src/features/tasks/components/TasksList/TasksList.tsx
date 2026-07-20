@@ -2,7 +2,7 @@ import { DragDropProvider, type DragEndEvent } from '@dnd-kit/react';
 import { isSortable } from '@dnd-kit/react/sortable';
 
 import type { Task } from '@olegpolyakov/tasks-core';
-import { List } from '@olegpolyakov/ui-components';
+import { List } from '@olegpolyakov/ui';
 
 import TaskItem from '../TaskItem';
 

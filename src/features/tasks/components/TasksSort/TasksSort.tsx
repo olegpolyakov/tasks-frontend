@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Icon, Menu } from '@olegpolyakov/ui-components';
+import { Button, ButtonGroup, Icon, Menu } from '@olegpolyakov/ui';
 
 const sortNames: Record<string, string> = {
     dueDate: 'Due date',

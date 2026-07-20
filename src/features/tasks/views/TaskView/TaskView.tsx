@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Button, ButtonGroup, Drawer } from '@olegpolyakov/ui-components';
+import { Button, ButtonGroup, Drawer } from '@olegpolyakov/ui';
 import { useIsMobile } from '@olegpolyakov/frontend/hooks/mq';
 
 import { TaskDetails } from '../../components';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import type { RecurrenceData } from '@olegpolyakov/core';
-import { Button, ButtonGroup } from '@olegpolyakov/ui-components';
+import { Button, ButtonGroup } from '@olegpolyakov/ui';
 
 const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 

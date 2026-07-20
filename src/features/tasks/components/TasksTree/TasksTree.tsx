@@ -1,5 +1,5 @@
 import { Task } from '@olegpolyakov/tasks-core';
-import { SortableTree, type TreeItem } from '@olegpolyakov/ui-components';
+import { SortableTree, type TreeItem } from '@olegpolyakov/ui';
 
 import { buildTree } from '../../logic/children';
 import TaskItem from '../TaskItem';

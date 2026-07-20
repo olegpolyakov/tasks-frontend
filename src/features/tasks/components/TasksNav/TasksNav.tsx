@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-import { Badge, Item, List } from '@olegpolyakov/ui-components';
+import { Badge, Item, List } from '@olegpolyakov/ui';
 import { useAppContext } from '@olegpolyakov/frontend/app';
 
 import { useTasksContext } from '../../contexts';
