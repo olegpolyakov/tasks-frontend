@@ -1,5 +1,9 @@
-import { atom } from 'jotai';
+import { atom, useAtom } from 'jotai';
 
-import type { Project } from '@olegpolyakov/tasks-core';
+import type { ProjectData } from '@olegpolyakov/tasks-core';
 
-export const projectsAtom = atom<Project[]>([]);
+export const projectsAtom = atom<ProjectData[]>([]);
+
+export function useProjectsState() {
+    return useAtom(projectsAtom);
+}

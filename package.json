@@ -14,7 +14,7 @@
     "@dnd-kit/react": "^0.4.0",
     "@olegpolyakov/core": "^0.6.0",
     "@olegpolyakov/frontend": "^0.13.2",
-    "@olegpolyakov/tasks-core": "^0.3.0",
+    "@olegpolyakov/tasks-core": "^0.4.0",
     "@olegpolyakov/ui": "^0.6.0",
     "jotai": "^2.19.0",
     "react": "^19.2.0",
@@ -23,6 +23,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@olegpolyakov/tasks-core": "file://../core",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/uuid": "^10.0.0",

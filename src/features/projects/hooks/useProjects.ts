@@ -1,36 +1,36 @@
 import { useCallback, useEffect } from 'react';
 
-import { useAtom } from 'jotai';
-
 import type { Project } from '@olegpolyakov/tasks-core';
 
-import * as api from '../api';
-import { projectsAtom } from '../state';
+import { useProjectsState } from '../state';
+
+import useProjectsApi from './useProjectsApi';
 
 export default function useProjects() {
-    const [projects, setProjects] = useAtom(projectsAtom);
+    const api = useProjectsApi();
+    const [projects, setProjects] = useProjectsState();
 
     useEffect(() => {
         api.fetchProjects().then(setProjects);
-    }, [setProjects]);
+    }, [api, setProjects]);
 
     const createProject = useCallback(async (data: Partial<Project>) => {
         const nextProject = await api.createProject(data);
 
         setProjects(prevProjects => [...prevProjects, nextProject]);
-    }, [setProjects]);
+    }, [api, setProjects]);
 
     const updateProject = useCallback(async (id: string, data: Partial<Project>) => {
         const updatedProject = await api.updateProject(id, data);
 
         setProjects(prevProjects => prevProjects.map(project => project.id === id ? updatedProject : project));
-    }, [setProjects]);
+    }, [api, setProjects]);
 
     const deleteProject = useCallback(async (id: string) => {
         await api.deleteProject(id, { deleteTasks: false });
 
         setProjects(prevProjects => prevProjects.filter(project => project.id !== id));
-    }, [setProjects]);
+    }, [api, setProjects]);
 
     return {
         projects,
