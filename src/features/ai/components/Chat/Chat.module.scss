@@ -1,0 +1,30 @@
+.root {
+    max-width: 480px;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: var(--fui-space-s);
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-s);
+}
+
+.message {
+    white-space: break-spaces;
+    
+    &.assistant {
+        align-self: start;
+    }
+
+    &.user {
+        align-self: end;
+        background-color: var(--ui-tinted-color);
+        padding: var(--ui-space-xxs) var(--ui-space-xs);
+        border-radius: var(--ui-radius-s);
+    }
+
+    &.system {}
+}
