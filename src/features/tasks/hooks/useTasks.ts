@@ -20,20 +20,12 @@ export default function useTasks() {
     }, [api, setTasks]);
 
     const createTask = useCallback(async (data: Partial<Task>) => {
-        const createdTask = await api.createTask(data);
-
-        setTasks(tasks => [...tasks, createdTask]);
-
-        return createdTask;
-    }, [api, setTasks]);
+        return api.createTask(data);
+    }, [api]);
 
     const updateTask = useCallback(async (id: string, data: Partial<Task>) => {
-        const updatedTask = await api.updateTask(id, data);
-
-        setTasks(prevTasks => prevTasks.map(task => task.id === id ? updatedTask : task));
-
-        return updatedTask;
-    }, [api, setTasks]);
+        return api.updateTask(id, data);
+    }, [api]);
 
     const toggleTask = useCallback(async (id: string, completed: boolean) => {
         const tasksRecord = toRecord(tasks);
@@ -48,25 +40,13 @@ export default function useTasks() {
                 return;
             }
 
-            const completedTasks = toRecord(
-                await Promise.all([task, ...incompleteTasks].map(task => api.toggleTask(task.id, true)))
-            );
+            const [completedTask] = await Promise.all([task, ...incompleteTasks].map(task => api.toggleTask(task.id, true)));
 
-            setTasks(tasks => tasks.map(t =>
-                t.id in completedTasks
-                    ? completedTasks[t.id]
-                    : t
-            ));
-
-            return completedTasks[id];
+            return completedTask;
         } else {
-            const updatedTask = await api.toggleTask(id, completed);
-            
-            setTasks(tasks => tasks.map(task => task.id === id ? updatedTask : task));
-    
-            return updatedTask;
+            return api.toggleTask(id, completed);
         }
-    }, [api, tasks, setTasks]);
+    }, [api, tasks]);
 
     const deleteTask = useCallback(async (id: string) => {       
         const tasksRecord = toRecord(tasks);
@@ -78,26 +58,20 @@ export default function useTasks() {
                 return;
             }
 
-            const deleteTasks = toRecord(
-                await Promise.all([task, ...children].map(async task => {
-                    await api.deleteTask(task.id);
-                    return task;
-                }))
-            );
+            const [deletedTask] = await Promise.all([task, ...children].map(async task => {
+                await api.deleteTask(task.id);
+                return task;
+            }));
 
-            setTasks(tasks => tasks.filter(t => !(t.id in deleteTasks)));
-
-            return deleteTasks[id];
+            return deletedTask;
         } else {
             if (!confirm('Are you sure you want to delete this task?')) {
                 return;
             }
 
             await api.deleteTask(id);
-
-            setTasks(tasks => tasks.filter(task => task.id !== id));
         }
-    }, [api, tasks, setTasks]);
+    }, [api, tasks]);
 
     return {
         tasks,
