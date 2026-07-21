@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
-import { Button, Checkbox, Field, Heading, Input, Text, Textarea } from '@olegpolyakov/ui';
+import { Button, Checkbox, Field, Heading, Input, Switch, Text, Textarea } from '@olegpolyakov/ui';
 import Editable from '@olegpolyakov/frontend/components/Editable';
 
 import { TaskTags } from '../../components';
-import TaskPriority from '../TaskPriority';
 import TaskRecurrence from '../TaskRecurrence';
 
 import styles from './TaskDetails.module.scss';
@@ -41,9 +40,10 @@ export default function TaskDetails({
             </div>
 
             <div className={styles.content}>
-                <TaskPriority
-                    priority={task.priority}
-                    onChange={priority => onUpdate(task.id, { priority })}
+                <Switch
+                    label="Important"
+                    checked={task.important}
+                    onChange={({ checked }) => onUpdate(task.id, { important: checked })}
                 />
 
                 <Field label="Due Date">

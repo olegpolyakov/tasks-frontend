@@ -1,8 +1,9 @@
 import { SubmitEvent, useState } from 'react';
 
+import type { TaskData } from '@olegpolyakov/tasks-core';
 import { Input } from '@olegpolyakov/ui';
 
-export default function TaskInput({ onSubmit }: { onSubmit?: (data: {title: string}) => void }) {
+export default function TaskInput({ onSubmit }: { onSubmit?: (data: Partial<TaskData>) => void }) {
     const [title, setTitle] = useState('');
 
     const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {

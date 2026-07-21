@@ -1,5 +1,10 @@
+import { DateTime } from '@olegpolyakov/core';
 import { type Task, TaskPriority } from '@olegpolyakov/tasks-core';
 import { Badge, Box, Checkbox, Flex, Icon, Item, Pill, type PillProps, Text } from '@olegpolyakov/ui';
+
+import { capitalize } from '@/utils';
+
+import styles from './TaskItem.module.scss';
 
 const priorityColors = {
     [TaskPriority.Low]: 'success',
@@ -12,6 +17,8 @@ const priorityLabels = {
     [TaskPriority.Medium]: 'Medium',
     [TaskPriority.High]: 'High'
 };
+
+
 
 export default function TaskItem({
     task,
@@ -28,12 +35,35 @@ export default function TaskItem({
     onDelete?: (id: string) => void;
     onToggle?: (id: string, completed: boolean) => void;
 }) {
+    const today = DateTime.now();
+    const dueDateTime = DateTime.fromISO(task.dueDate);
+    const daysDiff = Math.abs(dueDateTime.diff(today, 'days').toObject().days);
+    const dueDateString = daysDiff > 3
+        ? DateTime.fromISO(task.dueDate).toLocaleString()
+        : DateTime.fromISO(task.dueDate).toRelativeCalendar();
+    const isOverDue = dueDateTime < today;
+    const color = isOverDue
+        ? 'danger'
+        : task.important 
+            ? 'warning'
+            : undefined;
+    const variant = (isOverDue || task.important)
+        ? 'tinted'
+        : undefined;
+    
     return (
         <Item
             shape="rounded-s"
-            variant="plain"
+            color={color}
+            variant={variant}
             active={selected}
             interactive
+            end={
+                <Flex gap="xxs">
+                    {isOverDue && <Icon name="priority_high" title="Over due" />}
+                    {task.important && <Icon name="flag" title="Important" />}
+                </Flex>
+            }
             onClick={() => onSelect?.(task)}
             {...props}
         >
@@ -72,9 +102,10 @@ export default function TaskItem({
 
                         {task.dueDate && (
                             <Text
-                                content={new Date(task.dueDate).toLocaleDateString()}
+                                className={styles.dueDate}
+                                content={capitalize(dueDateString)}
                                 title="Due date"
-                                color="secondary"
+                                color={isOverDue ? 'danger' : 'secondary'}
                                 size="xs"
                             />
                         )}

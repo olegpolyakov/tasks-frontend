@@ -1,6 +1,7 @@
 import { type ReactNode, useCallback, useMemo } from 'react';
 
-import type { Task } from '@olegpolyakov/tasks-core';
+import { DateTime } from '@olegpolyakov/core';
+import type { Task, TaskData } from '@olegpolyakov/tasks-core';
 import { Button, ButtonGroup, Flex, Heading, HeadingProps, State, TreeItem } from '@olegpolyakov/ui';
 import { useAppContext } from '@olegpolyakov/frontend/app';
 
@@ -49,6 +50,16 @@ export default function TasksView({
         toggleSortDir,
         clearSort
     } = useTasksSort(id);
+
+    const handleSubmit = useCallback((data: Partial<TaskData>) => {
+        switch (filter.name) {
+            case 'today':
+                data.dueDate = DateTime.now().endOf('day');
+                break;
+        }
+
+        createTask(data);
+    }, [filter, createTask]);
 
     const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {
         updateSettings({
@@ -141,7 +152,7 @@ export default function TasksView({
                 </div>
             
                 <div className={styles.footer}>
-                    <TaskInput onSubmit={createTask} />
+                    <TaskInput onSubmit={handleSubmit} />
                 </div>
             </div>
 
