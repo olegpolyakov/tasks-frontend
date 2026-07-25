@@ -3,6 +3,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Button, Heading, Text } from '@olegpolyakov/ui-components';
 import { AppContent, AppDrawer, AppShell } from '@olegpolyakov/frontend/app';
 
+import { ProjectCreateAction } from '@/features/projects';
+import { Project, ProjectsNav } from '@/features/projects';
 import { Tag, TagCreateAction, TagsNav } from '@/features/tags';
 import { Tasks, TasksNav } from '@/features/tasks';
 
@@ -29,6 +31,15 @@ export default function App() {
                         <TasksNav />
 
                         <Text
+                            content="Projects"
+                            end={<ProjectCreateAction icon="add" size="xs" />}
+                            color="secondary"
+                            size="xs"
+                            decorative
+                        />
+                        <ProjectsNav />
+
+                        <Text
                             content="Tags"
                             end={<TagCreateAction icon="add" size="xs" />}
                             color="secondary"
@@ -49,6 +60,11 @@ export default function App() {
                         <Route
                             path="/:filter"
                             element={<Tasks />}
+                        />
+
+                        <Route
+                            path="/projects/:projectId"
+                            element={<Project />}
                         />
 
                         <Route

@@ -1,10 +1,13 @@
 import type { Project, ProjectData, ProjectSectionData, Task } from '@olegpolyakov/tasks-core';
 
+import { socket } from '@/common/ws';
 import { API_URL } from '@/env';
 
 import type { ProjectsApi } from './interface';
 
 export default {
+    events: socket,
+
     async fetchProjects(): Promise<ProjectData[]> {
         return fetch(`${API_URL}/projects`).then(res => res.json());
     },
@@ -47,7 +50,7 @@ export default {
         }).then(res => res.json());
     },
 
-    addSection(projectId: string, data: Partial<ProjectSectionData>) {
+    async createSection(projectId: string, data: Partial<ProjectSectionData>) {
         return fetch(`${API_URL}/projects/${projectId}/sections`, {
             method: 'POST',
             headers: {
@@ -57,7 +60,7 @@ export default {
         }).then(res => res.json());
     },
 
-    updateSection(projectId: string, sectionId: string, data: Partial<ProjectSectionData>) {
+    async updateSection(projectId: string, sectionId: string, data: Partial<ProjectSectionData>) {
         return fetch(`${API_URL}/projects/${projectId}/sections/${sectionId}`, {
             method: 'PUT',
             headers: {
@@ -67,11 +70,9 @@ export default {
         }).then(res => res.json());
     },
 
-    removeSection(projectId: string, sectionId: string) {
+    async deleteSection(projectId: string, sectionId: string) {
         return fetch(`${API_URL}/projects/${projectId}/sections/${sectionId}`, {
             method: 'DELETE'
         }).then(res => res.json());
     }
 } satisfies ProjectsApi;
-
-

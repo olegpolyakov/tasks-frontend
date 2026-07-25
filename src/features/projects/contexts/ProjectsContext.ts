@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import type { Project } from '@olegpolyakov/tasks/core';
+import type { Project } from '@olegpolyakov/tasks-core';
 
 export type ProjectsContext = {
     projects: Project[];

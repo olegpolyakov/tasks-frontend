@@ -6,7 +6,7 @@ import { Dialog } from '@olegpolyakov/ui';
 
 import { ProjectForm } from '../components';
 import { ProjectContext } from '../contexts';
-import { useProject } from '../hooks';
+import { useProject, useProjectTasks } from '../hooks';
 
 export default function ProjectProvider({
     children
@@ -17,19 +17,15 @@ export default function ProjectProvider({
     
     const {
         project,
-        sections,
-        tasks,
-
         updateProject,
         deleteProject,
-
-        addSection,
+        
+        sections,
+        createSection,
         updateSection,
-        removeSection,
-
-        addTask,
-        removeTask
+        deleteSection
     } = useProject(projectId);
+    const { tasks, addTask, removeTask } = useProjectTasks(project);
 
     const [isProjectDialogOpen, setProjectDialogOpen] = useState(false);
 
@@ -40,16 +36,15 @@ export default function ProjectProvider({
 
     const value = useMemo(() => ({
         project: project!,
-        sections,
-        tasks,
-
         updateProject,
         deleteProject,
 
-        addSection,
+        sections,
+        createSection,
         updateSection,
-        removeSection,
-
+        deleteSection,
+        
+        tasks,
         addTask,
         removeTask,
 
@@ -58,15 +53,18 @@ export default function ProjectProvider({
         closeProjectDialog: () => setProjectDialogOpen(false)
     }), [
         project,
-        sections,
-        tasks,
         updateProject,
         deleteProject,
-        addSection,
+
+        sections,
+        createSection,
         updateSection,
-        removeSection,
+        deleteSection,
+        
+        tasks,
         addTask,
         removeTask,
+        
         isProjectDialogOpen
     ]);
 

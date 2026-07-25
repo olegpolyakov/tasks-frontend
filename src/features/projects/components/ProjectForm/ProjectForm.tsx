@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-import type { Project } from '@olegpolyakov/tasks-core';
+import type { ProjectData } from '@olegpolyakov/tasks-core';
 import { Button, Flex, Input, Textarea } from '@olegpolyakov/ui';
 
 export default function ProjectForm({
     data,
     onSubmit
 }: {
-    data?: Partial<Project>;
-    onSubmit?: (data: Partial<Project>) => void
+    data?: Partial<ProjectData>;
+    onSubmit?: (data: Partial<ProjectData>) => void
 }) {
     const [name, setName] = useState(data?.name || '');
     const [icon, setIcon] = useState(data?.icon || '');

@@ -1,63 +1,110 @@
 import { useCallback } from 'react';
 
-import type { ProjectSection, Task } from '@olegpolyakov/tasks-core';
-import { Box, Button, Flex, Menu } from '@olegpolyakov/ui';
+import type { ProjectSectionData, Task, TaskData } from '@olegpolyakov/tasks-core';
+import { Box, Button, Menu, type TreeItem } from '@olegpolyakov/ui';
+import Editable from '@olegpolyakov/frontend/components/Editable';
+import classnames from '@olegpolyakov/frontend/helpers/classnames';
 
-import { TaskInput, TasksList, useTaskContext } from '@/features/tasks';
+import { TaskInput, TasksTree, useTaskContext, useTasksContext } from '@/features/tasks';
 
 import { useProjectContext } from '../../contexts';
+
+import styles from './ProjectSection.module.scss';
 
 export default function ProjectSection({
     section,
     className
 }: {
-    section: ProjectSection,
-    tasks: Task[],
-    onUpdate: (id: string, data: Partial<ProjectSection>) => void,
-    onDelete: (id: string) => void
+    section: ProjectSectionData,
     className?: string,
 }) {
     const {
         tasks,
         addTask,
         removeTask,
-        removeSection
+        updateSection,
+        deleteSection
     } = useProjectContext();
+    const { updateTask } = useTasksContext();
+    const { task: selectedTask, setTask, toggleTask } = useTaskContext();
 
-    const { setTask, toggleTask } = useTaskContext();
-
-    const handleSubmit = useCallback((data: Partial<Task>) => {
+    const handleSubmit = useCallback((data: Partial<TaskData>) => {
         addTask(data, section.id);
     }, [addTask, section.id]);
 
-    const sectionTasks = tasks.filter(task => section.taskIds.includes(task.id));
-        
+    const handleDelete = useCallback(() => {
+        if (!confirm(
+            'Are you sure you want to delete the section?' +
+            (section.taskIds.length > 0 ? ` ${section.taskIds.length} will also be deleted!` : '')
+        )) {
+            return;
+        }
+
+        deleteSection(section.id);
+    }, [section, deleteSection]);
+
+    const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {    
+        itemsInOrder.forEach(updateTaskChildren);
+    
+        // clearSort();
+        updateSection(section.id, { taskIds: itemsInOrder.map(i => i.id) });
+    
+        async function updateTaskChildren(item: TreeItem) {
+            const task = tasks[item.id];
+    
+            if (!task) return;
+    
+            const childrenIds = item.children.map(child => child.id);
+    
+            if (task.childrenIds.join(',') !== childrenIds.join(',')) {
+                await updateTask(task.id, { childrenIds });
+            }
+    
+            item.children.forEach(updateTaskChildren);
+        }        
+    }, [section.id, updateTask, tasks, updateSection]);
+
+    const sectionTasks = section.taskIds.map(id => tasks[id]).filter(Boolean) as Task[];
+    
     return (
-        <Box className={className} variant="tinted" padding="s" shape="rounded-m" interactive={false}>
-            <Flex column gap="s">
-                <Flex align="center" justify="between">
-                    {section.name}
+        <Box
+            className={classnames(className, styles.root)}
+            variant="outlined"
+            shape="rounded-m"
+            interactive={false}
+        >
+            <div className={styles.header}>
+                <Editable
+                    content={section.name}
+                    onBlur={name => updateSection(section.id, { name })}
+                />
 
-                    <Menu
-                        trigger={<Button icon="more_vert" size="s" />}
-                        items={[
-                            { content: 'Edit', onClick: () => {} },
-                            { content: 'Delete', onClick: () => removeSection(section.id) }
-                        ]}
-                    />
-                </Flex>
+                <Menu
+                    trigger={
+                        <Button icon="more_vert" size="s" />
+                    }
+                    items={[
+                        {
+                            content: 'Delete',
+                            onClick: handleDelete
+                        }
+                    ]}
+                />
+            </div>
 
-                <div>
-                    <TasksList
-                        tasks={sectionTasks}
-                        onSelect={setTask}
-                        onToggle={toggleTask}
-                        onDelete={removeTask}
-                    />
+            <div className={styles.body}>
+                <TasksTree
+                    tasks={sectionTasks}
+                    selectedTask={selectedTask}
+                    onSelect={setTask}
+                    onToggle={toggleTask}
+                    onReorder={reorderTasks}
+                />
+            </div>
 
-                    <TaskInput onSubmit={handleSubmit} />
-                </div>
-            </Flex>
+            <div className={styles.footer}>
+                <TaskInput onSubmit={handleSubmit} />
+            </div>
         </Box>
     );
 }

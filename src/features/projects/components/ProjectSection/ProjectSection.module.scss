@@ -1,0 +1,19 @@
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--ui-space-xs) var(--ui-space-xs) var(--ui-space-xs) var(--ui-space-s);
+}
+
+.body {
+    padding: var(--ui-space-xs);
+}
+
+.footer {
+    padding: var(--ui-space-xs);
+}
