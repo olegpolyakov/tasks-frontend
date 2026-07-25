@@ -6,15 +6,15 @@ import { useTasksContext } from '../contexts';
 
 export default function useTask() {
     const {
-        tasks,
+        tasks: tasks,
         updateTask: _updateTask,
         toggleTask: _toggleTask,
         deleteTask: _deleteTask
     } = useTasksContext();
     
-    const [taskId, setTaskId] = useState<string | null>(null);
+    const [taskId, setTaskId] = useState<string>('');
     
-    const task = tasks.find(t => t.id === taskId) || null;
+    const task = tasks[taskId] as Task;
     
     const setTask = useCallback((arg: string | Task) => {
         if (typeof arg === 'string') {
@@ -25,25 +25,25 @@ export default function useTask() {
     }, []);
     
     const unsetTask = useCallback(() => {
-        setTaskId(null);
+        setTaskId('');
     }, []);
     
     const updateTask = useCallback(async (data: Partial<Task>) => {
-        if (!task) return;
+        if (!task) throw new Error('No task');
     
-        await _updateTask(task.id, data);
+        return _updateTask(task.id, data);
     }, [task, _updateTask]);
     
     const toggleTask = useCallback(async (completed: boolean) => {
-        if (!task) return;
+        if (!task) throw new Error('No task');
     
-        await _toggleTask(task.id, completed);
+        return _toggleTask(task.id, completed);
     }, [task, _toggleTask]);
     
     const deleteTask = useCallback(async () => {
-        if (!task) return;
+        if (!task) throw new Error('No task');
     
-        await _deleteTask(task.id);
+        return _deleteTask(task.id);
     }, [task, _deleteTask]);
 
     return {

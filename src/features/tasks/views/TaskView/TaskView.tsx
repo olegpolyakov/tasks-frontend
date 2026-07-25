@@ -18,6 +18,8 @@ export default function TaskView() {
         setOpen(!!task);
     }, [task]);
 
+    console.log({ task });
+
     return (
         <Drawer
             className={styles.root}

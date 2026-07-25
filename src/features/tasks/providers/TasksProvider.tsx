@@ -16,8 +16,9 @@ export default function TasksProvider({
         deleteTask
     } = useTasks();
 
-    const value = useMemo(() => ({
+    const value = useMemo<TasksContextValue>(() => ({
         tasks,
+        tasksList: Object.values(tasks),
         createTask,
         updateTask,
         toggleTask,

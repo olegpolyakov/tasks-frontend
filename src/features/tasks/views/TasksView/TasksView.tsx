@@ -31,7 +31,7 @@ export default function TasksView({
 }) {
     const { openDrawer } = useAppContext();
     const {
-        tasks,
+        tasks: tasks,
         createTask,
         updateTask,
         toggleTask,
@@ -74,7 +74,7 @@ export default function TasksView({
         clearSort();
 
         async function updateTaskChildren(item: TreeItem) {
-            const task = tasks.find(t => t.id === item.id);
+            const task = tasks[item.id];
 
             if (!task) return;
 
@@ -89,13 +89,8 @@ export default function TasksView({
     }, [updateSettings, settings.tasksOrder, id, updateTask, clearSort, tasks]);
     
     const filteredAndSortedTasks = useMemo(() => {
-        return sortTasks(filterTasks(tasks, filter), sort, settings.tasksOrder?.[id]);
+        return sortTasks(filterTasks(Object.values(tasks) as Task[], filter), sort, settings.tasksOrder?.[id]);
     }, [tasks, filter, sort, settings.tasksOrder, id]);
-    const tasksTreeKey = useMemo(() => {
-        return filteredAndSortedTasks
-            .map(task => `${task.id}:${task.childrenIds.join('.')}`)
-            .join('|');
-    }, [filteredAndSortedTasks]);
 
     return (
         <div className={styles.root}>
@@ -132,7 +127,6 @@ export default function TasksView({
                     {filteredAndSortedTasks.length > 0 ?
                         <div className={styles.content}>
                             <TasksTree
-                                key={tasksTreeKey}
                                 tasks={filteredAndSortedTasks}
                                 selectedTask={selectedTask}
                                 onSelect={setTask}

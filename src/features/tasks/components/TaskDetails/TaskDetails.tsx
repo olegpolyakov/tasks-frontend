@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+import { DateTime } from '@olegpolyakov/core';
 import type { Task } from '@olegpolyakov/tasks-core';
-import { Button, Checkbox, Field, Heading, Input, Switch, Text, Textarea } from '@olegpolyakov/ui';
+import { Button, ButtonGroup, Checkbox, Field, Heading, Input, Pill, PillGroup, Switch, Text, Textarea } from '@olegpolyakov/ui';
 import Editable from '@olegpolyakov/frontend/components/Editable';
 
 import { TaskTags } from '../../components';
@@ -56,15 +57,44 @@ export default function TaskDetails({
                                 : new Date(task.dueDate).toISOString().slice(0, 10)
                         }
                         end={
-                            <Button
-                                title={hasTime ? 'Remove time' : 'Add time'}
-                                icon={hasTime ? 'alarm_off' : 'alarm'}
-                                size="s"
-                                onClick={() => setHasTime(!hasTime)}
-                            />
+                            <ButtonGroup gap="s">
+                                <Button
+                                    title={hasTime ? 'Remove time' : 'Add time'}
+                                    icon={hasTime ? 'alarm_off' : 'alarm'}
+                                    size="s"
+                                    onClick={() => setHasTime(!hasTime)}
+                                />
+
+                                <Button
+                                    title="Clear"
+                                    icon="clear"
+                                    size="s"
+                                    // @ts-ignore Allow null as a value
+                                    onClick={() => onUpdate(task.id, { dueDate: null })}
+                                />
+                            </ButtonGroup>
                         }
                         onChange={({ value }) => onUpdate(task.id, { dueDate: new Date(value) })}
                     />
+
+                    {!task.dueDate &&
+                        <PillGroup size="s" interactive>
+                            <Pill
+                                content="Today"
+                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().toISODate() })}
+                            />
+
+                            <Pill
+                                content="Tomorrow"
+                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().plus({ days: 1 }).toISODate() })}
+                            />
+
+                            <Pill
+                                content="Next week"
+                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().endOf('week').plus({ days: 1 }).toISODate() })}
+                            />
+                        </PillGroup>
+                    }
                 </Field>
 
                 <TaskRecurrence

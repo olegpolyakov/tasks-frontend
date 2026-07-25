@@ -22,7 +22,7 @@ export function buildTree(data: TaskData[]): Task[] {
 
 export function getAllChildren(
     taskId: string,
-    tasks: Record<string, TaskData>,
+    tasks: Record<string, Task>,
     filter: (task: TaskData) => boolean = () => true
 ): TaskData[] {
     const task = tasks[taskId];

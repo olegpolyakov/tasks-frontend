@@ -4,3 +4,4 @@ export { default as TaskTags } from './TaskTags';
 export { default as TasksList } from './TasksList';
 export { default as TasksNav } from './TasksNav';
 export { default as TasksSort } from './TasksSort';
+export { default as TasksTree } from './TasksTree';

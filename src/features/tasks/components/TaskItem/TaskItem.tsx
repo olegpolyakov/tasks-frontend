@@ -2,7 +2,7 @@ import { DateTime } from '@olegpolyakov/core';
 import { type Task, TaskPriority } from '@olegpolyakov/tasks-core';
 import { Badge, Box, Checkbox, Flex, Icon, Item, Pill, type PillProps, Text } from '@olegpolyakov/ui';
 
-import { capitalize } from '@/utils';
+import { capitalize } from '@/common/utils';
 
 import styles from './TaskItem.module.scss';
 
@@ -47,9 +47,9 @@ export default function TaskItem({
         : task.important 
             ? 'warning'
             : undefined;
-    const variant = (isOverDue || task.important)
+    const variant = (isOverDue || task.important || selected)
         ? 'tinted'
-        : undefined;
+        : 'plain';
     
     return (
         <Item

@@ -1,9 +1,10 @@
-import type { Task } from '@olegpolyakov/tasks-core';
+import type { TaskData } from '@olegpolyakov/tasks-core';
 
 export interface TasksApi {
-    fetchTasks(): Promise<Task[]>;
-    createTask(data: Partial<Task>): Promise<Task>;
-    updateTask(id: string, data: Partial<Task>): Promise<Task>;
-    toggleTask(id: string, completed: boolean): Promise<Task>;
+    events: EventTarget;
+    fetchTasks(): Promise<TaskData[]>;
+    createTask(data: Partial<TaskData>): Promise<TaskData>;
+    updateTask(id: string, data: Partial<TaskData>): Promise<TaskData>;
+    toggleTask(id: string, completed: boolean): Promise<TaskData>;
     deleteTask(id: string): Promise<void>
 }

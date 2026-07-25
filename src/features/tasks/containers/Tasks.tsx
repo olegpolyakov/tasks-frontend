@@ -5,15 +5,9 @@ import { Button, Drawer } from '@olegpolyakov/ui';
 
 import { Chat } from '@/features/ai';
 
-import { filters } from '../logic/filter';
+import { filterNames, filters } from '../logic/filter';
 import { TaskProvider } from '../providers';
 import { TasksView } from '../views';
-
-const headings: Record<string, string> = {
-    today: 'Today',
-    inbox: 'Inbox',
-    all: 'All'
-};
 
 export default function Tasks() {
     const { filter = 'all' } = useMatch('/:filter')?.params || {};
@@ -24,8 +18,8 @@ export default function Tasks() {
         <TaskProvider>
             <TasksView
                 id={filter}
-                heading={headings[filter] || 'Tasks'}
-                filter={filters[filter] || filters.all}
+                heading={filterNames[filter] ?? 'Tasks'}
+                filter={filters[filter] ?? filters.all}
                 actions={
                     <Button
                         icon="chat"
