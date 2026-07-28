@@ -39,7 +39,9 @@ export default function Chat() {
     };
 
     const handleInput = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === 'Enter' && event.shiftKey) {
+        if (event.key === 'Enter') {
+            if (event.shiftKey) return;
+
             event.preventDefault();
 
             const content = textareaRef.current?.value;
