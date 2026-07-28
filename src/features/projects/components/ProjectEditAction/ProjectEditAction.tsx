@@ -1,6 +1,6 @@
 import { Button } from '@olegpolyakov/ui';
 
-import { useProjectContext } from '../../contexts';
+import { useProjectContext } from '../../hooks';
 
 export default function ProjectEditAction() {
     const { openProjectDialog } = useProjectContext();

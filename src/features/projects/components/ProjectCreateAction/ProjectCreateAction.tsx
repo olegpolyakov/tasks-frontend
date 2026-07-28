@@ -1,6 +1,6 @@
 import { Button, type ButtonProps } from '@olegpolyakov/ui';
 
-import { useProjectsContext } from '../../contexts/ProjectsContext';
+import { useProjectsContext } from '../../hooks';
 
 export default function ProjectCreateAction(props: ButtonProps) {
     const { openCreateProjectDialog } = useProjectsContext();

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Item, List } from '@olegpolyakov/ui';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
-import { useProjectsContext } from '../../contexts';
+import { useProjectsContext } from '../../hooks';
 
 export default function ProjectsNav() {
     const { projects } = useProjectsContext();

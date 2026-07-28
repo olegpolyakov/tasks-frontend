@@ -4,7 +4,7 @@ import { Button, ButtonGroup, TreeItem } from '@olegpolyakov/ui';
 
 import { TaskInput, TasksTree, useTaskContext, useTasksContext } from '@/features/tasks';
 
-import { useProjectContext } from '../../contexts';
+import { useProjectContext } from '../../hooks';
 import ProjectSection from '../ProjectSection';
 
 import styles from './ProjectTasks.module.scss';
@@ -17,8 +17,8 @@ export default function ProjectTasks() {
         addTask,
         updateProject
     } = useProjectContext();
-    const { tasks, updateTask } = useTasksContext();
-    const { task: selectedTask, setTask, toggleTask } = useTaskContext();
+    const { tasksById, toggleTask, updateTask } = useTasksContext();
+    const { task: selectedTask, setTask } = useTaskContext();
 
     const [view, setView] = useState<'board' | 'list'>(() => {
         const savedView = localStorage.getItem(`tasks.projects.${project.id}.view`);
@@ -36,7 +36,7 @@ export default function ProjectTasks() {
         updateProject({ taskIds: itemsInOrder.map(i => i.id) });
         
         async function updateTaskChildren(item: TreeItem) {
-            const task = tasks[item.id];
+            const task = tasksById[item.id];
         
             if (!task) return;
         
@@ -48,7 +48,7 @@ export default function ProjectTasks() {
         
             item.children.forEach(updateTaskChildren);
         }    
-    }, [updateProject, tasks, updateTask]);
+    }, [updateProject, tasksById, updateTask]);
 
     return (
         <div className={styles.root}>
@@ -77,8 +77,10 @@ export default function ProjectTasks() {
                     <TasksTree
                         tasks={projectTasks}
                         selectedTask={selectedTask}
+                        hideProjects
                         onSelect={setTask}
                         onToggle={toggleTask}
+                        onUpdate={updateTask}
                         onReorder={reorderTasks}
                     />
 

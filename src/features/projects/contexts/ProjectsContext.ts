@@ -1,8 +1,8 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 import type { Project } from '@olegpolyakov/tasks-core';
 
-export type ProjectsContext = {
+export type ProjectsContextValue = {
     projects: Project[];
     createProject: (data: Partial<Project>) => Promise<void>;
     updateProject: (id: string, data: Partial<Project>) => Promise<void>;
@@ -13,16 +13,4 @@ export type ProjectsContext = {
     closeCreateProjectDialog: () => void;
 };
 
-const ProjectsContext = createContext<ProjectsContext>(null! as ProjectsContext);
-
-export function useProjectsContext() {
-    const context = useContext(ProjectsContext);
-    
-    if (!context) {
-        throw new Error('useProjectsContext must be used within a ProjectsProvider');
-    }
-    
-    return context;
-}
-
-export default ProjectsContext;
+export default createContext<ProjectsContextValue>(null! as ProjectsContextValue);

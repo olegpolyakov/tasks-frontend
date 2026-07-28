@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Button, type ButtonProps, Checkbox, Dialog, Flex, Text } from '@olegpolyakov/ui';
 
-import { useProjectContext } from '../../contexts';
+import { useProjectContext } from '../../hooks';
 
 export default function ProjectDeleteAction(props: ButtonProps) {
     const { deleteProject } = useProjectContext();

@@ -7,7 +7,7 @@ import classnames from '@olegpolyakov/frontend/helpers/classnames';
 
 import { TaskInput, TasksTree, useTaskContext, useTasksContext } from '@/features/tasks';
 
-import { useProjectContext } from '../../contexts';
+import { useProjectContext } from '../../hooks';
 
 import styles from './ProjectSection.module.scss';
 
@@ -19,14 +19,12 @@ export default function ProjectSection({
     className?: string,
 }) {
     const {
-        tasks,
         addTask,
-        removeTask,
         updateSection,
         deleteSection
     } = useProjectContext();
-    const { updateTask } = useTasksContext();
-    const { task: selectedTask, setTask, toggleTask } = useTaskContext();
+    const { tasksById, updateTask, toggleTask } = useTasksContext();
+    const { task: selectedTask, setTask } = useTaskContext();
 
     const handleSubmit = useCallback((data: Partial<TaskData>) => {
         addTask(data, section.id);
@@ -50,7 +48,7 @@ export default function ProjectSection({
         updateSection(section.id, { taskIds: itemsInOrder.map(i => i.id) });
     
         async function updateTaskChildren(item: TreeItem) {
-            const task = tasks[item.id];
+            const task = tasksById[item.id];
     
             if (!task) return;
     
@@ -62,9 +60,9 @@ export default function ProjectSection({
     
             item.children.forEach(updateTaskChildren);
         }        
-    }, [section.id, updateTask, tasks, updateSection]);
+    }, [section.id, updateTask, tasksById, updateSection]);
 
-    const sectionTasks = section.taskIds.map(id => tasks[id]).filter(Boolean) as Task[];
+    const sectionTasks = section.taskIds.map(id => tasksById[id]).filter(Boolean) as Task[];
     
     return (
         <Box
@@ -98,6 +96,7 @@ export default function ProjectSection({
                     selectedTask={selectedTask}
                     onSelect={setTask}
                     onToggle={toggleTask}
+                    onUpdate={updateTask}
                     onReorder={reorderTasks}
                 />
             </div>

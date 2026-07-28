@@ -1,18 +1,13 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import type { ProjectData, ProjectSectionData } from '@olegpolyakov/tasks-core';
 
-import { useProjectState } from '../state';
-
 import useProjectsApi from './useProjectsApi';
+import useProjectState from './useProjectState';
 
 export default function useProject(projectId: string) {
     const api = useProjectsApi();
-    const [project, setProject] = useProjectState(api.events);
-
-    useEffect(() => {
-        api.fetchProject(projectId).then(setProject);
-    }, [projectId, api, setProject]);
+    const project = useProjectState(projectId, api);
 
     const updateProject = useCallback(async (data: Partial<ProjectData>) => {
         return api.updateProject(projectId, data);

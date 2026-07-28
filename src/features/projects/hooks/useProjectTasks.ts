@@ -1,8 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
-import type { ProjectData, Task, TaskData } from '@olegpolyakov/tasks-core';
+import type { ProjectData, TaskData } from '@olegpolyakov/tasks-core';
 
-import { toRecord } from '@/common/utils';
 import { useTasksApi, useTasksContext } from '@/features/tasks';
 import { getAllChildren } from '@/features/tasks/logic/children';
 
@@ -11,10 +10,21 @@ import useProjectsApi from './useProjectsApi';
 export default function useProjectTasks(project: ProjectData | null) {
     const api = useProjectsApi();
     const tasksApi = useTasksApi();
-    const { tasks } = useTasksContext();
+    const { tasksById } = useTasksContext();
+
+    const tasks = useMemo(() => {
+        return project?.taskIds
+            .map(id => tasksById[id])
+            .filter(Boolean)
+            .flatMap(task => [
+                task,
+                ...getAllChildren(task.id, tasksById).flat()
+            ])
+            .filter(Boolean) ?? [];
+    }, [project?.taskIds, tasksById]);
 
     const addTask = useCallback(async (data: Partial<TaskData>, sectionId?: string) => {
-        if (!project) return;
+        if (!project) throw new Error('No project');
         
         const task = await tasksApi.createTask(data);
         
@@ -50,17 +60,8 @@ export default function useProjectTasks(project: ProjectData | null) {
         }
     }, [project, api, tasksApi]);
 
-    const projectTasks = project?.taskIds
-        .map(id => tasks[id])
-        .filter(Boolean)
-        .flatMap(task => [
-            task,
-            ...getAllChildren(task.id, tasks).flat()
-        ])
-        .filter(Boolean) as Task[] ?? [];
-
     return {
-        tasks: projectTasks,
+        tasks,
         addTask,
         removeTask
     };

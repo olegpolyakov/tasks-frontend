@@ -1,2 +1,2 @@
-export { default as ProjectContext, useProjectContext } from './ProjectContext';
-export { default as ProjectsContext, useProjectsContext } from './ProjectsContext';
+export { default as ProjectContext, type ProjectContextValue } from './ProjectContext';
+export { default as ProjectsContext, type ProjectsContextValue } from './ProjectsContext';
