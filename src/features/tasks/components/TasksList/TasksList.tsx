@@ -1,7 +1,7 @@
 import { DragDropProvider, type DragEndEvent } from '@dnd-kit/react';
 import { isSortable } from '@dnd-kit/react/sortable';
 
-import type { Task } from '@olegpolyakov/tasks-core';
+import type { Task, TaskData } from '@olegpolyakov/tasks-core';
 import { List } from '@olegpolyakov/ui';
 
 import TaskItem from '../TaskItem';
@@ -11,14 +11,14 @@ export default function TasksList({
     selectedTask,
     onSelect,
     onToggle,
-    onDelete,
+    onUpdate,
     onReorder
 }: {
     tasks: Task[];
     selectedTask?: Task;
     onSelect: (task: Task) => void;
     onToggle: (id: string, completed: boolean) => void;
-    onDelete: (id: string) => void;
+    onUpdate: (id: string, data: Partial<TaskData>) => void;
     onReorder?: (tasks: Task[]) => void;
 }) {
     const handleDragEnd = (event: DragEndEvent) => {
@@ -50,15 +50,14 @@ export default function TasksList({
                 variant="plain"
                 interactive
             >
-                {tasks.map((task, index) => (
+                {tasks.map(task => (
                     <TaskItem
                         key={task.id}
-                        task={task as unknown as Task}
-                        index={index}
+                        task={task}
                         selected={selectedTask?.id === task.id}
                         onSelect={onSelect}
                         onToggle={onToggle}
-                        onDelete={onDelete}
+                        onUpdate={onUpdate}
                     />
                 ))}
             </List>

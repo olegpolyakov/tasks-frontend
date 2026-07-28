@@ -10,6 +10,7 @@ export default function TasksProvider({
 }) {
     const {
         tasks,
+        tasksById,
         createTask,
         updateTask,
         toggleTask,
@@ -18,13 +19,14 @@ export default function TasksProvider({
 
     const value = useMemo<TasksContextValue>(() => ({
         tasks,
-        tasksList: Object.values(tasks),
+        tasksById,
         createTask,
         updateTask,
         toggleTask,
         deleteTask
     }), [
         tasks,
+        tasksById,
         createTask,
         updateTask,
         toggleTask,

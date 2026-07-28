@@ -1,8 +1,6 @@
-import { Task, TaskData } from '@olegpolyakov/tasks-core';
+import { Task } from '@olegpolyakov/tasks-core';
 
-export function buildTree(data: TaskData[]): Task[] {
-    const tasks = data.map(task => new Task(task));
-
+export function buildTree(tasks: Task[]): Task[] {
     for (const task of tasks) {
         if (!task.hasChildren) continue;
 
@@ -23,8 +21,8 @@ export function buildTree(data: TaskData[]): Task[] {
 export function getAllChildren(
     taskId: string,
     tasks: Record<string, Task>,
-    filter: (task: TaskData) => boolean = () => true
-): TaskData[] {
+    filter: (task: Task) => boolean = () => true
+): Task[] {
     const task = tasks[taskId];
 
     if (!task) throw new Error('Task is not found');

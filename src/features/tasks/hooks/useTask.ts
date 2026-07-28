@@ -2,11 +2,11 @@ import { useCallback, useState } from 'react';
 
 import { Task } from '@olegpolyakov/tasks-core';
 
-import { useTasksContext } from '../contexts';
+import useTasksContext from './useTasksContext';
 
 export default function useTask() {
     const {
-        tasks: tasks,
+        tasksById,
         updateTask: _updateTask,
         toggleTask: _toggleTask,
         deleteTask: _deleteTask
@@ -14,7 +14,7 @@ export default function useTask() {
     
     const [taskId, setTaskId] = useState<string>('');
     
-    const task = tasks[taskId] as Task;
+    const task = tasksById[taskId] as Task;
     
     const setTask = useCallback((arg: string | Task) => {
         if (typeof arg === 'string') {

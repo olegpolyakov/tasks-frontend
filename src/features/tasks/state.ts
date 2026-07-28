@@ -2,18 +2,15 @@ import { atom } from 'jotai';
 
 import type { TaskData } from '@olegpolyakov/tasks-core';
 
-import { type StateEvent, useRecordState, useSingleState } from '@/common/state';
+import { listReducer, singleReducer, type Store } from '@/store';
 
-const filter = (event: StateEvent<TaskData>) => event.model === 'Task';
-
-export const tasksAtom = atom<Record<string, TaskData>>({});
-
-export function useTasksState(events: EventTarget) {    
-    return useRecordState(tasksAtom, events, filter);
-}
+export const tasksAtom = atom<TaskData[]>([]);
+export const tasksReducer = listReducer<TaskData>('task');
 
 export const taskAtom = atom<TaskData | null>(null);
+export const taskReducer = singleReducer<TaskData>('task');
 
-export function useTaskState(events: EventTarget) {
-    return useSingleState(taskAtom, events, filter);
+export function initState(store: Store) {
+    store.set('tasks', tasksAtom);
+    store.set('task', taskAtom);
 }

@@ -9,7 +9,6 @@ export const sorts: Sorts =  {
 
         return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
     },
-    priority: (a, b) => b.priority - a.priority,
     createdAt: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 };
 

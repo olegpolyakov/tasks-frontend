@@ -2,7 +2,6 @@ import { Button, ButtonGroup, Icon, Menu } from '@olegpolyakov/ui';
 
 const sortNames: Record<string, string> = {
     dueDate: 'Due date',
-    priority: 'Priority',
     createdAt: 'Created at'
 };
 
@@ -60,11 +59,6 @@ export default function TasksSort({
                     content: 'Due date',
                     value: 'dueDate',
                     onClick: () => onSortKeyChange('dueDate')
-                },
-                {
-                    content: 'Priority',
-                    value: 'priority',
-                    onClick: () => onSortKeyChange('priority')
                 },
                 {
                     content: 'Created at',

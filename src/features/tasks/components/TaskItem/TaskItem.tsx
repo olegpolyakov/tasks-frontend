@@ -1,52 +1,43 @@
-import { DateTime } from '@olegpolyakov/core';
-import { type Task, TaskPriority } from '@olegpolyakov/tasks-core';
-import { Badge, Box, Checkbox, Flex, Icon, Item, Pill, type PillProps, Text } from '@olegpolyakov/ui';
+import { Link } from 'react-router-dom';
 
-import { capitalize } from '@/common/utils';
+import { DateTime } from '@olegpolyakov/core';
+import type { Task, TaskData } from '@olegpolyakov/tasks-core';
+import { Box, Button, Checkbox, Flex, Icon, Item, Pill, Text } from '@olegpolyakov/ui';
+import { capitalize } from '@olegpolyakov/core/utils/string';
+import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 import styles from './TaskItem.module.scss';
-
-const priorityColors = {
-    [TaskPriority.Low]: 'success',
-    [TaskPriority.Medium]: 'brand',
-    [TaskPriority.High]: 'danger'
-};
-
-const priorityLabels = {
-    [TaskPriority.Low]: 'Low',
-    [TaskPriority.Medium]: 'Medium',
-    [TaskPriority.High]: 'High'
-};
-
-
 
 export default function TaskItem({
     task,
     selected,
     onSelect,
     onToggle,
-    onDelete,
+    onUpdate,
+    hideProjects,
+    hideTags,
     ...props
 }: {
     ref?: (element: Element | null) => void;
     task: Task;
     selected?: boolean;
+    hideProjects?: boolean;
+    hideTags?: boolean;
     onSelect?: (task: Task) => void;
-    onDelete?: (id: string) => void;
     onToggle?: (id: string, completed: boolean) => void;
+    onUpdate?: (id: string, data: Partial<TaskData>) => void;
 }) {
     const today = DateTime.now();
-    const dueDateTime = DateTime.fromISO(task.dueDate);
-    const daysDiff = Math.abs(dueDateTime.diff(today, 'days').toObject().days);
-    const dueDateString = daysDiff > 3
-        ? DateTime.fromISO(task.dueDate).toLocaleString()
-        : DateTime.fromISO(task.dueDate).toRelativeCalendar();
-    const isOverDue = dueDateTime < today;
+    const dueDate = task.dueDate;
+    const dueDateTime = dueDate && DateTime.fromJSDate(dueDate);
+    const daysDiff = dueDateTime ? (dueDateTime.diff(today, 'days').toObject().days ?? 0) : 0;
+    const dueDateString = dueDate ? (daysDiff > 3
+        ? DateTime.fromJSDate(dueDate).toLocaleString()
+        : DateTime.fromJSDate(dueDate).toRelativeCalendar()) : '';
+    const isOverDue = dueDateTime ? dueDateTime < today : false;
     const color = isOverDue
         ? 'danger'
-        : task.important 
-            ? 'warning'
-            : undefined;
+        : undefined;
     const variant = (isOverDue || task.important || selected)
         ? 'tinted'
         : 'plain';
@@ -59,9 +50,26 @@ export default function TaskItem({
             active={selected}
             interactive
             end={
-                <Flex gap="xxs">
+                <Flex align="center" gap="xxs">
                     {isOverDue && <Icon name="priority_high" title="Over due" />}
-                    {task.important && <Icon name="flag" title="Important" />}
+
+                    <Button
+                        icon={<Icon name="star" filled={task.active} />}
+                        title={task.active ? 'Remove from active' : 'Add to active'}
+                        onClick={event => {
+                            event.stopPropagation();
+                            onUpdate?.(task.id, { active: !task.active });
+                        }}
+                    />
+
+                    <Button
+                        icon={<Icon name="flag" filled={task.important} />}
+                        title={task.important ? 'Remove from important' : 'Add to important'}
+                        onClick={event => {
+                            event.stopPropagation();
+                            onUpdate?.(task.id, { important: !task.important });
+                        }}
+                    />
                 </Flex>
             }
             onClick={() => onSelect?.(task)}
@@ -84,23 +92,7 @@ export default function TaskItem({
 
                 <Box style={{ marginLeft: '1.75rem' }}>
                     <Flex gap="xs">
-                        {task.priority !== undefined && (
-                            <Pill
-                                start={
-                                    <Badge
-                                        color={priorityColors[task.priority] as PillProps['color']}
-                                        size="s"
-                                    />
-                                }
-                                content={priorityLabels[task.priority]}
-                                title="Priority"
-                                color={priorityColors[task.priority] as PillProps['color']}
-                                size="s"
-                                variant="tinted"
-                            />
-                        )}
-
-                        {task.dueDate && (
+                        {dueDateString && (
                             <Text
                                 className={styles.dueDate}
                                 content={capitalize(dueDateString)}
@@ -122,10 +114,42 @@ export default function TaskItem({
 
                         {task.content && (
                             <Icon
-                                title={task.content.length > 100 ? task.content.slice(0, 100) + '...' : task.content}
+                                title="Task has content"
                                 name="notes"
                                 size="s"
                                 color="secondary"
+                            />
+                        )}
+
+                        {!hideProjects && task.projects.map(project => 
+                            <Pill
+                                className={styles.link}
+                                key={project.id}
+                                as={Link}
+                                to={`/projects/${project.id}`}
+                                content={project.name}
+                                start={project.icon && <EntityIcon icon={project.icon} />}
+                                size="s"
+                                variant="tinted"
+                                title={`Project: ${project.name}`}
+                                interactive
+                                onClick={event => event.stopPropagation()}
+                            />
+                        )}
+
+                        {!hideTags && task.tags.map(tag => 
+                            <Pill
+                                className={styles.link}
+                                key={tag.id}
+                                as={Link}
+                                to={`/tags/${tag.id}`}
+                                start={<EntityIcon icon={tag.icon || 'tag'} />}
+                                content={tag.name}
+                                size="s"
+                                variant="tinted"
+                                title={`Tag: ${tag.name}`}
+                                interactive
+                                onClick={event => event.stopPropagation()}
                             />
                         )}
                     </Flex>

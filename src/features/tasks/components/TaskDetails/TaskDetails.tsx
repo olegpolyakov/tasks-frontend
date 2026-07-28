@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
 import { DateTime } from '@olegpolyakov/core';
-import type { Task } from '@olegpolyakov/tasks-core';
-import { Button, ButtonGroup, Checkbox, Field, Heading, Input, Pill, PillGroup, Switch, Text, Textarea } from '@olegpolyakov/ui';
+import type { Task, TaskData } from '@olegpolyakov/tasks-core';
+import { Button, ButtonGroup, Checkbox, Field, Flex, Heading, Input, Pill, PillGroup, Switch, Text, Textarea } from '@olegpolyakov/ui';
 import Editable from '@olegpolyakov/frontend/components/Editable';
+import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 import { TaskTags } from '../../components';
+import TaskContent from '../TaskContent';
 import TaskRecurrence from '../TaskRecurrence';
 
 import styles from './TaskDetails.module.scss';
@@ -15,7 +17,7 @@ export default function TaskDetails({
     onUpdate
 }: {
     task: Task;
-    onUpdate: (id: string, data: Partial<Task>) => void;
+    onUpdate: (id: string, data: Partial<TaskData>) => void;
 }) {
     const [content, setContent] = useState(task.content || '');
     const [hasTime, setHasTime] = useState(false);
@@ -41,11 +43,31 @@ export default function TaskDetails({
             </div>
 
             <div className={styles.content}>
-                <Switch
-                    label="Important"
-                    checked={task.important}
-                    onChange={({ checked }) => onUpdate(task.id, { important: checked })}
-                />
+                <PillGroup>
+                    <Pill
+                        content="Active"
+                        icon={{
+                            name: 'star',
+                            filled: task.active
+                        }}
+                        color={task.active ? 'brand' : undefined}
+                        variant={task.active ? 'filled' : 'tinted'}
+                        interactive
+                        onClick={() => onUpdate(task.id, { active: !task.active })}
+                    />
+
+                    <Pill
+                        content="Important"
+                        icon={{
+                            name: 'flag',
+                            filled: task.important
+                        }}
+                        color={task.important ? 'brand' : undefined}
+                        variant={task.important ? 'filled' : 'tinted'}
+                        interactive
+                        onClick={() => onUpdate(task.id, { important: !task.important })}
+                    />
+                </PillGroup>
 
                 <Field label="Due Date">
                     <Input
@@ -69,8 +91,7 @@ export default function TaskDetails({
                                     title="Clear"
                                     icon="clear"
                                     size="s"
-                                    // @ts-ignore Allow null as a value
-                                    onClick={() => onUpdate(task.id, { dueDate: null })}
+                                    onClick={() => onUpdate(task.id, { dueDate: null as unknown as undefined })}
                                 />
                             </ButtonGroup>
                         }
@@ -81,17 +102,17 @@ export default function TaskDetails({
                         <PillGroup size="s" interactive>
                             <Pill
                                 content="Today"
-                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().toISODate() })}
+                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().toJSDate() })}
                             />
 
                             <Pill
                                 content="Tomorrow"
-                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().plus({ days: 1 }).toISODate() })}
+                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().plus({ days: 1 }).toJSDate() })}
                             />
 
                             <Pill
                                 content="Next week"
-                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().endOf('week').plus({ days: 1 }).toISODate() })}
+                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().endOf('week').plus({ days: 1 }).toJSDate() })}
                             />
                         </PillGroup>
                     }
@@ -102,26 +123,41 @@ export default function TaskDetails({
                     onChange={recurrence => onUpdate(task.id, { recurrence })}
                 />
 
+                <Field label="Projects">
+                    {task.projects?.map(project => 
+                        <Pill
+                            key={project.id}
+                            start={project.icon && <EntityIcon icon={project.icon} />}
+                            content={project.name}
+                            variant="tinted"
+                        />
+                    )}
+                </Field>
+
                 <TaskTags
                     task={task}
                     onChange={tagIds => onUpdate(task.id, { tagIds })}
                 />
-                
-                <Field label="Description">
-                    <Textarea
-                        value={content}
-                        onChange={({ value = '' }) => setContent(value)}
-                        onBlur={() => onUpdate(task.id, { content })}
-                    />
-                </Field>
 
-                {task.createdAt && (
-                    <Text
-                        content={`Created: ${new Date(task.createdAt).toLocaleDateString()}`}
-                        size="xs"
-                        color="secondary"
-                    />
-                )}
+                <TaskContent />
+
+                <Flex gap="s">
+                    {task.createdAt && (
+                        <Text
+                            content={`Created: ${DateTime.fromJSDate(new Date(task.createdAt)).toLocaleString()}`}
+                            size="xs"
+                            color="secondary"
+                        />
+                    )}
+
+                    {task.updatedAt && (
+                        <Text
+                            content={`Updated: ${DateTime.fromJSDate(new Date(task.updatedAt)).toLocaleString()}`}
+                            size="xs"
+                            color="secondary"
+                        />
+                    )}
+                </Flex>
             </div>
         </div>
     );

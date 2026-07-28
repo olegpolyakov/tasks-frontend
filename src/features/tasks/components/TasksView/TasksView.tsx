@@ -10,7 +10,7 @@ import { useSettingsContext } from '@/features/settings';
 import NoTasksImage from '../../assets/no-tasks.svg';
 import { TaskInput, TasksSort } from '../../components';
 import TasksTree from '../../components/TasksTree';
-import { useTaskContext, useTasksContext } from '../../contexts';
+import { useTaskContext, useTasksContext } from '../../hooks';
 import { useTasksSort } from '../../hooks';
 import { filters, filterTasks } from '../../logic/filter';
 import { sortTasks } from '../../logic/sort';
@@ -31,11 +31,11 @@ export default function TasksView({
 }) {
     const { openDrawer } = useAppContext();
     const {
-        tasks: tasks,
+        tasks,
+        tasksById,
         createTask,
         updateTask,
-        toggleTask,
-        deleteTask
+        toggleTask
     } = useTasksContext();
     const {
         task: selectedTask,
@@ -53,8 +53,14 @@ export default function TasksView({
 
     const handleSubmit = useCallback((data: Partial<TaskData>) => {
         switch (filter.name) {
+            case 'active':
+                data.active = true;
+                break;
+            case 'important':
+                data.important = true;
+                break;
             case 'today':
-                data.dueDate = DateTime.now().endOf('day');
+                data.dueDate = DateTime.now().endOf('day').toJSDate();
                 break;
         }
 
@@ -74,7 +80,7 @@ export default function TasksView({
         clearSort();
 
         async function updateTaskChildren(item: TreeItem) {
-            const task = tasks[item.id];
+            const task = tasksById[item.id];
 
             if (!task) return;
 
@@ -86,7 +92,7 @@ export default function TasksView({
 
             item.children.forEach(updateTaskChildren);
         }        
-    }, [updateSettings, settings.tasksOrder, id, updateTask, clearSort, tasks]);
+    }, [updateSettings, settings.tasksOrder, id, updateTask, clearSort, tasksById]);
     
     const filteredAndSortedTasks = useMemo(() => {
         return sortTasks(filterTasks(Object.values(tasks) as Task[], filter), sort, settings.tasksOrder?.[id]);
@@ -131,7 +137,7 @@ export default function TasksView({
                                 selectedTask={selectedTask}
                                 onSelect={setTask}
                                 onToggle={toggleTask}
-                                onDelete={deleteTask}
+                                onUpdate={updateTask}
                                 onReorder={reorderTasks}
                             />
                         </div>

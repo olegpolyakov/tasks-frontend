@@ -5,9 +5,9 @@ import { Button, Drawer } from '@olegpolyakov/ui';
 
 import { Chat } from '@/features/ai';
 
+import { TasksView } from '../components';
 import { filterNames, filters } from '../logic/filter';
 import { TaskProvider } from '../providers';
-import { TasksView } from '../views';
 
 export default function Tasks() {
     const { filter = 'all' } = useMatch('/:filter')?.params || {};

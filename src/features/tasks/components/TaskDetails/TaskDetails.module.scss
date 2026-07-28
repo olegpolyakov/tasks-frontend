@@ -1,6 +1,6 @@
 .root {
     height: 100%;
-    max-width: 360px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: var(--ui-space-m);
@@ -10,5 +10,5 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: var(--ui-space-s);
+    gap: var(--ui-space-m);
 }
