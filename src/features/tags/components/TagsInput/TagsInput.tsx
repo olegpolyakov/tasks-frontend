@@ -6,7 +6,7 @@ import type { Tag } from '@olegpolyakov/tasks-core';
 import { Button, Field, Flex, Item, List, Pill, Popover } from '@olegpolyakov/ui';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
-import { useTagsContext } from '../../contexts';
+import { useTagsContext } from '../../hooks';
 
 import styles from './TagsInput.module.scss';
 

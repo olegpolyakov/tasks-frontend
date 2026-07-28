@@ -3,8 +3,8 @@ import { useCallback, useState } from 'react';
 import type { Tag } from '@olegpolyakov/tasks-core';
 import { Button, type ButtonProps, Dialog } from '@olegpolyakov/ui';
 
-import { TagForm } from '../..';
-import { useTagContext, useTagsContext } from '../../contexts';
+import { useTagContext, useTagsContext } from '../../hooks';
+import TagForm from '../TagForm';
 
 export default function TagEditAction({ tagId, ...props }: { tagId?: string } & ButtonProps) {
     const { tags, updateTag } = useTagsContext();

@@ -6,7 +6,7 @@ import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 import { useTasksContext } from '@/features/tasks';
 
-import { useTagsContext } from '../../contexts';
+import { useTagsContext } from '../../hooks';
 
 import styles from './TagsNav.module.scss';
 

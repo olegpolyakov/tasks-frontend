@@ -2,26 +2,29 @@ import { useCallback, useEffect } from 'react';
 
 import { useAtom } from 'jotai';
 
-import type { Tag } from '@olegpolyakov/tasks-core';
+import { Tag } from '@olegpolyakov/tasks-core';
 
 import { useSettingsContext } from '@/features/settings';
 
-import * as api from '../api';
-import { tagAtom } from '../atoms';
+import { tagAtom } from '../state';
+
+import useTagsApi from './useTagsApi';
 
 export default function useTag(tagId: string) {
+    const api = useTagsApi();
+    
     const { settings, updateSettings } = useSettingsContext();
     
     const [tag, setTag] = useAtom(tagAtom);
 
     useEffect(() => {
         api.fetchTag(tagId).then(setTag);
-    }, [tagId, setTag]);
+    }, [api, tagId, setTag]);
 
     const updateTag = useCallback(async (data: Partial<Tag>) => {
         const updatedTag = await api.updateTag(tagId, data);
         setTag(updatedTag);
-    }, [tagId, setTag]);
+    }, [api, tagId, setTag]);
 
     const deleteTag = useCallback(async () => {
         await api.deleteTag(tagId);
@@ -36,10 +39,10 @@ export default function useTag(tagId: string) {
         });
 
         setTag(null);
-    }, [tagId, settings, updateSettings, setTag]);
+    }, [api, tagId, settings, updateSettings, setTag]);
 
     return {
-        tag,
+        tag: tag ? new Tag(tag) : null,
         setTag,
         updateTag,
         deleteTag

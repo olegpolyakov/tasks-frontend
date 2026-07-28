@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import type { Tag } from '@olegpolyakov/tasks-core';
 import { Button, type ButtonProps, Dialog } from '@olegpolyakov/ui';
 
-import { useTagsContext } from '../../contexts';
+import { useTagsContext } from '../../hooks';
 import TagForm from '../TagForm';
 
 export default function TagCreateAction(props: ButtonProps) {

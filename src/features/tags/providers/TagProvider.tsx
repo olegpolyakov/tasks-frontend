@@ -1,8 +1,9 @@
 import { type ReactNode, useCallback, useMemo } from 'react';
 
 import type { Task } from '@olegpolyakov/tasks-core';
+import { toRecord } from '@olegpolyakov/core/utils/types';
 
-import { TasksContext, useTasksContext } from '@/features/tasks';
+import { TasksContext, TasksContextValue, useTasksContext } from '@/features/tasks';
 
 import { TagContext, TagContextValue } from '../contexts';
 import { useTag } from '../hooks';
@@ -23,6 +24,12 @@ export default function TagProvider({
         deleteTask
     } = useTasksContext();
 
+    const tagTasks = useMemo(() => {
+        return tag
+            ? tasks.filter(task => task.tagIds.includes(tag.id))
+            : [];
+    }, [tag, tasks]);
+
     const createTaskWithTag = useCallback(async (data: Partial<Task>) => {
         const tagIds = new Set(data.tagIds || []);
 
@@ -41,17 +48,15 @@ export default function TagProvider({
         deleteTag
     }), [tag, setTag, updateTag, deleteTag]);
 
-    const tasksValue = useMemo(() => ({
-        tasks: tag
-            ? tasks.filter(task => task.tagIds.includes(tag.id))
-            : [],
+    const tasksValue = useMemo<TasksContextValue>(() => ({
+        tasks: tagTasks,
+        tasksById: toRecord(tagTasks, t => t.id),
         createTask: createTaskWithTag,
         updateTask,
         toggleTask,
         deleteTask
     }), [
-        tag,
-        tasks,
+        tagTasks,
         createTaskWithTag,
         updateTask,
         toggleTask,

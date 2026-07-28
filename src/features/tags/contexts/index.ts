@@ -1,2 +1,2 @@
-export { default as TagContext, type TagContextValue, useTagContext } from './TagContext';
-export { default as TagsContext, type TagsContextValue, useTagsContext } from './TagsContext';
+export { default as TagContext, type TagContextValue } from './TagContext';
+export { default as TagsContext, type TagsContextValue } from './TagsContext';

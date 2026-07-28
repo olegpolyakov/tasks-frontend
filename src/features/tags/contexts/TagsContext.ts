@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 import type { Tag } from '@olegpolyakov/tasks-core';
 
@@ -9,16 +9,4 @@ export type TagsContextValue = {
     deleteTag: (id: string, options?: { deleteTasks?: boolean }) => Promise<void>;
 };
 
-const TagsContext = createContext<TagsContextValue>(null! as TagsContextValue);
-
-export function useTagsContext() {
-    const context = useContext(TagsContext);
-    
-    if (!context) {
-        throw new Error('useTagsContext must be used within a TagsProvider');
-    }
-    
-    return context;
-}
-
-export default TagsContext;
+export default createContext<TagsContextValue>(null! as TagsContextValue);
