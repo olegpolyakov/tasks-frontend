@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_DOMAIN: string;
   readonly VITE_API_URL: string;
   readonly VITE_AUTH_URL: string;
+  readonly VITE_WS_URL: string;
 }
 
 declare module '*.module.scss' {
