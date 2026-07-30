@@ -5,6 +5,9 @@ import sharedConfig from '@olegpolyakov/frontend/viteconfig';
 export default defineConfig(sharedConfig({
     basePath: import.meta.dirname,
     server: {
-        allowedHosts: ['tasks_frontend', 'tasks.olegpoliakov.local', 'localhost']
+        allowedHosts: ['tasks.olegpoliakov.local', 'localhost'],
+        host: 'tasks.olegpoliakov.local',
+        port: 5173,
+        strictPort: true
     }
 }));
