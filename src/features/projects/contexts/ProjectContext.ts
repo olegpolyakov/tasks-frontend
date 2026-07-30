@@ -4,12 +4,12 @@ import type { ProjectData, ProjectSectionData, Task, TaskData } from '@olegpolya
 
 export type ProjectContextValue = {
     project: ProjectData;
-    updateProject: (data: Partial<ProjectData>) => Promise<void>;
+    updateProject: (data: Partial<ProjectData>) => Promise<ProjectData>;
     deleteProject: (options: { deleteTasks: boolean }) => Promise<void>;
     
     sections: ProjectSectionData[];
-    createSection: (data: Partial<ProjectSectionData>) => Promise<void>;
-    updateSection: (sectionId: string, data: Partial<ProjectSectionData>) => Promise<void>;
+    createSection: (data: Partial<ProjectSectionData>) => Promise<ProjectSectionData>;
+    updateSection: (sectionId: string, data: Partial<ProjectSectionData>) => Promise<ProjectSectionData>;
     deleteSection: (sectionId: string) => Promise<void>;
     
     tasks: Task[];

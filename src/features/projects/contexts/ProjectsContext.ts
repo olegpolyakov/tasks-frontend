@@ -1,11 +1,11 @@
 import { createContext } from 'react';
 
-import type { Project } from '@olegpolyakov/tasks-core';
+import type { Project, ProjectData } from '@olegpolyakov/tasks-core';
 
 export type ProjectsContextValue = {
     projects: Project[];
-    createProject: (data: Partial<Project>) => Promise<void>;
-    updateProject: (id: string, data: Partial<Project>) => Promise<void>;
+    createProject: (data: Partial<ProjectData>) => Promise<ProjectData>;
+    updateProject: (id: string, data: Partial<ProjectData>) => Promise<ProjectData>;
     deleteProject: (id: string) => Promise<void>;
 
     isCreateProjectDialogOpen: boolean;
