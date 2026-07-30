@@ -1,4 +1,5 @@
 import type { Project, ProjectData, ProjectSectionData, Task } from '@olegpolyakov/tasks-core';
+import http from '@olegpolyakov/frontend/clients/http';
 
 import { API_URL } from '@/env';
 import { socket } from '@/ws';
@@ -9,70 +10,40 @@ export default {
     events: socket,
 
     async fetchProjects(): Promise<ProjectData[]> {
-        return fetch(`${API_URL}/projects`).then(res => res.json());
+        return http.get(`${API_URL}/projects`);
     },
 
     async fetchProject(id: string): Promise<ProjectData> {
-        return fetch(`${API_URL}/projects/${id}`).then(res => res.json());
+        return http.get(`${API_URL}/projects/${id}`);
     },
 
     async fetchProjectTasks(id: string): Promise<Task[]> {
-        return fetch(`${API_URL}/projects/${id}/tasks`).then(res => res.json());
+        return http.get(`${API_URL}/projects/${id}/tasks`);
     },
 
     async createProject(data: Partial<Project>) {
-        return fetch(`${API_URL}/projects`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(res => res.json());
+        return http.post(`${API_URL}/projects`, data);
     },
 
     async updateProject(id: string, data: Partial<Project>) {
-        return fetch(`${API_URL}/projects/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(res => res.json());
+        return http.put(`${API_URL}/projects/${id}`, data);
     },
 
-    async deleteProject(id: string, options?: { deleteTasks: boolean }) {
-        await fetch(`${API_URL}/projects/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+    async deleteProject(id: string, options: { deleteTasks?: boolean } = {}) {
+        await http.delete(`${API_URL}/projects/${id}`, {
             body: JSON.stringify(options)
-        }).then(res => res.json());
+        });
     },
 
     async createSection(projectId: string, data: Partial<ProjectSectionData>) {
-        return fetch(`${API_URL}/projects/${projectId}/sections`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(res => res.json());
+        return http.post(`${API_URL}/projects/${projectId}/sections`, data);
     },
 
     async updateSection(projectId: string, sectionId: string, data: Partial<ProjectSectionData>) {
-        return fetch(`${API_URL}/projects/${projectId}/sections/${sectionId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(res => res.json());
+        return http.put(`${API_URL}/projects/${projectId}/sections/${sectionId}`, data);
     },
 
     async deleteSection(projectId: string, sectionId: string) {
-        return fetch(`${API_URL}/projects/${projectId}/sections/${sectionId}`, {
-            method: 'DELETE'
-        }).then(res => res.json());
+        return http.delete(`${API_URL}/projects/${projectId}/sections/${sectionId}`);
     }
 } satisfies ProjectsApi;
