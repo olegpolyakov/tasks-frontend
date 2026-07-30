@@ -1,8 +1,8 @@
 import type { Tag } from '@olegpolyakov/tasks-core';
 import http from '@olegpolyakov/frontend/clients/http';
 
-import { socket } from '@/common/ws';
 import { API_URL } from '@/env';
+import { socket } from '@/ws';
 
 import type { TagsApi } from './interface';
 

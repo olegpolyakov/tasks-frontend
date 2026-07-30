@@ -1,7 +1,7 @@
 import type { Project, ProjectData, ProjectSectionData, Task } from '@olegpolyakov/tasks-core';
 
-import { socket } from '@/common/ws';
 import { API_URL } from '@/env';
+import { socket } from '@/ws';
 
 import type { ProjectsApi } from './interface';
 
