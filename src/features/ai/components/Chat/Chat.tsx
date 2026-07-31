@@ -2,6 +2,7 @@ import { KeyboardEvent, useRef, useState } from 'react';
 
 import { Text, Textarea } from '@olegpolyakov/ui';
 
+import { AI_URL } from '@/env';
 import { useTaskContext } from '@/features/tasks';
 
 import styles from './Chat.module.scss';
@@ -80,11 +81,17 @@ async function getResponse(messages: Message[]): Promise<Message> {
         messages
     };
 
-    const res = await fetch('/ai/chat', {
+    const res = await fetch(`${AI_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(data)
     });
+    const contentType = res.headers.get('Content-Type');
+
+    if (contentType === 'application/json') {
+        return await res.json();
+    }
 
     let content = '';
         

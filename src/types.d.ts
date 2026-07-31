@@ -5,6 +5,7 @@ interface ImportMeta {
 interface ImportMetaEnv {
   readonly VITE_DOMAIN: string;
   readonly VITE_APP_DOMAIN: string;
+  readonly VITE_AI_URL: string;
   readonly VITE_API_URL: string;
   readonly VITE_AUTH_URL: string;
   readonly VITE_WS_URL: string;
