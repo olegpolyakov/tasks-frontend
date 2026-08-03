@@ -1,4 +1,5 @@
-import { Button, ButtonGroup, Drawer } from '@olegpolyakov/ui';
+import { Button, ButtonGroup, Checkbox, Drawer } from '@olegpolyakov/ui';
+import Editable from '@olegpolyakov/frontend/components/Editable';
 import { useIsMobile } from '@olegpolyakov/frontend/hooks/mq';
 
 import { TaskDetails } from '../../components';
@@ -17,14 +18,28 @@ export default function TaskView() {
             type={isMobile ? 'modal' : 'inline'}
             position={isMobile ? 'bottom' : 'right'}
             size="m"
-            closeButton={{ icon: 'close' }}
+            title={task && {
+                start: (
+                    <Checkbox
+                        checked={task.completed}
+                        onChange={({ checked }) => updateTask({ completed: checked })}
+                    />
+                ),
+                content: (
+                    <Editable
+                        content={task.title}
+                        onBlur={title => updateTask({ title })}
+                    />
+                ),
+                size: 's'
+            }}
             closeOnClickOutside={isMobile}
             onClose={unsetTask}
         >
             {task &&
                 <TaskDetails
-                    key={task?.id}
-                    task={task!}
+                    key={task.id}
+                    task={task}
                     onUpdate={(id, data) => updateTask(data)}
                 />
             }
@@ -37,12 +52,6 @@ export default function TaskView() {
                     variant="tinted"
                     fluid
                     onClick={deleteTask}
-                />
-
-                <Button 
-                    icon="right_panel_close"
-                    variant="tinted"
-                    onClick={unsetTask}
                 />
             </ButtonGroup>
         </Drawer>
