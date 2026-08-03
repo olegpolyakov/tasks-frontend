@@ -6,6 +6,8 @@ import { SortableTree, type TreeItem } from '@olegpolyakov/ui';
 import { buildTree } from '../../logic/children';
 import TaskItem from '../TaskItem';
 
+import styles from './TasksTree.module.scss';
+
 export default function TasksTree({
     tasks,
     selectedTask,
@@ -32,7 +34,7 @@ export default function TasksTree({
     }, [tasks]);
 
     return (
-        <div>
+        <div className={styles.root}>
             <SortableTree
                 key={key}
                 as="div"
