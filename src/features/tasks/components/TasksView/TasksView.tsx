@@ -8,8 +8,7 @@ import { useAppContext } from '@olegpolyakov/frontend/app';
 import { useSettingsContext } from '@/features/settings';
 
 import NoTasksImage from '../../assets/no-tasks.svg';
-import { TaskInput, TasksSort } from '../../components';
-import TasksTree from '../../components/TasksTree';
+import { TaskInput, TasksSort, TasksTree } from '../../components';
 import { useTaskContext, useTasksContext } from '../../hooks';
 import { useTasksSort } from '../../hooks';
 import { filters, filterTasks } from '../../logic/filter';
