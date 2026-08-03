@@ -8,6 +8,7 @@ import { toRecordById } from '@olegpolyakov/core/utils/types';
 import { useStateEvents, useStore } from '@/store';
 
 import type { TasksApi } from '../api';
+import { buildTree } from '../logic/children';
 import { tasksAtom, tasksReducer } from '../state';
 
 export default function useTasksState(api: TasksApi) {
@@ -27,10 +28,12 @@ export default function useTasksState(api: TasksApi) {
 
     const tasks = useMemo(() => {
         const tagsById = toRecordById(tags);
-        return state.map(data => new Task(data, {
+        const tasks = state.map(data => new Task(data, {
             projects: projects.filter(p => p.taskIds.includes(data.id)),
             tags: data.tagIds.map(id => tagsById[id])
         }));
+
+        return buildTree(tasks);
     }, [state, projects, tags]);
 
     return tasks;
