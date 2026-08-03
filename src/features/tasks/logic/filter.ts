@@ -17,9 +17,12 @@ export const filters: Record<string, (task: Task) => boolean> = {
     active: task => task.active,
     important: task => task.important,
     inbox: task => 
+        !task.active &&
         !task.important &&
         !task.dueDate &&
-        task.tagIds.length === 0,
+        !task.parent &&
+        task.tagIds.length === 0 &&
+        task.projects?.length === 0,
     overdue: task =>
         !task.completed &&
         !!task.dueDate &&
