@@ -1,9 +1,9 @@
 import { KeyboardEvent, useRef, useState } from 'react';
 
-import { Text, Textarea } from '@olegpolyakov/ui';
+import { Spinner, Text, Textarea } from '@olegpolyakov/ui';
+import Markdown from '@olegpolyakov/frontend/components/Markdown';
 
 import { AI_URL } from '@/env';
-import { useTaskContext } from '@/features/tasks';
 
 import styles from './Chat.module.scss';
 
@@ -14,13 +14,16 @@ type Message = {
     content: string;
 };
 
-export default function Chat() {
-    const { task } = useTaskContext();
-
+export default function Chat({
+    prompt = ''
+}: {
+    prompt?: string
+}) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    const [prompt, setPrompt] = useState<string>(task ? `Current task ID: ${task.id}` : '');
     const [messages, setMessages] = useState<Message[]>([]);
+    const [isLoading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const sendMessage = async (content: string) => {
         const message: Message = {
@@ -29,14 +32,20 @@ export default function Chat() {
         };
 
         setMessages(ms => ms.concat(message));
+        setLoading(true);
+        setError('');
 
-        const response = await getResponse([
+        await getResponse([
             { role: 'system', content: prompt },
             ...messages,
             message
-        ]);
-
-        setMessages(ms => ms.concat(response));
+        ]).then(response => {
+            console.log('RES', response);
+            setMessages(ms => ms.concat(response));
+            setLoading(false);
+        }).catch((error: Error) => {
+            console.error(error);
+        });
     };
 
     const handleInput = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -60,17 +69,30 @@ export default function Chat() {
                 {messages.map(message =>
                     <Text
                         key={message.content}
+                        as="div"
                         className={`${styles.message} ${styles[message.role]}`}
-                        content={message.content}
-                    />
+                    >
+                        <Markdown content={message.content} />
+                    </Text>
                 )}
             </div>
 
             <div className={styles.input}>
                 <Textarea
                     ref={textareaRef}
+                    end={isLoading &&
+                        <Spinner size="xs" />
+                    }
                     onKeyDown={handleInput}
                 />
+
+                {error &&
+                    <Text
+                        content={error}
+                        color="danger"
+                        size="s"
+                    />
+                }
             </div>
         </div>
     );
@@ -88,6 +110,8 @@ async function getResponse(messages: Message[]): Promise<Message> {
         body: JSON.stringify(data)
     });
     const contentType = res.headers.get('Content-Type');
+
+    console.log('RES', res.status, res.statusText);
 
     if (contentType === 'application/json') {
         return await res.json();
