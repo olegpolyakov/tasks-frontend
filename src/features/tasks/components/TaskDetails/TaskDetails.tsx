@@ -63,7 +63,7 @@ export default function TaskDetails({
                                 onClick={() => setHasTime(!hasTime)}
                             />
                         }
-                        onChange={({ value }) => onUpdate(task.id, { dueDate: new Date(value) })}
+                        onChange={({ value }) => onUpdate(task.id, { dueDate: value ? new Date(value) : undefined })}
                     />
                 </Field>
 
