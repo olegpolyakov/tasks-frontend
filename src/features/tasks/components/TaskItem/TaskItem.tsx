@@ -72,6 +72,7 @@ export default function TaskItem({
 
                         {task.dueDate && (
                             <Text
+                                start={<Icon color="secondary" name="event" size="s" />}
                                 content={new Date(task.dueDate).toLocaleDateString()}
                                 title="Due date"
                                 color="secondary"
