@@ -1,12 +1,19 @@
 import { Link } from 'react-router-dom';
 
-import { DateTime } from '@olegpolyakov/core';
+import { DateTime, type RecurrenceFrequency } from '@olegpolyakov/core';
 import type { Task, TaskData } from '@olegpolyakov/tasks-core';
-import { Box, Button, Checkbox, Flex, Icon, Item, Pill, Text } from '@olegpolyakov/ui';
+import { Button, Checkbox, Flex, Icon, Item, Pill, Text } from '@olegpolyakov/ui';
 import { capitalize } from '@olegpolyakov/core/utils/string';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 import styles from './TaskItem.module.scss';
+
+const recurrenceLabels: Record<RecurrenceFrequency, string> = {
+    daily: 'Daily',
+    monthly: 'Monthly',
+    weekly: 'Weekly',
+    yearly: 'Yearly'
+};
 
 export default function TaskItem({
     task,
@@ -27,13 +34,13 @@ export default function TaskItem({
     onToggle?: (id: string, completed: boolean) => void;
     onUpdate?: (id: string, data: Partial<TaskData>) => void;
 }) {
-    const today = DateTime.now();
+    const today = DateTime.now().startOf('day');
     const dueDate = task.dueDate;
     const dueDateTime = dueDate && DateTime.fromJSDate(dueDate);
     const daysDiff = dueDateTime ? (dueDateTime.diff(today, 'days').toObject().days ?? 0) : 0;
-    const dueDateString = dueDate ? (daysDiff > 3
-        ? DateTime.fromJSDate(dueDate).toLocaleString()
-        : DateTime.fromJSDate(dueDate).toRelativeCalendar()) : '';
+    const dueDateString = dueDateTime ? (daysDiff > 3
+        ? dueDateTime.toLocaleString()
+        : dueDateTime.toRelativeCalendar()) : '';
     const isOverDue = dueDateTime ? dueDateTime < today : false;
     const color = isOverDue
         ? 'danger'
@@ -75,7 +82,7 @@ export default function TaskItem({
             onClick={() => onSelect?.(task)}
             {...props}
         >
-            <Flex column gap="xxs">
+            <div className={styles.content}>
                 <Text
                     as="span"
                     start={
@@ -90,71 +97,80 @@ export default function TaskItem({
                     strikethrough={task.completed}
                 />
 
-                <Box style={{ marginLeft: '1.75rem' }}>
-                    <Flex gap="xs">
-                        {dueDateString && (
-                            <Text
-                                className={styles.dueDate}
-                                content={capitalize(dueDateString)}
-                                title="Due date"
-                                color={isOverDue ? 'danger' : 'secondary'}
-                                size="xs"
-                            />
-                        )}
+                <div className={styles.details}>
+                    {dueDateString && (
+                        <Text
+                            className={styles.dueDate}
+                            content={capitalize(dueDateString)}
+                            title="Due date"
+                            color={isOverDue ? 'danger' : 'secondary'}
+                            size="xs"
+                        />
+                    )}
 
-                        {task.childrenIds.length > 0 &&
+                    {task.recurrence && (
+                        <Text
+                            className={styles.dueDate}
+                            start={<Icon color="secondary" name="autorenew" size="s" />}
+                            color="secondary"
+                            content={recurrenceLabels[task.recurrence.frequency]}
+                            title="Recurrence"
+                            size="xs"
+                        />
+                    )}
+
+                    {task.childrenIds.length > 0 &&
                             <Text
                                 start={<Icon color="secondary" name="checklist" size="s" />}
                                 content={task.childrenIds.length}
+                                title={`${task.childrenIds.length} subtasks`}
                                 color="secondary"
                                 size="xs"
-                                title={`${task.childrenIds.length} subtasks`}
                             />
-                        }
+                    }
 
-                        {task.content && (
-                            <Icon
-                                title="Task has content"
-                                name="notes"
-                                size="s"
-                                color="secondary"
-                            />
-                        )}
+                    {task.content && (
+                        <Icon
+                            title="Task has content"
+                            name="notes"
+                            size="s"
+                            color="secondary"
+                        />
+                    )}
 
-                        {!hideProjects && task.projects.map(project => 
-                            <Pill
-                                className={styles.link}
-                                key={project.id}
-                                as={Link}
-                                to={`/projects/${project.id}`}
-                                content={project.name}
-                                start={project.icon && <EntityIcon icon={project.icon} />}
-                                size="s"
-                                variant="tinted"
-                                title={`Project: ${project.name}`}
-                                interactive
-                                onClick={event => event.stopPropagation()}
-                            />
-                        )}
+                    {!hideProjects && task.projects.map(project => 
+                        <Pill
+                            className={styles.link}
+                            key={project.id}
+                            as={Link}
+                            to={`/projects/${project.id}`}
+                            content={project.name}
+                            start={project.icon && <EntityIcon icon={project.icon} />}
+                            size="s"
+                            variant="tinted"
+                            title={`Project: ${project.name}`}
+                            interactive
+                            onClick={event => event.stopPropagation()}
+                        />
+                    )}
 
-                        {!hideTags && task.tags.map(tag => 
-                            <Pill
-                                className={styles.link}
-                                key={tag.id}
-                                as={Link}
-                                to={`/tags/${tag.id}`}
-                                start={<EntityIcon icon={tag.icon || 'tag'} />}
-                                content={tag.name}
-                                size="s"
-                                variant="tinted"
-                                title={`Tag: ${tag.name}`}
-                                interactive
-                                onClick={event => event.stopPropagation()}
-                            />
-                        )}
-                    </Flex>
-                </Box>
-            </Flex>
+                    {!hideTags && task.tags.map(tag => 
+                        <Pill
+                            className={styles.link}
+                            key={tag.id}
+                            as={Link}
+                            to={`/tags/${tag.id}`}
+                            start={<EntityIcon icon={tag.icon || 'tag'} />}
+                            content={tag.name}
+                            size="s"
+                            variant="tinted"
+                            title={`Tag: ${tag.name}`}
+                            interactive
+                            onClick={event => event.stopPropagation()}
+                        />
+                    )}
+                </div>
+            </div>
         </Item>
     );
 }

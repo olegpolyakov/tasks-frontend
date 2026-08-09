@@ -2,3 +2,19 @@
     color: initial;
     text-decoration: none;
 }
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-xxs);
+}
+
+.details {
+    display: flex;
+    gap: var(--ui-space-xs);
+    margin-left: 1.75rem;
+
+    &:empty {
+        display: none;
+    }
+}
