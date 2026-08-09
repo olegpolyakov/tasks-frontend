@@ -21,8 +21,8 @@ initTagsState(store);
 export default function App() {
     return (
         <StoreContext value={store}>
-            <FeaturesProvider>
-                <AppShell name="Tasks">
+            <AppShell name="Tasks">
+                <FeaturesProvider>
                     <AppDrawer>
                         <div className={styles.sidebar}>
                             <Heading
@@ -80,8 +80,8 @@ export default function App() {
                             />
                         </Routes>
                     </AppContent>
-                </AppShell>
-            </FeaturesProvider>
+                </FeaturesProvider>
+            </AppShell>
         </StoreContext>
     );
 }
