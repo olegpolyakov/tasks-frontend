@@ -11,13 +11,13 @@ export default function FeaturesProvider({ children }: { children: ReactNode }) 
     return (
         <AuthProvider apiUrl={AUTH_URL}>
             <SettingsProvider>
-                <TagsProvider>
-                    <TasksProvider>
-                        <ProjectsProvider>
+                <TasksProvider>
+                    <ProjectsProvider>
+                        <TagsProvider>
                             {children}
-                        </ProjectsProvider>
-                    </TasksProvider>
-                </TagsProvider>
+                        </TagsProvider>
+                    </ProjectsProvider>
+                </TasksProvider>
             </SettingsProvider>
         </AuthProvider>
     );
