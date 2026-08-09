@@ -40,20 +40,15 @@ export default function TaskRecurrence({
     recurrence?: RecurrenceData;
     onChange?: (recurrence: RecurrenceData) => void
 }) {
-    const RecurrenceSettings = recurrence ? frequencySettingsComponents[recurrence.frequency] : null;
+    const RecurrenceSettings = recurrence
+        ? frequencySettingsComponents[recurrence.frequency]
+        : null;
 
     return (
         <Field label="Recurrence">
             <Select
-                value={recurrence?.frequency}
+                value={recurrence?.frequency ?? ''}
                 options={frequencyOptions}
-                onChange={({ value }) =>  onChange?.({
-                    frequency: value as RecurrenceFrequency,
-                    interval: 1,
-                    values: recurrence?.frequency === value
-                        ? recurrence?.values
-                        : []
-                })}
                 end={recurrence && (
                     <div onClick={event => event.stopPropagation()}>
                         <Popover
@@ -80,6 +75,14 @@ export default function TaskRecurrence({
                         </Popover>
                     </div>
                 )}
+                // @ts-ignore TODO Allow null value
+                onChange={({ value }) =>  onChange?.(value ? {
+                    frequency: value as RecurrenceFrequency,
+                    interval: 1,
+                    values: recurrence?.frequency === value
+                        ? recurrence?.values
+                        : []
+                } : null)}
             />
 
             {recurrence && (
