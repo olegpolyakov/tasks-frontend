@@ -1,31 +1,38 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import type { RecurrenceData } from '@olegpolyakov/core';
-import { Button, ButtonGroup } from '@olegpolyakov/ui';
+import { Box, Button, ButtonGroup, Flex, Input } from '@olegpolyakov/ui';
+import { DateTime, Recurrence, RecurrenceData } from '@olegpolyakov/core/objects';
 
-const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-
-export function getWeeklyRecurrenceDescription(recurrence: RecurrenceData) {
-    const interval = recurrence.interval || 1;
-    const days = recurrence.values || [];
-    
-    if (days.length === 0) {
-        return `Every ${interval > 1 ? interval : ''} week${interval > 1 ? 's' : ''}`;
-    }
-
-    const dayNames = days.map(day => daysOfWeek[day]);
-
-    return `Every ${interval > 1 ? interval : ''} week${interval > 1 ? 's' : ''} on ${dayNames.join(', ')}`;
-}
+import Calendar from './Calendar';
+import { daysOfWeek } from './constants';
 
 export default function WeeklyRecurrenceSettings({
-    recurrence,
+    date = new Date(),
+    recurrence: data,
     onChange
 }: {
-    recurrence?: RecurrenceData;
-    onChange: (days: number[]) => void;
+    date?: Date;
+    recurrence: RecurrenceData;
+    onChange: (data: RecurrenceData) => void;
 }) {
-    const [selectedDays, setSelectedDays] = useState<number[]>(recurrence?.values || []);
+    const interval = data.interval ?? 1;
+
+    const [selectedDays, setSelectedDays] = useState<number[]>(data?.values || []);
+
+    const dates = useMemo(() => {
+        const recurrence = Recurrence.create(data);
+        const endOfMonth = DateTime.now().endOf('month');
+        let currentDate = DateTime.fromJSDate(date).startOf('day');
+        const map: Record<string, Date> = {};
+    
+        while (currentDate < endOfMonth) {
+            const jsDate = currentDate.toJSDate();
+            map[jsDate.toISOString()] = jsDate;
+            currentDate = DateTime.fromJSDate(recurrence.calculateNextDate(currentDate.toJSDate()));
+        }
+    
+        return map;
+    }, [date, data]);
 
     const handleClick = (day: number) => {
         const newSelectedDays = selectedDays.includes(day)
@@ -33,21 +40,47 @@ export default function WeeklyRecurrenceSettings({
             : [...selectedDays, day];
 
         setSelectedDays(newSelectedDays);
-        onChange(newSelectedDays);
+        onChange({
+            ...data,
+            values: newSelectedDays
+        });
     };
 
     return (
-        <ButtonGroup joined>
-            {daysOfWeek.map((day, index) => (
-                <Button
-                    key={index}
-                    content={day}
-                    value={index}
-                    color={selectedDays.includes(index) ? 'brand' : undefined}
-                    variant={selectedDays.includes(index) ? 'filled' : 'plain'}
-                    onClick={() => handleClick(index)}
-                />
-            ))}
-        </ButtonGroup>
+        <Flex column gap="xs">
+            <ButtonGroup joined>
+                {daysOfWeek.map((day, index) => (
+                    <Button
+                        key={index}
+                        content={day}
+                        value={index}
+                        color={selectedDays.includes(index) ? 'brand' : undefined}
+                        variant={selectedDays.includes(index) ? 'filled' : 'plain'}
+                        onClick={() => handleClick(index)}
+                    />
+                ))}
+            </ButtonGroup>
+
+            <Input
+                type="number"
+                start="Every"
+                value={interval}
+                end={interval > 1 ? 'weeks' : 'week'}
+                min={1}
+                onChange={({ value }) => onChange({
+                    ...data,
+                    interval: Number(value)
+                })}
+            />
+
+            <Calendar
+                hasEvents={date => {
+                    const key = DateTime.fromJSDate(date).startOf('day').toJSDate().toISOString();
+                        
+                    return key in dates;
+                }}
+                compact
+            />
+        </Flex>
     );
 }

@@ -1,19 +1,14 @@
 import { Link } from 'react-router-dom';
 
-import { DateTime, type RecurrenceFrequency } from '@olegpolyakov/core';
+import { DateTime } from '@olegpolyakov/core';
 import type { Task, TaskData } from '@olegpolyakov/tasks-core';
 import { Button, Checkbox, Flex, Icon, Item, Pill, Text } from '@olegpolyakov/ui';
 import { capitalize } from '@olegpolyakov/core/utils/string';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
-import styles from './TaskItem.module.scss';
+import { getRecurrenceDescription } from '../TaskRecurrence';
 
-const recurrenceLabels: Record<RecurrenceFrequency, string> = {
-    daily: 'Daily',
-    monthly: 'Monthly',
-    weekly: 'Weekly',
-    yearly: 'Yearly'
-};
+import styles from './TaskItem.module.scss';
 
 export default function TaskItem({
     task,
@@ -113,7 +108,7 @@ export default function TaskItem({
                             className={styles.dueDate}
                             start={<Icon color="secondary" name="autorenew" size="s" />}
                             color="secondary"
-                            content={recurrenceLabels[task.recurrence.frequency]}
+                            content={getRecurrenceDescription[task.recurrence.frequency]?.(task.recurrence)}
                             title="Recurrence"
                             size="xs"
                         />

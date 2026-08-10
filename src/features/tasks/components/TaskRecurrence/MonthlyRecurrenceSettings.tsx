@@ -1,19 +1,23 @@
-import type { RecurrenceData } from '@olegpolyakov/core';
+import { DateTime, Recurrence, RecurrenceData } from '@olegpolyakov/core';
 
-export function getMonthlyRecurrenceDescription(recurrence: RecurrenceData) {
-    const interval = recurrence.interval || 1;
-
-    return `Every ${interval > 1 ? interval : ''} month${interval > 1 ? 's' : ''}`;
-}
+import Calendar from './Calendar';
 
 export default function MonthlyRecurrenceSettings({
-    recurrence,
+    recurrence: data,
     onChange
 }: {
-    recurrence?: RecurrenceData;
-    onChange: (days: number[]) => void;
+    recurrence: RecurrenceData;
+    onChange: (data: RecurrenceData) => void;
 }) {
+    const today = new Date();
+    const recurrence = Recurrence.create(data);
+    const nextDate = recurrence.calculateNextDate(today);
+
     return (
-        null
+        <Calendar
+            initialDate={today}
+            hasEvents={date => DateTime.fromJSDate(nextDate).hasSame(DateTime.fromJSDate(date), 'day')}
+            compact
+        />
     );
 }

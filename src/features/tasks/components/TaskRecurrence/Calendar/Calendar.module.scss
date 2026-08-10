@@ -1,0 +1,24 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ui-space-xxs);
+}
+
+.week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: flex-start;
+    gap: var(--ui-space-xxs);
+}

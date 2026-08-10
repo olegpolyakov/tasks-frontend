@@ -1,0 +1,50 @@
+.root {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--ui-brand-color);
+    }
+}
+
+.disabled,
+.disabled:hover {
+    color: #D4D4DA;
+    cursor: default;
+}
+
+.hasEvents {
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-radius: var(--ui-circle);
+        background-color: var(--ui-brand-color);
+    }
+
+    &.selected {
+        &:after {
+            background-color: var(--ui-on-brand-color);
+        }
+    }
+}
+
+.selected {
+    border-radius: var(--ui-circle);
+    background-color: var(--ui-brand-color);
+    color: var(--ui-on-brand-color);
+}

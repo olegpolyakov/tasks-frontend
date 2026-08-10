@@ -98,7 +98,7 @@ export default function TaskDetails({
             </Field>
 
             <TaskRecurrence
-                recurrence={task.recurrence}
+                task={task}
                 onChange={recurrence => onUpdate(task.id, { recurrence })}
             />
 

@@ -1,10 +1,13 @@
 import { type RecurrenceData, RecurrenceFrequency } from '@olegpolyakov/core';
+import type { Task } from '@olegpolyakov/tasks-core';
 import { Button, Field, Popover, Select, Text } from '@olegpolyakov/ui';
 
-import DailyRecurrenceSettings, { getDailyRecurrenceDescription } from './DailyRecurrenceSettings';
-import MonthlyRecurrenceSettings, { getMonthlyRecurrenceDescription } from './MonthlyRecurrenceSettings';
-import WeeklyRecurrenceSettings, { getWeeklyRecurrenceDescription } from './WeeklyRecurrenceSettings';
-import YearlyRecurrenceSettings, { getYearlyRecurrenceDescription } from './YearlyRecurrenceSettings';
+import { frequencyOptions } from './constants';
+import DailyRecurrenceSettings from './DailyRecurrenceSettings';
+import { getRecurrenceDescription } from './helpers';
+import MonthlyRecurrenceSettings from './MonthlyRecurrenceSettings';
+import WeeklyRecurrenceSettings from './WeeklyRecurrenceSettings';
+import YearlyRecurrenceSettings from './YearlyRecurrenceSettings';
 
 const frequencySettingsComponents = {
     [RecurrenceFrequency.Daily]: DailyRecurrenceSettings,
@@ -13,33 +16,14 @@ const frequencySettingsComponents = {
     [RecurrenceFrequency.Yearly]: YearlyRecurrenceSettings
 };
 
-const frequencyLabels: Record<RecurrenceFrequency, string> = {
-    [RecurrenceFrequency.Daily]: 'Daily',
-    [RecurrenceFrequency.Weekly]: 'Weekly',
-    [RecurrenceFrequency.Monthly]: 'Monthly',
-    [RecurrenceFrequency.Yearly]: 'Yearly'
-};
-
-const frequencyDescriptions = {
-    [RecurrenceFrequency.Daily]: getDailyRecurrenceDescription,
-    [RecurrenceFrequency.Weekly]: getWeeklyRecurrenceDescription,
-    [RecurrenceFrequency.Monthly]: getMonthlyRecurrenceDescription,
-    [RecurrenceFrequency.Yearly]: getYearlyRecurrenceDescription
-};
-
-const frequencyOptions = Object.entries(frequencyLabels).map(([value, label]) => ({
-    key: value,
-    value: value as RecurrenceFrequency,
-    label
-}));
-
 export default function TaskRecurrence({
-    recurrence,
+    task,
     onChange
 }: {
-    recurrence?: RecurrenceData;
+    task: Task;
     onChange?: (recurrence: RecurrenceData) => void
 }) {
+    const recurrence = task.recurrence;
     const RecurrenceSettings = recurrence
         ? frequencySettingsComponents[recurrence.frequency]
         : null;
@@ -53,6 +37,7 @@ export default function TaskRecurrence({
                     <div onClick={event => event.stopPropagation()}>
                         <Popover
                             placement="bottom-end"
+                            size="m"
                             trigger={
                                 <Button
                                     icon={{
@@ -65,11 +50,9 @@ export default function TaskRecurrence({
                         >
                             {RecurrenceSettings && (
                                 <RecurrenceSettings
+                                    date={task.dueDate}
                                     recurrence={recurrence}
-                                    onChange={values => onChange?.({
-                                        ...recurrence,
-                                        values
-                                    })}
+                                    onChange={data => onChange?.(data)}
                                 />
                             )}
                         </Popover>
@@ -87,9 +70,9 @@ export default function TaskRecurrence({
 
             {recurrence && (
                 <Text
-                    content={frequencyDescriptions[recurrence.frequency](recurrence)}
-                    size="s"
+                    content={getRecurrenceDescription[recurrence.frequency](recurrence)}
                     color="secondary"
+                    size="s"
                 />
             )}
         </Field>
