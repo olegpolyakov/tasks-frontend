@@ -4,10 +4,10 @@ export type Sorts = Record<string, (a: Task, b: Task) => number>;
 
 export const sorts: Sorts =  {
     dueDate: (a, b) => {
-        if (!a.dueDate) return 1;
-        if (!b.dueDate) return -1;
+        if (!a.date) return 1;
+        if (!b.date) return -1;
 
-        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
     },
     createdAt: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
 };

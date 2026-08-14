@@ -24,18 +24,6 @@ export default function TaskDetails({
         <div className={styles.root}>
             <PillGroup>
                 <Pill
-                    content="Active"
-                    icon={{
-                        name: 'star',
-                        filled: task.active
-                    }}
-                    color={task.active ? 'brand' : undefined}
-                    variant={task.active ? 'filled' : 'tinted'}
-                    interactive
-                    onClick={() => onUpdate(task.id, { active: !task.active })}
-                />
-
-                <Pill
                     content="Important"
                     icon={{
                         name: 'flag',
@@ -51,11 +39,11 @@ export default function TaskDetails({
             <Field label="Due Date">
                 <Input
                     type={hasTime ? 'datetime-local' : 'date'}
-                    value={!task.dueDate
+                    value={!task.date
                         ? ''
                         : hasTime
-                            ? new Date(task.dueDate).toISOString().slice(0, 16)
-                            : new Date(task.dueDate).toISOString().slice(0, 10)
+                            ? new Date(task.date).toISOString().slice(0, 16)
+                            : new Date(task.date).toISOString().slice(0, 10)
                     }
                     end={
                         <ButtonGroup gap="s">
@@ -70,28 +58,28 @@ export default function TaskDetails({
                                 title="Clear"
                                 icon="clear"
                                 size="s"
-                                onClick={() => onUpdate(task.id, { dueDate: null as unknown as undefined })}
+                                onClick={() => onUpdate(task.id, { date: null as unknown as undefined })}
                             />
                         </ButtonGroup>
                     }
-                    onChange={({ value }) => onUpdate(task.id, { dueDate: new Date(value) })}
+                    onChange={({ value }) => onUpdate(task.id, { date: new Date(value) })}
                 />
 
-                {!task.dueDate &&
+                {!task.date &&
                         <PillGroup size="s" interactive>
                             <Pill
                                 content="Today"
-                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().toJSDate() })}
+                                onClick={() => onUpdate(task.id, { date: DateTime.now().toJSDate() })}
                             />
 
                             <Pill
                                 content="Tomorrow"
-                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().plus({ days: 1 }).toJSDate() })}
+                                onClick={() => onUpdate(task.id, { date: DateTime.now().plus({ days: 1 }).toJSDate() })}
                             />
 
                             <Pill
                                 content="Next week"
-                                onClick={() => onUpdate(task.id, { dueDate: DateTime.now().endOf('week').plus({ days: 1 }).toJSDate() })}
+                                onClick={() => onUpdate(task.id, { date: DateTime.now().endOf('week').plus({ days: 1 }).toJSDate() })}
                             />
                         </PillGroup>
                 }

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 
-import { DateTime } from '@olegpolyakov/core';
 import type { Task, TaskData } from '@olegpolyakov/tasks-core';
 import { Button, Checkbox, Flex, Icon, Item, Pill, Text } from '@olegpolyakov/ui';
 import { capitalize } from '@olegpolyakov/core/utils/string';
@@ -29,18 +28,11 @@ export default function TaskItem({
     onToggle?: (id: string, completed: boolean) => void;
     onUpdate?: (id: string, data: Partial<TaskData>) => void;
 }) {
-    const today = DateTime.now().startOf('day');
-    const dueDate = task.dueDate;
-    const dueDateTime = dueDate && DateTime.fromJSDate(dueDate);
-    const daysDiff = dueDateTime ? (dueDateTime.diff(today, 'days').toObject().days ?? 0) : 0;
-    const dueDateString = dueDateTime ? (daysDiff > 3
-        ? dueDateTime.toLocaleString()
-        : dueDateTime.toRelativeCalendar()) : '';
-    const isOverDue = dueDateTime ? dueDateTime < today : false;
-    const color = isOverDue
+    const dateTimeString = task.dateTimeString;
+    const color = task.isOverdue
         ? 'danger'
         : undefined;
-    const variant = (isOverDue || task.important || selected)
+    const variant = (task.isOverdue || selected)
         ? 'tinted'
         : 'plain';
     
@@ -53,16 +45,7 @@ export default function TaskItem({
             interactive
             end={
                 <Flex align="center" gap="xxs">
-                    {isOverDue && <Icon name="priority_high" title="Over due" />}
-
-                    <Button
-                        icon={<Icon name="star" filled={task.active} />}
-                        title={task.active ? 'Remove from active' : 'Add to active'}
-                        onClick={event => {
-                            event.stopPropagation();
-                            onUpdate?.(task.id, { active: !task.active });
-                        }}
-                    />
+                    {task.isOverdue && <Icon name="priority_high" title="Over due" />}
 
                     <Button
                         icon={<Icon name="flag" filled={task.important} />}
@@ -93,12 +76,12 @@ export default function TaskItem({
                 />
 
                 <div className={styles.details}>
-                    {dueDateString && (
+                    {dateTimeString && (
                         <Text
                             className={styles.dueDate}
-                            content={capitalize(dueDateString)}
+                            content={capitalize(dateTimeString)}
                             title="Due date"
-                            color={isOverDue ? 'danger' : 'secondary'}
+                            color={task.isOverdue ? 'danger' : 'secondary'}
                             size="xs"
                         />
                     )}

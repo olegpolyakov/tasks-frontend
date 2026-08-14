@@ -15,7 +15,7 @@ export function buildTree(tasks: Task[]): Task[] {
         }).filter(Boolean) as Task[];
     }
 
-    return tasks.filter(t => !t.hasParent);
+    return tasks;
 }
 
 export function getAllChildren(

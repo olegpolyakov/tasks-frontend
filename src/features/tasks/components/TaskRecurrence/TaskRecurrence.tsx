@@ -50,7 +50,7 @@ export default function TaskRecurrence({
                         >
                             {RecurrenceSettings && (
                                 <RecurrenceSettings
-                                    date={task.dueDate}
+                                    date={task.date}
                                     recurrence={recurrence}
                                     onChange={data => onChange?.(data)}
                                 />

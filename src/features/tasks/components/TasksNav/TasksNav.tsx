@@ -7,24 +7,24 @@ import { useTasksContext } from '../../hooks';
 import { filters } from '../../logic/filter';
 
 export default function TasksNav() {
-    const { closeDrawer } = useAppContext();
     const { tasks } = useTasksContext();
+    const { closeDrawer } = useAppContext();
 
     const incompleteTasks = tasks.filter(t => !t.completed);
-    const activeTasks = incompleteTasks.filter(t => t.active).length;
-    const importantCount = incompleteTasks.filter(filters.important).length;
     const inboxCount = incompleteTasks.filter(filters.inbox).length;
+    const importantCount = incompleteTasks.filter(filters.important).length;
+    const currentTasks = incompleteTasks.filter(t => t.isCurrent).length;
+    const nextCount = incompleteTasks.filter(filters.next).length;
     const overDueCount = incompleteTasks.filter(filters.overdue).length;
     const todayCount = incompleteTasks.filter(filters.today).length;    
-    const nextCount = incompleteTasks.filter(filters.next).length;
     
     const items = [
         { to: '/inbox', content: 'Inbox', icon: 'inbox', count: inboxCount },
-        { to: '/active', content: 'Active', icon: 'star', count: activeTasks },
         { to: '/important', content: 'Important', icon: 'flag', count: importantCount },
-        { to: '/overdue', content: 'Over Due', icon: 'error', count: overDueCount },
         { to: '/today', content: 'Today', icon: 'today', count: todayCount },
+        { to: '/current', content: 'Current', icon: 'mode_standby', count: currentTasks },
         { to: '/next', content: 'Next', icon: 'event_upcoming', count: nextCount },
+        { to: '/overdue', content: 'Over Due', icon: 'error', count: overDueCount },
         { to: '/all', content: 'All', icon: 'done_all', count: tasks.length }
     ];
 

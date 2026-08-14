@@ -52,14 +52,11 @@ export default function TasksView({
 
     const handleSubmit = useCallback((data: Partial<TaskData>) => {
         switch (filter.name) {
-            case 'active':
-                data.active = true;
-                break;
             case 'important':
                 data.important = true;
                 break;
             case 'today':
-                data.dueDate = DateTime.now().endOf('day').toJSDate();
+                data.date = DateTime.now().endOf('day').toJSDate();
                 break;
         }
 

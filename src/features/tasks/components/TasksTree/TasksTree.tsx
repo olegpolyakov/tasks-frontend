@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import { Task, type TaskData } from '@olegpolyakov/tasks-core';
 import { SortableTree, type TreeItem } from '@olegpolyakov/ui';
 
-import { buildTree } from '../../logic/children';
 import TaskItem from '../TaskItem';
 
 import styles from './TasksTree.module.scss';
@@ -32,6 +31,7 @@ export default function TasksTree({
             .map(task => `${task.id}:${task.childrenIds.join('.')}`)
             .join('|');
     }, [tasks]);
+    const items = useMemo(() => tasks.filter(t => !t.hasParent), [tasks]);
 
     return (
         <div className={styles.root}>
@@ -39,7 +39,7 @@ export default function TasksTree({
                 key={key}
                 as="div"
                 gap="s"
-                items={buildTree(tasks)}
+                items={items}
                 renderItem={(item, sortable) => {
                     const task = tasks.find(t => t.id === item.id);
 
