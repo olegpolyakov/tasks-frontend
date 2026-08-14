@@ -1,12 +1,14 @@
 import { NavLink } from 'react-router-dom';
 
 import { Item, List } from '@olegpolyakov/ui';
+import { useAppContext } from '@olegpolyakov/frontend/app';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 import { useProjectsContext } from '../../hooks';
 
 export default function ProjectsNav() {
     const { projects } = useProjectsContext();
+    const { closeDrawer } = useAppContext();
 
     return (
         <div>
@@ -24,6 +26,7 @@ export default function ProjectsNav() {
                                 shape="rounded-s"
                                 active={isActive}
                                 interactive
+                                onClick={closeDrawer}
                             />
                         )}
                     </NavLink>

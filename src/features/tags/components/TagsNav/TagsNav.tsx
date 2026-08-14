@@ -11,9 +11,9 @@ import { useTagsContext } from '../../hooks';
 import styles from './TagsNav.module.scss';
 
 export default function TagsNav() {
-    const { closeDrawer } = useAppContext();
     const { tasks } = useTasksContext();
     const { tags } = useTagsContext();
+    const { closeDrawer } = useAppContext();
 
     return (
         <List className={styles.root} gap="s">
