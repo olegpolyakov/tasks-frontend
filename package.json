@@ -13,10 +13,10 @@
   "dependencies": {
     "@dnd-kit/react": "^0.4.0",
     "@olegpolyakov/core": "^0.9.1",
-    "@olegpolyakov/editor": "^0.2.0",
+    "@olegpolyakov/editor": "^0.2.1",
     "@olegpolyakov/frontend": "^0.18.4",
     "@olegpolyakov/tasks-core": "^0.9.0",
-    "@olegpolyakov/ui": "^0.7.0",
+    "@olegpolyakov/ui": "^0.7.1",
     "jotai": "^2.19.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
