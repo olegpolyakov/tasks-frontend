@@ -2,4 +2,14 @@
     width: 100%;
     max-width: 720px;
     margin-inline: auto;
+    background-color: var(--ui-tinted-color);
+    border-radius: var(--ui-radius-s);
+    overflow: hidden;
+}
+
+.content {
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }

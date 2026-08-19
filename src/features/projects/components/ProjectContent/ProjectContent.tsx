@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { type EditorState, ToolbarEditor } from '@olegpolyakov/editor';
-import { Card } from '@olegpolyakov/ui';
 import { useDebounce } from '@olegpolyakov/frontend/hooks/fn';
 
 import { useProjectContext } from '../../hooks';
@@ -23,12 +22,12 @@ export default function ProjectContent() {
 
     return (
         <div className={styles.root}>
-            <Card size="s">
+            <div className={styles.content}>
                 <ToolbarEditor
                     initialState={initialState}
                     onChange={handleUpdate}
                 />
-            </Card>
+            </div>
         </div>
     );
 }
