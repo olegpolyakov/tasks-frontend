@@ -19,7 +19,10 @@ export default function ProjectsNav() {
                             <Item
                                 key={project.id}
                                 start={
-                                    <EntityIcon icon={project.icon || 'folder'} />
+                                    <EntityIcon
+                                        icon={project.icon || 'folder'}
+                                        size="m"
+                                    />
                                 }
                                 content={project.name}
                                 variant="plain"

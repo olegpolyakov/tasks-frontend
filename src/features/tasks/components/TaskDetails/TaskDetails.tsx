@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import { DateTime } from '@olegpolyakov/core';
 import type { Task, TaskData } from '@olegpolyakov/tasks-core';
@@ -13,9 +13,11 @@ import styles from './TaskDetails.module.scss';
 
 export default function TaskDetails({
     task,
+    children,
     onUpdate
 }: {
     task: Task;
+    children?: ReactNode;
     onUpdate: (id: string, data: Partial<TaskData>) => void;
 }) {
     const [hasTime, setHasTime] = useState(false);
@@ -125,6 +127,8 @@ export default function TaskDetails({
                     />
                 )}
             </Flex>
+
+            {children}
         </div>
     );
 }

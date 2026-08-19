@@ -41,19 +41,19 @@ export default function TaskView() {
                     key={task.id}
                     task={task}
                     onUpdate={(id, data) => updateTask(data)}
-                />
+                >
+                    <ButtonGroup className={styles.actions}>
+                        <Button 
+                            icon="delete"
+                            content="Delete"
+                            color="danger"
+                            variant="tinted"
+                            fluid
+                            onClick={deleteTask}
+                        />
+                    </ButtonGroup>
+                </TaskDetails>
             }
-
-            <ButtonGroup>
-                <Button 
-                    icon="delete"
-                    content="Delete"
-                    color="danger"
-                    variant="tinted"
-                    fluid
-                    onClick={deleteTask}
-                />
-            </ButtonGroup>
         </Drawer>
     );
 }

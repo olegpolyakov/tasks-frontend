@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
-import { Button, ButtonGroup, Heading, Icon, Tab, TabGroup, TabPanel, Tabs } from '@olegpolyakov/ui';
+import { Button, ButtonGroup, Flex, Heading, Icon, Tab, TabGroup, TabPanel, Tabs } from '@olegpolyakov/ui';
+import { useAppContext } from '@olegpolyakov/frontend/app';
 import { containsEmoji } from '@olegpolyakov/frontend/helpers/emoji';
 
 import { useProjectContext } from '../../hooks';
@@ -11,6 +12,7 @@ import ProjectTasks from '../ProjectTasks/ProjectTasks';
 import styles from './ProjectView.module.scss';
 
 export default function ProjectView({ children }: {children?: ReactNode}) {
+    const { openDrawer } = useAppContext();
     const { project, createSection, openProjectDialog } = useProjectContext();
 
     return (
@@ -18,12 +20,23 @@ export default function ProjectView({ children }: {children?: ReactNode}) {
             <div className={styles.main}>
                 <Tabs defaultValue="tasks">
                     <div className={styles.header}>
-                        <Heading
-                            start={project.icon && (containsEmoji(project.icon) ? project.icon : <Icon name={project.icon || 'folder'} />)}
-                            content={project.name}
-                        />
+                        <Flex align="center" gap="m" className={styles.heading}>
+                            <Button
+                                className={styles.menu}
+                                icon="menu"
+                                onClick={openDrawer}
+                            />
 
-                        <TabGroup>
+                            <Heading
+                                start={project.icon && (containsEmoji(project.icon)
+                                    ? project.icon
+                                    : <Icon name={project.icon} />
+                                )}
+                                content={project.name}
+                            />
+                        </Flex>
+
+                        <TabGroup className={styles.tabs}>
                             <Tab
                                 value="tasks"
                                 content="Tasks"
@@ -35,12 +48,10 @@ export default function ProjectView({ children }: {children?: ReactNode}) {
                             />
                         </TabGroup>
 
-                        <ButtonGroup>
+                        <ButtonGroup className={styles.actions}>
                             <Button
-                                className={styles.addSectionButton}
                                 icon="add"
-                                content="Add Section"
-                                variant="tinted"
+                                title="Add Section"
                                 onClick={() => createSection({ name: 'New Section' })}
                             />
                 

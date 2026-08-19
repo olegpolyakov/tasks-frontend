@@ -1,7 +1,8 @@
+@use 'pkg:@olegpolyakov/ui/styles/media';
+
 .root {
     height: 100%;
     display: flex;
-    overflow: hidden;
 }
 
 .main {
@@ -9,6 +10,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .header {
@@ -16,6 +18,34 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--ui-space-m);
+
+    .menu {
+        @include media.from(m) {
+            display: none;
+        }
+    }
+
+    @include media.to(m) {
+        gap: var(--ui-space-m);
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-areas:
+            'h a'
+            't t';
+
+        .heading {
+            grid-area: h;
+        }
+
+        .tabs {
+            grid-area: t;
+        }
+
+        .actions {
+            grid-area: a;
+            justify-content: flex-end;
+        }
+    }
 }
 
 .body {
