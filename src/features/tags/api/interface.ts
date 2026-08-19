@@ -7,5 +7,5 @@ export interface TagsApi {
     fetchTag(id: string): Promise<TagData>;
     createTag(data: Partial<TagData>): Promise<TagData>;
     updateTag(id: string, data: Partial<TagData>): Promise<TagData>;
-    deleteTag(id: string, options?: { deleteTasks: boolean }): Promise<void>;
+    deleteTag(id: string): Promise<void>;
 }

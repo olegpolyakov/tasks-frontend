@@ -15,10 +15,9 @@ export default function TagDeleteAction({
     const { deleteTag } = useTagsContext();
 
     const [isDialogOpen, setDialogOpen] = useState(false);
-    const [deleteTasks, setDeleteTasks] = useState(false);
 
     const handleDelete = () => {
-        deleteTag(tagId, { deleteTasks });
+        deleteTag(tagId);
         setDialogOpen(false);
         onDeleted?.(tagId);
     };
@@ -37,12 +36,6 @@ export default function TagDeleteAction({
         >
             <Flex column gap="s">
                 <Text content="Are you sure you want to delete this tag?" />
-
-                <Checkbox
-                    label="Delete tasks?"
-                    checked={deleteTasks}
-                    onChange={() => setDeleteTasks(v => !v)}
-                />
 
                 <Button
                     content="Delete"

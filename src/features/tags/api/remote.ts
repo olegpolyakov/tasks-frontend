@@ -25,7 +25,7 @@ export default {
         return http.put<Tag>(`${API_URL}/tags/${id}`, data);
     },
 
-    async deleteTag(id: string, { deleteTasks = false }: { deleteTasks?: boolean } = {}) {
-        return http.delete(`${API_URL}/tags/${id}`, { body: JSON.stringify({ deleteTasks }) });
+    async deleteTag(id: string) {
+        return http.delete(`${API_URL}/tags/${id}`);
     }
 } satisfies TagsApi;
