@@ -22,9 +22,17 @@
     &.user {
         align-self: end;
         background-color: var(--ui-tinted-color);
-        padding: var(--ui-space-xxs) var(--ui-space-xs);
+        padding: var(--ui-space-xs) var(--ui-space-s);
         border-radius: var(--ui-radius-s);
     }
 
     &.system {}
+
+    p {
+        margin: 0;
+
+        + p {
+            margin-top: 1em;
+        }
+    }
 }
