@@ -13,24 +13,26 @@ export default defineConfig(mergeConfig(
             strictPort: true
         }
     }), {
-        plugins: [VitePWA({
-            registerType: 'autoUpdate',
-            manifest: {
-                name: 'Tasks',
-                short_name: 'Tasks',
-                description: 'Manage your tasks, projects, and tags.',
-                theme_color: '#ffffff',
-                background_color: '#ffffff',
-                display: 'standalone',
-                start_url: '/',
-                scope: '/',
-                icons: [{
-                    src: '/logo.svg',
-                    sizes: 'any',
-                    type: 'image/svg+xml',
-                    purpose: 'any'
-                }]
-            }
-        })]
+        plugins: [
+            VitePWA({
+                registerType: 'autoUpdate',
+                manifest: {
+                    name: 'Tasks',
+                    short_name: 'Tasks',
+                    description: 'Manage your tasks, projects, and tags.',
+                    theme_color: '#ffffff',
+                    background_color: '#ffffff',
+                    display: 'standalone',
+                    start_url: '/',
+                    scope: '/',
+                    icons: [{
+                        src: '/logo.svg',
+                        sizes: 'any',
+                        type: 'image/svg+xml',
+                        purpose: 'any'
+                    }]
+                }
+            })
+        ]
     }
 ));
