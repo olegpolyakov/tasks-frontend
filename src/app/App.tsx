@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { Button, Heading, Text } from '@olegpolyakov/ui';
+import { Button, Heading, Scrollable, Text } from '@olegpolyakov/ui';
 import { AppContent, AppDrawer, AppShell } from '@olegpolyakov/frontend/app';
 
 import { initState as initProjectsState, Project, ProjectCreateAction, ProjectsNav } from '@/features/projects';
@@ -21,11 +21,12 @@ initTagsState(store);
 export default function App() {
     return (
         <StoreContext value={store}>
-            <AppShell name="Tasks">
-                <FeaturesProvider>
-                    <AppDrawer>
-                        <div className={styles.sidebar}>
+            <FeaturesProvider>
+                <AppShell name="Tasks">
+                    <AppDrawer scrollable={false}>
+                        <Scrollable className={styles.sidebar} fade>
                             <Heading
+                                className={styles.heading}
                                 content="Tasks"
                                 end={
                                     <Button
@@ -54,7 +55,7 @@ export default function App() {
                                 decorative
                             />
                             <TagsNav />
-                        </div>
+                        </Scrollable>
                     </AppDrawer>
 
                     <AppContent>
@@ -80,8 +81,8 @@ export default function App() {
                             />
                         </Routes>
                     </AppContent>
-                </FeaturesProvider>
-            </AppShell>
+                </AppShell>
+            </FeaturesProvider>
         </StoreContext>
     );
 }
