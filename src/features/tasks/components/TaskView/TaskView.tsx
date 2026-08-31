@@ -33,6 +33,7 @@ export default function TaskView() {
                 ),
                 size: 's'
             }}
+            scrollable={{ fade: true }}
             closeOnClickOutside={isMobile}
             onClose={unsetTask}
         >
