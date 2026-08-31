@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Tag } from '@olegpolyakov/tasks-core';
+import { TagData } from '@olegpolyakov/tasks-core';
 
 import useTagsApi from './useTagsApi';
 import useTagsState from './useTagsState';
@@ -9,11 +9,11 @@ export default function useTags() {
     const api = useTagsApi();
     const tags = useTagsState(api);
 
-    const createTag = useCallback(async (data: Partial<Tag>) => {
+    const createTag = useCallback(async (data: Partial<TagData>) => {
         return api.createTag(data);
     }, [api]);
 
-    const updateTag = useCallback(async (id: string, data: Partial<Tag>) => {
+    const updateTag = useCallback(async (id: string, data: Partial<TagData>) => {
         return api.updateTag(id, data);
     }, [api]);
 

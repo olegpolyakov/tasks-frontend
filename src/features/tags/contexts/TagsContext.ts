@@ -1,11 +1,11 @@
 import { createContext } from 'react';
 
-import type { Tag } from '@olegpolyakov/tasks-core';
+import type { Tag, TagData } from '@olegpolyakov/tasks-core';
 
 export type TagsContextValue = {
     tags: Tag[];
-    createTag: (data: Partial<Tag>) => Promise<Tag>;
-    updateTag: (id: string, data: Partial<Tag>) => Promise<Tag>;
+    createTag: (data: Partial<Tag>) => Promise<TagData>;
+    updateTag: (id: string, data: Partial<Tag>) => Promise<TagData>;
     deleteTag: (id: string) => Promise<void>;
 };
 
