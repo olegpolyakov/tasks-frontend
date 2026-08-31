@@ -1,9 +1,7 @@
-import { useAuthContext } from '@/features/auth';
+import { useApi } from '@/features/api';
 
 import { remoteApi } from '../api';
 
 export default function useProjectsApi() {
-    const { userId } = useAuthContext();
-
-    return remoteApi;
+    return useApi(remoteApi);
 }

@@ -1,12 +1,12 @@
 import type { TaskData } from '@olegpolyakov/tasks-core';
-import http from '@olegpolyakov/frontend/clients/http';
+import type { HttpClient } from '@olegpolyakov/frontend/clients/http';
 
 import { API_URL } from '@/env';
 import { socket } from '@/ws';
 
 import type { TasksApi } from './interface';
 
-export default {
+export default (http: HttpClient): TasksApi => ({
     events: socket,
 
     async fetchTasks(): Promise<TaskData[]> {
@@ -28,4 +28,4 @@ export default {
     async deleteTask(id: string): Promise<void> {
         return http.delete(`${API_URL}/tasks/${id}`);
     }
-} satisfies TasksApi;
+});

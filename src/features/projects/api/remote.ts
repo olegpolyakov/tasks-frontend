@@ -1,12 +1,12 @@
 import type { Project, ProjectData, ProjectSectionData, Task } from '@olegpolyakov/tasks-core';
-import http from '@olegpolyakov/frontend/clients/http';
+import { HttpClient } from '@olegpolyakov/frontend/clients/http';
 
 import { API_URL } from '@/env';
 import { socket } from '@/ws';
 
 import type { ProjectsApi } from './interface';
 
-export default {
+export default (http: HttpClient): ProjectsApi => ({
     events: socket,
 
     async fetchProjects(): Promise<ProjectData[]> {
@@ -46,4 +46,4 @@ export default {
     async deleteSection(projectId: string, sectionId: string) {
         return http.delete(`${API_URL}/projects/${projectId}/sections/${sectionId}`);
     }
-} satisfies ProjectsApi;
+});

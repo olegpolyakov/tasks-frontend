@@ -1,8 +1,9 @@
 import type { TaskData } from '@olegpolyakov/tasks-core';
+import type { HttpClient } from '@olegpolyakov/frontend/clients/http';
 
 import type { TasksApi } from './interface';
 
-export default {
+export default (http: HttpClient): TasksApi => ({
     events: new EventTarget(),
 
     async fetchTasks(): Promise<TaskData[]> {
@@ -24,4 +25,4 @@ export default {
     async deleteTask(id: string): Promise<void> {
         return;
     }
-} satisfies TasksApi;
+});
