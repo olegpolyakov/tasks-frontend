@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
 import { Button, Drawer } from '@olegpolyakov/ui';
+import { GuestGuard } from '@olegpolyakov/frontend/features/auth';
 
+import { AI_URL } from '@/env';
 import { Chat } from '@/features/ai';
 
 import { useTaskContext } from '../../hooks';
@@ -22,15 +24,21 @@ export default function TaskChat() {
             />
             
             <Drawer
-                title="AI Chat"
+                title="AI Assistant"
                 position="right"
                 size="m"
                 type="modal"
                 open={isChatOpen}
+                scrollable
                 closeOnClickOutside
                 onClose={() => setChatOpen(false)}
             >
-                <Chat prompt={prompt} />
+                <GuestGuard>
+                    <Chat
+                        url={AI_URL}
+                        prompt={prompt}
+                    />
+                </GuestGuard>
             </Drawer>
         </>
     );
