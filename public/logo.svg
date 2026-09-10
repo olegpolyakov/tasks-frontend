@@ -5,6 +5,18 @@
     xmlns="http://www.w3.org/2000/svg"
     xmlns:svg="http://www.w3.org/2000/svg"
 >
+    <style>
+        :root {
+            color: black;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            :root {
+                color: white;
+            }
+        }
+    </style>
+
     <path
         fill="currentColor"
         fill-rule="evenodd"
