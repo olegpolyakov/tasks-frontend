@@ -17,14 +17,14 @@ export default function useTasks() {
     const tasksById = useMemo(() => toRecordById(tasks), [tasks]);
 
     const notifyError = useCallback((message: string) => {
-        showToast({ content: message, color: 'danger', icon: 'error' }, () => null);
+        showToast({ content: message, color: 'danger', icon: 'error', variant: 'filled' }, () => null);
     }, [showToast]);
 
     const createTask = useCallback(async (data: Partial<TaskData>) => {
         try {
             return await api.createTask(data) as Task;
         } catch (error) {
-            notifyError('Failed to create task');
+            notifyError('Failed to create task' + (data.title ? `: ${data.title}` : ''));
             throw error;
         }
     }, [api, notifyError]);
