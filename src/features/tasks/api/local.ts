@@ -16,7 +16,7 @@ export default (): TasksApi => ({
 
     async createTask(data: Partial<TaskData>): Promise<TaskData> {
         const id = uuid();
-        const task = new Task({ id, ...data });
+        const task = new Task({ id, ...data }).toData();
 
         tasks.set(id, task);
 
@@ -38,6 +38,7 @@ export default (): TasksApi => ({
         if (!task) throw new Error('Task not found');
 
         const updatedTask = { ...task, ...data };
+
         tasks.set(id, updatedTask);
 
         this.events.dispatchEvent(new MessageEvent('message', {
@@ -58,6 +59,7 @@ export default (): TasksApi => ({
         if (!task) throw new Error('Task not found');
 
         const updatedTask = { ...task, completed };
+        
         tasks.set(id, updatedTask);
 
         this.events.dispatchEvent(new MessageEvent('message', {
@@ -68,6 +70,14 @@ export default (): TasksApi => ({
                 data: updatedTask
             })
         }));
+
+        if (completed && task.recurrence) {
+            await this.createTask({
+                ...task,
+                completed: false,
+                date: new Task(task).getNextDate()
+            });
+        }
 
         return updatedTask;
     },
