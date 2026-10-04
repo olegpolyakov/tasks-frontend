@@ -10,7 +10,7 @@ import { useTaskContext } from '../../hooks';
 import styles from './TaskView.module.scss';
 
 export default function TaskView() {
-    const { task, unsetTask, updateTask, deleteTask } = useTaskContext();
+    const { task, unsetTask, updateTask, toggleTask, deleteTask } = useTaskContext();
     const isMobile = useIsMobile();
 
     return (
@@ -24,13 +24,13 @@ export default function TaskView() {
                 start: (
                     <Checkbox
                         checked={task.completed}
-                        onChange={({ checked }) => updateTask({ completed: checked }).catch(noop)}
+                        onChange={({ checked }) => toggleTask(checked)}
                     />
                 ),
                 content: (
                     <Editable
                         content={task.title}
-                        onBlur={title => updateTask({ title }).catch(noop)}
+                        onBlur={title => updateTask({ title })}
                     />
                 ),
                 size: 's'
