@@ -5,17 +5,14 @@ import { Card } from '@olegpolyakov/ui';
 import { useDebounce } from '@olegpolyakov/frontend/hooks/fn';
 
 import { useTaskContext } from '../../hooks';
+import { parseContent } from '../../logic/content';
 
 import styles from './TaskContent.module.scss';
 
 export default function TaskContent() {
     const { task, updateTask } = useTaskContext();
 
-    const [initialState] = useState(
-        task.content
-            ? JSON.parse(task.content) as EditorState
-            : undefined
-    );
+    const [initialState] = useState(() => parseContent(task.content));
 
     const handleUpdate = useDebounce((state: EditorState) => {
         updateTask({ content: JSON.stringify(state) });
