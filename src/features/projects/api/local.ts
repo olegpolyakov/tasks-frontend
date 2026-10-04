@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import type { ProjectData, ProjectSectionData, TaskData } from '@olegpolyakov/tasks-core';
+import { Project, ProjectData, ProjectSectionData } from '@olegpolyakov/tasks-core';
 
 import type { ProjectsApi } from './interface';
 
@@ -22,22 +22,18 @@ export default (): ProjectsApi => ({
         return project;
     },
 
-    async fetchProjectTasks(id: string): Promise<TaskData[]> {
-        return [] as TaskData[];
-    },
-
     async createProject(data: Partial<ProjectData>) {
         const id = uuid();
-        const project = { id, ...data } as ProjectData;
+        const project = new Project({ id, ...data });
 
-        projects.set(id, project);
+        projects.set(id, project.toData());
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
                 model: 'Project',
                 action: 'insert',
                 documentId: id,
-                data: project
+                data: project.toData()
             })
         }));
 

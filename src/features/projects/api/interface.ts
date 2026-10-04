@@ -1,11 +1,10 @@
-import type { ProjectData, ProjectSectionData, TaskData } from '@olegpolyakov/tasks-core';
+import type { ProjectData, ProjectSectionData } from '@olegpolyakov/tasks-core';
 
 export interface ProjectsApi {
     events: EventTarget;
 
     fetchProjects(): Promise<ProjectData[]>;
     fetchProject(id: string): Promise<ProjectData>;
-    fetchProjectTasks(id: string): Promise<TaskData[]>;
 
     createProject(data: Partial<ProjectData>): Promise<ProjectData>;
     updateProject(id: string, data: Partial<ProjectData>): Promise<ProjectData>;

@@ -1,4 +1,4 @@
-import type { ProjectData, ProjectSectionData, TaskData } from '@olegpolyakov/tasks-core';
+import type { ProjectData, ProjectSectionData } from '@olegpolyakov/tasks-core';
 import type { HttpClient } from '@olegpolyakov/frontend/clients/http';
 import type { WsClient } from '@olegpolyakov/frontend/clients/ws';
 
@@ -15,10 +15,6 @@ export default (http: HttpClient, ws: WsClient): ProjectsApi => ({
 
     async fetchProject(id: string): Promise<ProjectData> {
         return http.get<ProjectData>(`${API_URL}/projects/${id}`);
-    },
-
-    async fetchProjectTasks(id: string): Promise<TaskData[]> {
-        return http.get<TaskData[]>(`${API_URL}/projects/${id}/tasks`);
     },
 
     async createProject(data: Partial<ProjectData>) {
