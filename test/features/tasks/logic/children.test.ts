@@ -69,9 +69,49 @@ describe('getAllChildren', () => {
                 7: { id: '7', childrenIds: [] as string[] } as Task
             };
 
-            console.log(getAllChildren(id, record));
-
             expect(getAllChildren(id, record)).toHaveLength(6);
         });
+    });
+});
+
+const task = (id: string, childrenIds: string[] = [], completed = false) =>
+    ({ id, childrenIds, completed }) as Task;
+
+const toRecord = (...tasks: Task[]) =>
+    Object.fromEntries(tasks.map(t => [t.id, t])) as Record<string, Task>;
+
+const ids = (tasks: Task[]) => tasks.map(t => t.id);
+
+describe('getAllChildren with a filter', () => {
+    const incomplete = (t: Task) => !t.completed;
+
+    test('applies the filter at every depth', () => {
+        const record = toRecord(
+            task('1', ['2']),
+            task('2', ['3']),
+            task('3', [], true)
+        );
+
+        expect(ids(getAllChildren('1', record, incomplete))).toEqual(['2']);
+    });
+
+    test('includes matching descendants of a child that does not match', () => {
+        const record = toRecord(
+            task('1', ['2']),
+            task('2', ['3'], true),
+            task('3')
+        );
+
+        expect(ids(getAllChildren('1', record, incomplete))).toEqual(['3']);
+    });
+
+    test('ignores child ids that do not exist', () => {
+        const record = toRecord(task('1', ['2', 'missing']), task('2'));
+
+        expect(ids(getAllChildren('1', record))).toEqual(['2']);
+    });
+
+    test('throws when the task does not exist', () => {
+        expect(() => getAllChildren('x', {})).toThrow();
     });
 });

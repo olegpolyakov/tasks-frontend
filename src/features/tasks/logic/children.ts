@@ -29,10 +29,10 @@ export function getAllChildren(
 
     const children = task.childrenIds
         .map(id => tasks[id])
-        .filter(task => !!task && filter(task));
+        .filter(Boolean);
 
     return [
         ...children,
         ...children.flatMap(t => getAllChildren(t.id, tasks))
-    ];
+    ].filter(filter);
 }
