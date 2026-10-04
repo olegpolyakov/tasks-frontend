@@ -6,6 +6,7 @@ import { Button, ButtonGroup, Field, Flex, Input, Pill, PillGroup, Text } from '
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
 import { TaskTags } from '../../components';
+import { fromInputValue, hasTimeComponent, toInputValue } from '../../logic/date';
 import TaskContent from '../TaskContent';
 import TaskRecurrence from '../TaskRecurrence';
 
@@ -20,7 +21,7 @@ export default function TaskDetails({
     children?: ReactNode;
     onUpdate: (id: string, data: Partial<TaskData>) => void;
 }) {
-    const [hasTime, setHasTime] = useState(false);
+    const [hasTime, setHasTime] = useState(() => !!task.date && hasTimeComponent(task.date));
 
     return (
         <div className={styles.root}>
@@ -41,12 +42,7 @@ export default function TaskDetails({
             <Field label="Due Date">
                 <Input
                     type={hasTime ? 'datetime-local' : 'date'}
-                    value={!task.date
-                        ? ''
-                        : hasTime
-                            ? new Date(task.date).toISOString().slice(0, 16)
-                            : new Date(task.date).toISOString().slice(0, 10)
-                    }
+                    value={task.date ? toInputValue(task.date, hasTime) : ''}
                     end={
                         <ButtonGroup gap="s">
                             <Button
@@ -64,24 +60,28 @@ export default function TaskDetails({
                             />
                         </ButtonGroup>
                     }
-                    onChange={({ value }) => onUpdate(task.id, { date: new Date(value) })}
+                    onChange={({ value }) => {
+                        const date = fromInputValue(value, hasTime);
+
+                        if (date) onUpdate(task.id, { date });
+                    }}
                 />
 
                 {!task.date &&
                         <PillGroup size="s" interactive>
                             <Pill
                                 content="Today"
-                                onClick={() => onUpdate(task.id, { date: DateTime.now().toJSDate() })}
+                                onClick={() => onUpdate(task.id, { date: DateTime.now().startOf('day').toJSDate() })}
                             />
 
                             <Pill
                                 content="Tomorrow"
-                                onClick={() => onUpdate(task.id, { date: DateTime.now().plus({ days: 1 }).toJSDate() })}
+                                onClick={() => onUpdate(task.id, { date: DateTime.now().startOf('day').plus({ days: 1 }).toJSDate() })}
                             />
 
                             <Pill
                                 content="Next week"
-                                onClick={() => onUpdate(task.id, { date: DateTime.now().endOf('week').plus({ days: 1 }).toJSDate() })}
+                                onClick={() => onUpdate(task.id, { date: DateTime.now().startOf('week').plus({ weeks: 1 }).toJSDate() })}
                             />
                         </PillGroup>
                 }
