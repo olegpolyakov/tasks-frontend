@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import type { Project } from '@olegpolyakov/tasks-core';
 
@@ -8,10 +9,13 @@ import useProjectsState from './useProjectsState';
 export default function useProjects() {
     const api = useProjectsApi();
     const projects = useProjectsState(api);
+    const navigate = useNavigate();
 
     const createProject = useCallback(async (data: Partial<Project>) => {
-        return api.createProject(data);
-    }, [api]);
+        const project = await api.createProject(data);
+        navigate(`/projects/${project.id}`);
+        return project;
+    }, [api, navigate]);
 
     const updateProject = useCallback(async (id: string, data: Partial<Project>) => {
         return api.updateProject(id, data);
