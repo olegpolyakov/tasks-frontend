@@ -71,17 +71,23 @@ export default function TaskDetails({
                         <PillGroup size="s" interactive>
                             <Pill
                                 content="Today"
-                                onClick={() => onUpdate(task.id, { date: DateTime.now().startOf('day').toJSDate() })}
+                                onClick={() => onUpdate(task.id, {
+                                    date: DateTime.now().startOf('day').toJSDate()
+                                })}
                             />
 
                             <Pill
                                 content="Tomorrow"
-                                onClick={() => onUpdate(task.id, { date: DateTime.now().startOf('day').plus({ days: 1 }).toJSDate() })}
+                                onClick={() => onUpdate(task.id, {
+                                    date: DateTime.now().startOf('day').plus({ days: 1 }).toJSDate()
+                                })}
                             />
 
                             <Pill
                                 content="Next week"
-                                onClick={() => onUpdate(task.id, { date: DateTime.now().startOf('week').plus({ weeks: 1 }).toJSDate() })}
+                                onClick={() => onUpdate(task.id, {
+                                    date: DateTime.now().startOf('week').plus({ weeks: 1 }).toJSDate()
+                                })}
                             />
                         </PillGroup>
                 }
