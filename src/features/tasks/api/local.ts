@@ -5,9 +5,10 @@ import { Task, type TaskData } from '@olegpolyakov/tasks-core';
 import type { TasksApi } from './interface';
 
 const tasks = new Map<string, TaskData>();
+const events = new EventTarget();
 
 export default (): TasksApi => ({
-    events: new EventTarget(),
+    events,
 
     async fetchTasks(): Promise<TaskData[]> {
         return Array.from(tasks.values());

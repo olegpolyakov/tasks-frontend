@@ -5,9 +5,10 @@ import type { ProjectData, ProjectSectionData, TaskData } from '@olegpolyakov/ta
 import type { ProjectsApi } from './interface';
 
 const projects = new Map<string, ProjectData>();
+const events = new EventTarget();
 
 export default (): ProjectsApi => ({
-    events: new EventTarget(),
+    events,
 
     async fetchProjects(): Promise<ProjectData[]> {
         return Array.from(projects.values());

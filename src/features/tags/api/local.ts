@@ -5,9 +5,10 @@ import type { TagData } from '@olegpolyakov/tasks-core';
 import type { TagsApi } from './interface';
 
 const tags = new Map<string, TagData>();
+const events = new EventTarget();
 
 export default (): TagsApi => ({
-    events: new EventTarget(),
+    events,
     
     async fetchTags() {
         return Array.from(tags.values());
