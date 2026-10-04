@@ -2,8 +2,6 @@ import { Button, ButtonGroup, Checkbox, Drawer } from '@olegpolyakov/ui';
 import Editable from '@olegpolyakov/frontend/components/Editable';
 import { useIsMobile } from '@olegpolyakov/frontend/hooks/mq';
 
-import { noop } from '@/utils';
-
 import { TaskDetails } from '../../components';
 import { useTaskContext } from '../../hooks';
 
@@ -43,7 +41,7 @@ export default function TaskView() {
                 <TaskDetails
                     key={task.id}
                     task={task}
-                    onUpdate={(id, data) => updateTask(data).catch(noop)}
+                    onUpdate={(id, data) => updateTask(data)}
                 >
                     <ButtonGroup className={styles.actions}>
                         <Button 
@@ -52,7 +50,7 @@ export default function TaskView() {
                             color="danger"
                             variant="tinted"
                             fluid
-                            onClick={() => deleteTask().catch(noop)}
+                            onClick={() => deleteTask()}
                         />
                     </ButtonGroup>
                 </TaskDetails>

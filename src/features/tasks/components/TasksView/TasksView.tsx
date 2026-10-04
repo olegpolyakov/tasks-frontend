@@ -6,7 +6,6 @@ import { Button, ButtonGroup, Flex, Heading, HeadingProps, Scrollable, State, Tr
 import { useAppContext } from '@olegpolyakov/frontend/app';
 
 import { useSettingsContext } from '@/features/settings';
-import { noop } from '@/utils';
 
 import NoTasksImage from '../../assets/no-tasks.svg';
 import { TaskInput, TasksList, TasksSort, TasksTree } from '../../components';
@@ -51,7 +50,7 @@ export default function TasksView({
         clearSort
     } = useTasksSort(id);
 
-    const handleSubmit = useCallback((data: Partial<TaskData>) => {
+    const handleSubmit = useCallback(async (data: Partial<TaskData>) => {
         switch (filter.name) {
             case 'important':
                 data.important = true;
@@ -61,16 +60,8 @@ export default function TasksView({
                 break;
         }
 
-        createTask(data).catch(noop);
+        await createTask(data);
     }, [filter, createTask]);
-
-    const handleToggle = useCallback((id: string, completed: boolean) => {
-        toggleTask(id, completed).catch(noop);
-    }, [toggleTask]);
-
-    const handleUpdate = useCallback((id: string, data: Partial<TaskData>) => {
-        updateTask(id, data).catch(noop);
-    }, [updateTask]);
 
     const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {
         updateSettings({
@@ -92,7 +83,7 @@ export default function TasksView({
             const childrenIds = item.children.map(child => child.id);
 
             if (task.childrenIds.join(',') !== childrenIds.join(',')) {
-                await updateTask(task.id, { childrenIds }).catch(noop);
+                await updateTask(task.id, { childrenIds });
             }
 
             item.children.forEach(updateTaskChildren);
@@ -142,8 +133,8 @@ export default function TasksView({
                                     tasks={filteredAndSortedTasks}
                                     selectedTask={selectedTask}
                                     onSelect={setTask}
-                                    onToggle={handleToggle}
-                                    onUpdate={handleUpdate}
+                                    onToggle={toggleTask}
+                                    onUpdate={updateTask}
                                     onReorder={reorderTasks}
                                 />
                                 :
@@ -151,8 +142,8 @@ export default function TasksView({
                                     tasks={filteredAndSortedTasks}
                                     selectedTask={selectedTask}
                                     onSelect={setTask}
-                                    onToggle={handleToggle}
-                                    onUpdate={handleUpdate}
+                                    onToggle={toggleTask}
+                                    onUpdate={updateTask}
                                     onReorder={reorderTasks}
                                 />
                             }
