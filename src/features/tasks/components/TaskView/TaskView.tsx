@@ -2,6 +2,8 @@ import { Button, ButtonGroup, Checkbox, Drawer } from '@olegpolyakov/ui';
 import Editable from '@olegpolyakov/frontend/components/Editable';
 import { useIsMobile } from '@olegpolyakov/frontend/hooks/mq';
 
+import { noop } from '@/utils';
+
 import { TaskDetails } from '../../components';
 import { useTaskContext } from '../../hooks';
 
@@ -22,13 +24,13 @@ export default function TaskView() {
                 start: (
                     <Checkbox
                         checked={task.completed}
-                        onChange={({ checked }) => updateTask({ completed: checked })}
+                        onChange={({ checked }) => updateTask({ completed: checked }).catch(noop)}
                     />
                 ),
                 content: (
                     <Editable
                         content={task.title}
-                        onBlur={title => updateTask({ title })}
+                        onBlur={title => updateTask({ title }).catch(noop)}
                     />
                 ),
                 size: 's'
@@ -41,7 +43,7 @@ export default function TaskView() {
                 <TaskDetails
                     key={task.id}
                     task={task}
-                    onUpdate={(id, data) => updateTask(data)}
+                    onUpdate={(id, data) => updateTask(data).catch(noop)}
                 >
                     <ButtonGroup className={styles.actions}>
                         <Button 
@@ -50,7 +52,7 @@ export default function TaskView() {
                             color="danger"
                             variant="tinted"
                             fluid
-                            onClick={deleteTask}
+                            onClick={() => deleteTask().catch(noop)}
                         />
                     </ButtonGroup>
                 </TaskDetails>

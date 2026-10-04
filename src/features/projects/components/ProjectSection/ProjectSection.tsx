@@ -6,6 +6,7 @@ import Editable from '@olegpolyakov/frontend/components/Editable';
 import classnames from '@olegpolyakov/frontend/helpers/classnames';
 
 import { TaskInput, TasksTree, useTaskContext, useTasksContext } from '@/features/tasks';
+import { noop } from '@/utils';
 
 import { useProjectContext } from '../../hooks';
 
@@ -41,6 +42,14 @@ export default function ProjectSection({
         deleteSection(section.id);
     }, [section, deleteSection]);
 
+    const handleToggle = useCallback((id: string, completed: boolean) => {
+        toggleTask(id, completed).catch(noop);
+    }, [toggleTask]);
+
+    const handleUpdate = useCallback((id: string, data: Partial<TaskData>) => {
+        updateTask(id, data).catch(noop);
+    }, [updateTask]);
+
     const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {    
         itemsInOrder.forEach(updateTaskChildren);
     
@@ -55,7 +64,7 @@ export default function ProjectSection({
             const childrenIds = item.children.map(child => child.id);
     
             if (task.childrenIds.join(',') !== childrenIds.join(',')) {
-                await updateTask(task.id, { childrenIds });
+                await updateTask(task.id, { childrenIds }).catch(noop);
             }
     
             item.children.forEach(updateTaskChildren);
@@ -95,8 +104,8 @@ export default function ProjectSection({
                     tasks={sectionTasks}
                     selectedTask={selectedTask}
                     onSelect={setTask}
-                    onToggle={toggleTask}
-                    onUpdate={updateTask}
+                    onToggle={handleToggle}
+                    onUpdate={handleUpdate}
                     onReorder={reorderTasks}
                 />
             </div>
