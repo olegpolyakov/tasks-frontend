@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 
-import { ToastsProvider } from '@olegpolyakov/ui';
 import { AuthProvider } from '@olegpolyakov/frontend/features/auth';
 import { ApiProvider } from '@olegpolyakov/frontend/services/api';
 
@@ -14,17 +13,15 @@ export default function AppFeaturesProvider({ children }: { children: ReactNode 
     return (
         <AuthProvider apiUrl={AUTH_URL}>
             <ApiProvider apiUrl={API_URL} wsUrl={WS_URL}>
-                <ToastsProvider>
-                    <SettingsProvider>
-                        <TasksProvider>
-                            <ProjectsProvider>
-                                <TagsProvider>
-                                    {children}
-                                </TagsProvider>
-                            </ProjectsProvider>
-                        </TasksProvider>
-                    </SettingsProvider>
-                </ToastsProvider>
+                <SettingsProvider>
+                    <TasksProvider>
+                        <ProjectsProvider>
+                            <TagsProvider>
+                                {children}
+                            </TagsProvider>
+                        </ProjectsProvider>
+                    </TasksProvider>
+                </SettingsProvider>
             </ApiProvider>
         </AuthProvider>
     );

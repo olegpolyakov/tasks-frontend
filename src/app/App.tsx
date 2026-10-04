@@ -23,8 +23,8 @@ initTagsState(store);
 export default function App() {
     return (
         <StoreContext value={store}>
-            <AppFeaturesProvider>
-                <AppShell name="Tasks">
+            <AppShell name="Tasks">
+                <AppFeaturesProvider>
                     <AppDrawer scrollable={false}>
                         <Scrollable className={styles.sidebar} fade>
                             <Heading
@@ -83,8 +83,8 @@ export default function App() {
                             />
                         </Routes>
                     </AppContent>
-                </AppShell>
-            </AppFeaturesProvider>
+                </AppFeaturesProvider>
+            </AppShell>
         </StoreContext>
     );
 }
