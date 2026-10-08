@@ -9,8 +9,7 @@ import { useSettingsContext } from '@/features/settings';
 
 import NoTasksImage from '../../assets/no-tasks.svg';
 import { TaskInput, TasksList, TasksSort, TasksTree } from '../../components';
-import { useTaskContext, useTasksContext } from '../../hooks';
-import { useTasksSort } from '../../hooks';
+import { useTaskContext, useTasksContext, useTasksSort } from '../../hooks';
 import { filters, filterTasks } from '../../logic/filter';
 import { sortTasks } from '../../logic/sort';
 import TaskView from '../TaskView';

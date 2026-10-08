@@ -15,10 +15,10 @@ import styles from './App.module.scss';
 
 const store = createStore();
 
-initSettingsState(store);
-initTasksState(store);
 initProjectsState(store);
+initSettingsState(store);
 initTagsState(store);
+initTasksState(store);
 
 export default function App() {
     return (
