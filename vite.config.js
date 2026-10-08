@@ -3,16 +3,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 import sharedConfig from '@olegpolyakov/frontend/viteconfig';
 
-export default defineConfig(mergeConfig(
-    sharedConfig({
-        basePath: import.meta.dirname,
-        server: {
-            allowedHosts: ['tasks.olegpoliakov.local', 'localhost'],
-            host: 'tasks.olegpoliakov.local',
-            port: 5173,
-            strictPort: true
-        }
-    }), {
+export default defineConfig(env => mergeConfig(
+    sharedConfig(env),
+    {
         plugins: [
             VitePWA({
                 registerType: 'autoUpdate',
