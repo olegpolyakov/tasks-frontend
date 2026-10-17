@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { type EditorState, ToolbarEditor } from '@olegpolyakov/editor';
-import { Card } from '@olegpolyakov/ui';
+import { Box } from '@olegpolyakov/ui';
 import { useDebounce } from '@olegpolyakov/frontend/hooks/fn';
 
 import { useTaskContext } from '../../hooks';
@@ -20,7 +20,11 @@ export default function TaskContent() {
 
     return (
         <div className={styles.root}>
-            <Card size="xs">
+            <Box
+                shape="rounded-s"
+                variant="tinted"
+                interactive={false}
+            >
                 <ToolbarEditor
                     initialState={initialState}
                     compact
@@ -30,7 +34,7 @@ export default function TaskContent() {
                     }}
                     onChange={handleUpdate}
                 />
-            </Card>
+            </Box>
         </div>
     );
 }
