@@ -4,12 +4,11 @@ import { Button, Heading, Scrollable, Text } from '@olegpolyakov/ui';
 import { AppContent, AppDrawer, AppShell } from '@olegpolyakov/frontend/app';
 import { createStore, StoreContext } from '@olegpolyakov/frontend/store';
 
+import { FeaturesProvider } from '@/features';
 import { initProjectsState, Project, ProjectCreateAction, ProjectsNav } from '@/features/projects';
 import { initSettingsState } from '@/features/settings';
 import { initTagsState, Tag, TagCreateAction, TagsNav } from '@/features/tags';
 import { initTasksState, Tasks, TasksNav } from '@/features/tasks';
-
-import AppFeaturesProvider from './AppFeaturesProvider';
 
 import styles from './App.module.scss';
 
@@ -24,9 +23,12 @@ export default function App() {
     return (
         <StoreContext value={store}>
             <AppShell name="Tasks">
-                <AppFeaturesProvider>
+                <FeaturesProvider>
                     <AppDrawer scrollable={false}>
-                        <Scrollable className={styles.sidebar} fade>
+                        <Scrollable
+                            className={styles.sidebar}
+                            fade
+                        >
                             <Heading
                                 className={styles.heading}
                                 content="Tasks"
@@ -42,7 +44,12 @@ export default function App() {
 
                             <Text
                                 content="Projects"
-                                end={<ProjectCreateAction icon="add" size="xs" />}
+                                end={
+                                    <ProjectCreateAction
+                                        icon="add"
+                                        size="xs"
+                                    />
+                                }
                                 color="secondary"
                                 size="xs"
                                 decorative
@@ -51,7 +58,12 @@ export default function App() {
 
                             <Text
                                 content="Tags"
-                                end={<TagCreateAction icon="add" size="xs" />}
+                                end={
+                                    <TagCreateAction
+                                        icon="add"
+                                        size="xs"
+                                    />
+                                }
                                 color="secondary"
                                 size="xs"
                                 decorative
@@ -64,7 +76,12 @@ export default function App() {
                         <Routes>
                             <Route
                                 index
-                                element={<Navigate to="/today" replace />}
+                                element={
+                                    <Navigate
+                                        to="/today"
+                                        replace
+                                    />
+                                }
                             />
 
                             <Route
@@ -83,7 +100,7 @@ export default function App() {
                             />
                         </Routes>
                     </AppContent>
-                </AppFeaturesProvider>
+                </FeaturesProvider>
             </AppShell>
         </StoreContext>
     );
