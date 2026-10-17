@@ -56,9 +56,15 @@ export default function TagsInput({
     const filteredTags = unusedTags.filter(tag => tag.name.toLowerCase().includes(inputValue.toLowerCase()));
 
     return (
-        <div ref={rootRef} className={styles.root}>
+        <div
+            ref={rootRef}
+            className={styles.root}
+        >
             <Field label="Tags">
-                <Flex wrap gap="xs">
+                <Flex
+                    wrap
+                    gap="xs"
+                >
                     {tags.map(tag => (
                         <Pill
                             key={tag.id}
