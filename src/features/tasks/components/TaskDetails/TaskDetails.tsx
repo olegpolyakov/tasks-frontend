@@ -8,6 +8,7 @@ import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 import { TaskTags } from '../../components';
 import { fromInputValue, hasTimeComponent, toInputValue } from '../../logic/date';
 import TaskContent from '../TaskContent';
+import TaskFiles from '../TaskFiles';
 import TaskRecurrence from '../TaskRecurrence';
 
 import styles from './TaskDetails.module.scss';
@@ -68,28 +69,31 @@ export default function TaskDetails({
                 />
 
                 {!task.date &&
-                        <PillGroup size="s" interactive>
-                            <Pill
-                                content="Today"
-                                onClick={() => onUpdate(task.id, {
-                                    date: DateTime.now().startOf('day').toJSDate()
-                                })}
-                            />
+                    <PillGroup
+                        size="s"
+                        interactive
+                    >
+                        <Pill
+                            content="Today"
+                            onClick={() => onUpdate(task.id, {
+                                date: DateTime.now().startOf('day').toJSDate()
+                            })}
+                        />
 
-                            <Pill
-                                content="Tomorrow"
-                                onClick={() => onUpdate(task.id, {
-                                    date: DateTime.now().startOf('day').plus({ days: 1 }).toJSDate()
-                                })}
-                            />
+                        <Pill
+                            content="Tomorrow"
+                            onClick={() => onUpdate(task.id, {
+                                date: DateTime.now().startOf('day').plus({ days: 1 }).toJSDate()
+                            })}
+                        />
 
-                            <Pill
-                                content="Next week"
-                                onClick={() => onUpdate(task.id, {
-                                    date: DateTime.now().startOf('week').plus({ weeks: 1 }).toJSDate()
-                                })}
-                            />
-                        </PillGroup>
+                        <Pill
+                            content="Next week"
+                            onClick={() => onUpdate(task.id, {
+                                date: DateTime.now().startOf('week').plus({ weeks: 1 }).toJSDate()
+                            })}
+                        />
+                    </PillGroup>
                 }
             </Field>
 
@@ -97,6 +101,8 @@ export default function TaskDetails({
                 task={task}
                 onChange={recurrence => onUpdate(task.id, { recurrence })}
             />
+
+            <TaskContent />
 
             <Field label="Projects">
                 {task.projects?.map(project => 
@@ -114,7 +120,10 @@ export default function TaskDetails({
                 onChange={tagIds => onUpdate(task.id, { tagIds })}
             />
 
-            <TaskContent />
+            <TaskFiles
+                task={task}
+                onChange={refs => onUpdate(task.id, { refs })}
+            />
 
             <Flex gap="s">
                 {task.createdAt && (
