@@ -6,6 +6,7 @@ import { Button, ButtonGroup, Flex, Heading, HeadingProps, Scrollable, State, Tr
 import { useAppContext } from '@olegpolyakov/frontend/app';
 
 import { useSettingsContext } from '@/features/settings';
+import { useTranslation } from '@/i18n/hooks';
 
 import NoTasksImage from '../../assets/no-tasks.svg';
 import { TaskInput, TasksList, TasksSort, TasksTree } from '../../components';
@@ -48,6 +49,7 @@ export default function TasksView({
         toggleSortDir,
         clearSort
     } = useTasksSort(id);
+    const { t } = useTranslation();
 
     const handleSubmit = useCallback(async (data: Partial<TaskData>) => {
         switch (filter.name) {
@@ -97,7 +99,10 @@ export default function TasksView({
         <div className={styles.root}>
             <div className={styles.main}>
                 <div className={styles.header}>
-                    <Flex align="center" gap="m">
+                    <Flex
+                        align="center"
+                        gap="m"
+                    >
                         <Button
                             className={styles.menu}
                             icon="menu"
@@ -124,7 +129,10 @@ export default function TasksView({
                     </div>
                 </div>
                 
-                <Scrollable className={styles.body} fade> 
+                <Scrollable
+                    className={styles.body}
+                    fade
+                > 
                     {filteredAndSortedTasks.length > 0 ?
                         <div className={styles.content}>
                             {id === 'all' ?
@@ -151,8 +159,7 @@ export default function TasksView({
                         <State
                             className={styles.empty}
                             image={<NoTasksImage />}
-                            title="No tasks"
-                            description="You don't have any tasks yet. Create your first task to get started!"
+                            title={t('tasks.empty')}
                         />
                     }
                 </Scrollable>

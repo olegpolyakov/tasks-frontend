@@ -1,17 +1,20 @@
 import { useMatch } from 'react-router-dom';
 
+import { useTranslation } from '@/i18n';
+
 import { TasksView } from '../components';
-import { filterNames, filters } from '../logic/filter';
+import { filters } from '../logic/filter';
 import { TaskProvider } from '../providers';
 
 export default function Tasks() {
     const { filter = 'all' } = useMatch('/:filter')?.params || {};
+    const { t } = useTranslation();
 
     return (
         <TaskProvider>
             <TasksView
                 id={filter}
-                heading={filterNames[filter] ?? 'Tasks'}
+                heading={t(filter) ?? t('tasks')}
                 filter={filters[filter] ?? filters.all}
             />
         </TaskProvider>

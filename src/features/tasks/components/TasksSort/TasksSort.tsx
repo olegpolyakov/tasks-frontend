@@ -1,9 +1,6 @@
 import { Button, ButtonGroup, Icon, Menu } from '@olegpolyakov/ui';
 
-const sortNames: Record<string, string> = {
-    dueDate: 'Due date',
-    createdAt: 'Created at'
-};
+import { useTranslation } from '@/i18n';
 
 export default function TasksSort({
     sortKey,
@@ -18,6 +15,8 @@ export default function TasksSort({
     onSortDirChange: (dir: number) => void;
     onClear?: () => void;
 }) {
+    const { t } = useTranslation();
+
     return sortKey ? (
         <ButtonGroup
             color="brand"
@@ -25,9 +24,9 @@ export default function TasksSort({
             joined
         >
             <Button
-                title="Toggle sorting direction"
+                title={t('sort.toggleDir')}
                 icon="sort"
-                content={sortNames[sortKey]}
+                content={t(sortKey)}
                 end={sortDir > 0
                     ? <Icon name="arrow_upward_alt" />
                     : <Icon name="arrow_downward_alt" />
@@ -36,7 +35,7 @@ export default function TasksSort({
             />
 
             <Button
-                title="Clear sorting"
+                title={t('sort.clear')}
                 icon={{
                     name: 'close', 
                     size: 's'
@@ -48,20 +47,20 @@ export default function TasksSort({
         <Menu
             trigger={
                 <Button
-                    title="Sort tasks"
+                    content={t(sortKey)}
                     icon="sort"
-                    content={sortNames[sortKey]}
+                    title={t('sort')}
                 />
             }
             placement="bottom-end"
             items={[
                 {
-                    content: 'Due date',
+                    content: t('dueDate'),
                     value: 'dueDate',
                     onClick: () => onSortKeyChange('dueDate')
                 },
                 {
-                    content: 'Created at',
+                    content: t('createdAt'),
                     value: 'createdAt',
                     onClick: () => onSortKeyChange('createdAt')
                 }

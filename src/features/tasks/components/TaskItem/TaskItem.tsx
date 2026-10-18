@@ -5,6 +5,8 @@ import { Button, Checkbox, Flex, Icon, Item, Pill, Text } from '@olegpolyakov/ui
 import { capitalize } from '@olegpolyakov/core/utils/string';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
+import { useTranslation } from '@/i18n';
+
 import { getRecurrenceDescription } from '../TaskRecurrence';
 
 import styles from './TaskItem.module.scss';
@@ -28,6 +30,9 @@ export default function TaskItem({
     onToggle?: (id: string, completed: boolean) => void;
     onUpdate?: (id: string, data: Partial<TaskData>) => void;
 }) {
+    const { t } = useTranslation();
+    
+
     const dateTimeString = task.dateTimeString;
     const color = task.isOverdue
         ? 'danger'
@@ -44,12 +49,26 @@ export default function TaskItem({
             active={selected}
             interactive
             end={
-                <Flex align="center" gap="xxs">
-                    {task.isOverdue && <Icon name="priority_high" title="Over due" />}
+                <Flex
+                    align="center"
+                    gap="xxs"
+                >
+                    {task.isOverdue &&
+                        <Icon
+                            name="priority_high"
+                            title={t('overdue')}
+                        />
+                    }
 
                     <Button
-                        icon={<Icon name="flag" filled={task.important} />}
-                        title={task.important ? 'Remove from important' : 'Add to important'}
+                        icon={<Icon
+                            name="flag"
+                            filled={task.important}
+                        />}
+                        title={task.important
+                            ? t('important.unset')
+                            : t('important.set')
+                        }
                         onClick={event => {
                             event.stopPropagation();
                             onUpdate?.(task.id, { important: !task.important });
@@ -80,7 +99,7 @@ export default function TaskItem({
                         <Text
                             className={styles.dueDate}
                             content={capitalize(dateTimeString)}
-                            title="Due date"
+                            title={t('dueDate')}
                             color={task.isOverdue ? 'danger' : 'secondary'}
                             size="xs"
                         />
@@ -89,19 +108,29 @@ export default function TaskItem({
                     {task.recurrence && (
                         <Text
                             className={styles.dueDate}
-                            start={<Icon color="secondary" name="autorenew" size="s" />}
+                            start={<Icon
+                                color="secondary"
+                                name="autorenew"
+                                size="s"
+                            />}
                             color="secondary"
                             content={getRecurrenceDescription[task.recurrence.frequency]?.(task.recurrence)}
-                            title="Recurrence"
+                            title={t('recurrence')}
                             size="xs"
                         />
                     )}
 
                     {task.childrenIds.length > 0 &&
                             <Text
-                                start={<Icon color="secondary" name="checklist" size="s" />}
+                                start={
+                                    <Icon
+                                        color="secondary"
+                                        name="checklist"
+                                        size="s"
+                                    />
+                                }
                                 content={task.childrenIds.length}
-                                title={`${task.childrenIds.length} subtasks`}
+                                title={t('subtasks', { count: task.childrenIds.length })}
                                 color="secondary"
                                 size="xs"
                             />
@@ -109,10 +138,10 @@ export default function TaskItem({
 
                     {task.content && (
                         <Icon
-                            title="Task has content"
+                            title={t('tasks.hasContent')}
                             name="notes"
-                            size="s"
                             color="secondary"
+                            size="s"
                         />
                     )}
 
@@ -126,7 +155,7 @@ export default function TaskItem({
                             start={project.icon && <EntityIcon icon={project.icon} />}
                             size="s"
                             variant="tinted"
-                            title={`Project: ${project.name}`}
+                            title={`${t('project')}: ${project.name}`}
                             interactive
                             onClick={event => event.stopPropagation()}
                         />
@@ -142,7 +171,7 @@ export default function TaskItem({
                             content={tag.name}
                             size="s"
                             variant="tinted"
-                            title={`Tag: ${tag.name}`}
+                            title={`${t('tag')}: ${tag.name}`}
                             interactive
                             onClick={event => event.stopPropagation()}
                         />

@@ -1,15 +1,5 @@
 import type { Task } from '@olegpolyakov/tasks-core';
 
-export const filterNames: Record<string, string> = {
-    all: 'All',
-    current: 'Current',
-    important: 'Important',
-    inbox: 'Inbox',
-    next: 'Next',
-    overdue: 'Over Due',
-    today: 'Today'
-};
-
 export const filters: Record<string, (task: Task) => boolean> = {
     all: () => true,
     current: task => task.isCurrent,

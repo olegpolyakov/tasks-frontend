@@ -5,6 +5,8 @@ import type { Task, TaskData } from '@olegpolyakov/tasks-core';
 import { Button, ButtonGroup, Field, Flex, Input, Pill, PillGroup, Text } from '@olegpolyakov/ui';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
+import { useTranslation } from '@/i18n';
+
 import { TaskTags } from '../../components';
 import { fromInputValue, hasTimeComponent, toInputValue } from '../../logic/date';
 import TaskContent from '../TaskContent';
@@ -22,13 +24,15 @@ export default function TaskDetails({
     children?: ReactNode;
     onUpdate: (id: string, data: Partial<TaskData>) => void;
 }) {
+    const { t } = useTranslation();
+
     const [hasTime, setHasTime] = useState(() => !!task.date && hasTimeComponent(task.date));
 
     return (
         <div className={styles.root}>
             <PillGroup>
                 <Pill
-                    content="Important"
+                    content={t('important')}
                     icon={{
                         name: 'flag',
                         filled: task.important
@@ -40,21 +44,21 @@ export default function TaskDetails({
                 />
             </PillGroup>
 
-            <Field label="Due Date">
+            <Field label={t('dueDate')}>
                 <Input
                     type={hasTime ? 'datetime-local' : 'date'}
                     value={task.date ? toInputValue(task.date, hasTime) : ''}
                     end={
                         <ButtonGroup gap="s">
                             <Button
-                                title={hasTime ? 'Remove time' : 'Add time'}
+                                title={hasTime ? t('time.remove') : t('time.add')}
                                 icon={hasTime ? 'alarm_off' : 'alarm'}
                                 size="s"
                                 onClick={() => setHasTime(!hasTime)}
                             />
 
                             <Button
-                                title="Clear"
+                                title={t('dueDate.clear')}
                                 icon="clear"
                                 size="s"
                                 onClick={() => onUpdate(task.id, { date: null as unknown as undefined })}
@@ -74,21 +78,21 @@ export default function TaskDetails({
                         interactive
                     >
                         <Pill
-                            content="Today"
+                            content={t('today')}
                             onClick={() => onUpdate(task.id, {
                                 date: DateTime.now().startOf('day').toJSDate()
                             })}
                         />
 
                         <Pill
-                            content="Tomorrow"
+                            content={t('tomorrow')}
                             onClick={() => onUpdate(task.id, {
                                 date: DateTime.now().startOf('day').plus({ days: 1 }).toJSDate()
                             })}
                         />
 
                         <Pill
-                            content="Next week"
+                            content={t('nextWeek')}
                             onClick={() => onUpdate(task.id, {
                                 date: DateTime.now().startOf('week').plus({ weeks: 1 }).toJSDate()
                             })}
@@ -104,7 +108,7 @@ export default function TaskDetails({
 
             <TaskContent />
 
-            <Field label="Projects">
+            <Field label={t('projects')}>
                 {task.projects?.map(project => 
                     <Pill
                         key={project.id}
@@ -128,17 +132,17 @@ export default function TaskDetails({
             <Flex gap="s">
                 {task.createdAt && (
                     <Text
-                        content={`Created: ${DateTime.fromJSDate(new Date(task.createdAt)).toLocaleString()}`}
-                        size="xs"
+                        content={`${t('createdAt')}: ${DateTime.fromJSDate(new Date(task.createdAt)).toLocaleString()}`}
                         color="secondary"
+                        size="xs"
                     />
                 )}
 
                 {task.updatedAt && (
                     <Text
-                        content={`Updated: ${DateTime.fromJSDate(new Date(task.updatedAt)).toLocaleString()}`}
-                        size="xs"
+                        content={`${t('updatedAt')}: ${DateTime.fromJSDate(new Date(task.updatedAt)).toLocaleString()}`}
                         color="secondary"
+                        size="xs"
                     />
                 )}
             </Flex>

@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { EntityRef } from '@olegpolyakov/core';
 import type { Task } from '@olegpolyakov/tasks-core';
@@ -27,6 +28,7 @@ export default function TaskFiles({
     onChange: (refs: EntityRef[]) => void
 }) {
     const { upload } = useUploadContext();
+    const { t } = useTranslation(); 
 
     const handleUpload = useCallback(async (file: File) => {
         const uploadedFile = await upload<FileData>(file);
@@ -46,7 +48,7 @@ export default function TaskFiles({
 
     return (
         <Field
-            label="Files"
+            label={t('files')}
             className={styles.root}
         >
             <EntityRefs<FileData>

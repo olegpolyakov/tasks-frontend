@@ -2,6 +2,8 @@ import { type RecurrenceData, RecurrenceFrequency } from '@olegpolyakov/core';
 import type { Task } from '@olegpolyakov/tasks-core';
 import { Button, Field, Popover, Select, Text } from '@olegpolyakov/ui';
 
+import { useTranslation } from '@/i18n';
+
 import { frequencyOptions } from './constants';
 import DailyRecurrenceSettings from './DailyRecurrenceSettings';
 import { getRecurrenceDescription } from './helpers';
@@ -23,13 +25,15 @@ export default function TaskRecurrence({
     task: Task;
     onChange?: (recurrence: RecurrenceData) => void
 }) {
+    const { t } = useTranslation();
+
     const recurrence = task.recurrence;
     const RecurrenceSettings = recurrence
         ? frequencySettingsComponents[recurrence.frequency]
         : null;
 
     return (
-        <Field label="Recurrence">
+        <Field label={t('recurrence')}>
             <Select
                 value={recurrence?.frequency ?? ''}
                 options={frequencyOptions}

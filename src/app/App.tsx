@@ -9,6 +9,7 @@ import { initProjectsState, Project, ProjectCreateAction, ProjectsNav } from '@/
 import { initSettingsState } from '@/features/settings';
 import { initTagsState, Tag, TagCreateAction, TagsNav } from '@/features/tags';
 import { initTasksState, Tasks, TasksNav } from '@/features/tasks';
+import { useTranslation } from '@/i18n';
 
 import styles from './App.module.scss';
 
@@ -20,9 +21,11 @@ initTagsState(store);
 initTasksState(store);
 
 export default function App() {
+    const { t } = useTranslation();
+
     return (
         <StoreContext value={store}>
-            <AppShell name="Tasks">
+            <AppShell name={t('tasks')}>
                 <FeaturesProvider>
                     <AppDrawer scrollable={false}>
                         <Scrollable
@@ -31,11 +34,11 @@ export default function App() {
                         >
                             <Heading
                                 className={styles.heading}
-                                content="Tasks"
+                                content={t('tasks')}
                                 end={
                                     <Button
                                         icon="settings"
-                                        title="Settings"
+                                        title={t('settings')}
                                     />
                                 }
                             />
@@ -43,7 +46,7 @@ export default function App() {
                             <TasksNav />
 
                             <Text
-                                content="Projects"
+                                content={t('projects')}
                                 end={
                                     <ProjectCreateAction
                                         icon="add"
@@ -57,7 +60,7 @@ export default function App() {
                             <ProjectsNav />
 
                             <Text
-                                content="Tags"
+                                content={t('tags')}
                                 end={
                                     <TagCreateAction
                                         icon="add"

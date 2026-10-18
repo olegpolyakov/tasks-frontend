@@ -3,7 +3,11 @@ import { SubmitEvent, useState } from 'react';
 import type { TaskData } from '@olegpolyakov/tasks-core';
 import { Input } from '@olegpolyakov/ui';
 
+import { useTranslation } from '@/i18n/hooks';
+
 export default function TaskInput({ onSubmit }: { onSubmit?: (data: Partial<TaskData>) => void }) {
+    const { t } = useTranslation();
+
     const [title, setTitle] = useState('');
 
     const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
@@ -15,7 +19,7 @@ export default function TaskInput({ onSubmit }: { onSubmit?: (data: Partial<Task
     return (
         <form onSubmit={handleSubmit}>
             <Input
-                placeholder="New task"
+                placeholder={t('tasks.new')}
                 value={title}
                 variant="outlined-tinted"
                 onChange={({ value }) => setTitle(value)}

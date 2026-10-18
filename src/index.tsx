@@ -8,6 +8,8 @@ import http from '@olegpolyakov/frontend/clients/http';
 import App from './app';
 import { API_URL } from './env';
 
+import './i18n';
+
 import './index.scss';
 
 http.setBaseUrl(API_URL);

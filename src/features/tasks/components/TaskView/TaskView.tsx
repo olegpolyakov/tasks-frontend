@@ -2,6 +2,8 @@ import { Button, ButtonGroup, Checkbox, Drawer } from '@olegpolyakov/ui';
 import Editable from '@olegpolyakov/frontend/components/Editable';
 import { useIsMobile } from '@olegpolyakov/frontend/hooks/mq';
 
+import { useTranslation } from '@/i18n';
+
 import { TaskDetails } from '../../components';
 import { useTaskContext } from '../../hooks';
 
@@ -10,6 +12,7 @@ import styles from './TaskView.module.scss';
 export default function TaskView() {
     const { task, unsetTask, updateTask, toggleTask, deleteTask } = useTaskContext();
     const isMobile = useIsMobile();
+    const { t } = useTranslation();
 
     return (
         <Drawer
@@ -46,7 +49,7 @@ export default function TaskView() {
                     <ButtonGroup className={styles.actions}>
                         <Button 
                             icon="delete"
-                            content="Delete"
+                            content={t('delete')}
                             color="danger"
                             variant="tinted"
                             fluid

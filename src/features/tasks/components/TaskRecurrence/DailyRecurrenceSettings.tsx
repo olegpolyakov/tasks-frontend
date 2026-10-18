@@ -31,7 +31,10 @@ export default function DailyRecurrenceSettings({
     }, [date, data]);
 
     return (
-        <Flex column gap="xs">
+        <Flex
+            column
+            gap="xs"
+        >
             <Input
                 type="number"
                 start="Every"

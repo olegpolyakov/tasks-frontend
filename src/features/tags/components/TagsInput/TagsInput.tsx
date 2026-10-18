@@ -6,6 +6,8 @@ import type { Tag } from '@olegpolyakov/tasks-core';
 import { Button, Field, Flex, Item, List, Pill, Popover } from '@olegpolyakov/ui';
 import EntityIcon from '@olegpolyakov/frontend/components/EntityIcon';
 
+import { useTranslation } from '@/i18n';
+
 import { useTagsContext } from '../../hooks';
 
 import styles from './TagsInput.module.scss';
@@ -22,6 +24,7 @@ export default function TagsInput({
     onChange?: (tags: Partial<Tag>[]) => void;
 }) {
     const { tags: allTags } = useTagsContext();
+    const { t } = useTranslation();
 
     const [inputValue, setInputValue] = useState('');
     const [isPopoverOpen, setPopoverOpen] = useState(false);
@@ -46,7 +49,6 @@ export default function TagsInput({
     };
 
     const handleSelect = (tag: Tag) => {
-        console.log('Selected tag:', tag);
         onChange?.([...tags, tag]);
         setInputValue('');
         setPopoverOpen(false);
@@ -60,7 +62,7 @@ export default function TagsInput({
             ref={rootRef}
             className={styles.root}
         >
-            <Field label="Tags">
+            <Field label={t('tags')}>
                 <Flex
                     wrap
                     gap="xs"
@@ -74,7 +76,7 @@ export default function TagsInput({
                             content={tag.name}
                             end={
                                 <Button
-                                    title="Remove tag"
+                                    title={t('tags.remove')}
                                     icon="close"
                                     variant="text"
                                     size="xs"
@@ -88,7 +90,7 @@ export default function TagsInput({
                         className={styles.input}
                         type="text"
                         value={inputValue}
-                        placeholder="Add a tag..."
+                        placeholder={t('tags.addPlaceholder')}
                         onKeyDown={handleKeyDown}
                         onChange={e => setInputValue(e.target.value)}
                         onFocus={() => setPopoverOpen(true)}
