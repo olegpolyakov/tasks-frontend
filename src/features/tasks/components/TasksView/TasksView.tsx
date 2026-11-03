@@ -97,7 +97,10 @@ export default function TasksView({
         <div className={styles.root}>
             <div className={styles.main}>
                 <div className={styles.header}>
-                    <Flex align="center" gap="m">
+                    <Flex
+                        align="center"
+                        gap="m"
+                    >
                         <Button
                             className={styles.menu}
                             icon="menu"
@@ -124,7 +127,10 @@ export default function TasksView({
                     </div>
                 </div>
                 
-                <Scrollable className={styles.body} fade> 
+                <Scrollable
+                    className={styles.body}
+                    fade
+                > 
                     {filteredAndSortedTasks.length > 0 ?
                         <div className={styles.content}>
                             {id === 'all' ?
