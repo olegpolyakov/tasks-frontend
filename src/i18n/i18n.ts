@@ -9,6 +9,9 @@ import ruCommon from './locales/ru/common.json';
 i18n
     .use(LanguageDetector)
     .use(initReactI18next)
+    .on('languageChanged', lng => {
+        document.documentElement.lang = lng;
+    })
     .init({
         resources: {
             en: {
