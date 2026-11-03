@@ -1,7 +1,7 @@
 {
     "name": "@olegpolyakov/tasks-frontend",
     "version": "0.1.0",
-    "description": "",
+    "description": "Manage your tasks, projects, and tags.",
     "author": "Oleg Poliakov <olegpoliakov@outlook.com>",
     "type": "module",
     "scripts": {
