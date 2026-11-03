@@ -29,7 +29,7 @@ export default function ProjectTasks() {
         localStorage.setItem(`tasks.projects.${project.id}.view`, view);
     }, [view, project.id]);
 
-    const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {    
+    const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {
         itemsInOrder.forEach(updateTaskChildren);
         
         // clearSort();

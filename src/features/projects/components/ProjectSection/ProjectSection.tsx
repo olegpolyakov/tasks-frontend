@@ -41,7 +41,7 @@ export default function ProjectSection({
         deleteSection(section.id);
     }, [section, deleteSection]);
 
-    const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {    
+    const reorderTasks = useCallback((itemsInOrder: TreeItem[]) => {
         itemsInOrder.forEach(updateTaskChildren);
     
         // clearSort();

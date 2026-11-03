@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { Task } from '@olegpolyakov/tasks-core';
-import {  Field, Flex, Item, Text } from '@olegpolyakov/ui';
+import { Field, Flex, Item, Text } from '@olegpolyakov/ui';
 import type { EntityRef } from '@olegpolyakov/core/objects/ref';
 import ConfirmButton from '@olegpolyakov/frontend/components/ConfirmButton';
 import EntityRefs from '@olegpolyakov/frontend/components/EntityRefs';
