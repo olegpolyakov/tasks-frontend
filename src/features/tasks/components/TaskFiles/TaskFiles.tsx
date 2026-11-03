@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { EntityRef } from '@olegpolyakov/core';
 import type { Task } from '@olegpolyakov/tasks-core';
 import {  Field, Flex, Item, Text } from '@olegpolyakov/ui';
+import type { EntityRef } from '@olegpolyakov/core/objects/ref';
 import ConfirmButton from '@olegpolyakov/frontend/components/ConfirmButton';
 import EntityRefs from '@olegpolyakov/frontend/components/EntityRefs';
 import { Upload, useUploadContext } from '@olegpolyakov/frontend/features/upload';
@@ -37,7 +37,14 @@ export default function TaskFiles({
             return;
         }
 
-        onChange([...task.refs, { id: uploadedFile.id, type: 'file', uri: uploadedFile.path }]);
+        const ref: EntityRef = {
+            kind: 'entity',
+            type: 'file',
+            id: uploadedFile.id,
+            uri: `app://files/files/${uploadedFile.id}`
+        };
+
+        onChange([...task.refs, ref]);
     }, [task.refs, upload, onChange]);
 
     const handleDelete = useCallback((entity: FileData) => {
