@@ -49,11 +49,11 @@ export default function ProjectView({ children }: {children?: ReactNode}) {
                         </TabGroup>
 
                         <ButtonGroup className={styles.actions}>
-                            <Button
+                            {/* <Button Disabled until the sections are implemented
                                 icon="add"
                                 title="Add Section"
                                 onClick={() => createSection({ name: 'New Section' })}
-                            />
+                            /> */}
                 
                             <Button
                                 title="Edit Project"
