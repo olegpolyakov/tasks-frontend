@@ -69,16 +69,9 @@ export default function useTasks() {
     const deleteTask = useCallback(async (id: string) => {
         const task = tasksById[id];
         const children = getAllChildren(id, tasksById);
-        const message = children.length > 0
-            ? `Deleting this task will also delete ${children.length} sub-tasks. Are you sure?`
-            : 'Are you sure you want to delete this task?';
-
-        if (!confirm(message)) return;
-
         const results = await Promise.allSettled(
             [task, ...children].map(t => api.deleteTask(t.id))
         );
-
         const failures = results.filter(r => r.status === 'rejected');
 
         if (failures.length > 0) {
