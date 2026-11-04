@@ -19,7 +19,11 @@ export default function TagForm({
     };
 
     return (
-        <Flex column gap="s">
+        <Flex
+            column
+            gap="s"
+            fluid
+        >
             <Input
                 label="Name"
                 value={name}
