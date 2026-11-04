@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button, type ButtonProps, Checkbox, Dialog, Flex, Text } from '@olegpolyakov/ui';
 
@@ -6,9 +7,16 @@ import { useProjectContext } from '../../hooks';
 
 export default function ProjectDeleteAction(props: ButtonProps) {
     const { deleteProject } = useProjectContext();
+    const navigate = useNavigate();
 
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [deleteTasks, setDeleteTasks] = useState(false);
+
+    const handleDeleteRequest = async () => {
+        await deleteProject({ deleteTasks });
+        setDialogOpen(false);
+        navigate('/');
+    };
 
     return (
         <>
@@ -23,7 +31,10 @@ export default function ProjectDeleteAction(props: ButtonProps) {
                 title="Delete project"
                 onClose={() => setDialogOpen(false)}
             >
-                <Flex column gap="s">
+                <Flex
+                    column
+                    gap="s"
+                >
                     <Text content="Are you sure you want to delete this project?" />
 
                     <Checkbox
@@ -37,10 +48,7 @@ export default function ProjectDeleteAction(props: ButtonProps) {
                         fluid
                         color="danger"
                         variant="tinted"
-                        onClick={() => {
-                            deleteProject({ deleteTasks });
-                            setDialogOpen(false);
-                        }}
+                        onClick={handleDeleteRequest}
                     />
                 </Flex>
             </Dialog>
