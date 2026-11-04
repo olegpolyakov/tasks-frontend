@@ -32,6 +32,8 @@
     "tasks.empty": "Нет задач",
     "tasks.new": "Новая задача",
     "tasks.hasContent": "Задача имеет содержимое",
+    "tasks.delete": "Удалить задачу",
+    "tasks.delete.subtasks": "Подзадачи тоже будут удалены",
     "tags": "Теги",
     "tags.add": "Добавить тег",
     "tags.addPlaceholder": "Добавить тег",

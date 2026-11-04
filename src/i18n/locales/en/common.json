@@ -32,6 +32,8 @@
     "tasks.empty": "No tasks",
     "tasks.new": "New Task",
     "tasks.hasContent": "Task has content",
+    "tasks.delete": "Delete task",
+    "tasks.delete.subtasks": "Subtasks will also be deleted",
     "tags": "Tags",
     "tags.add": "Add tag",
     "tags.addPlaceholder": "Add a tag",
