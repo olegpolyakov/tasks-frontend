@@ -11,7 +11,7 @@ import ProjectTasks from '../ProjectTasks/ProjectTasks';
 
 import styles from './ProjectView.module.scss';
 
-export default function ProjectView({ children }: {children?: ReactNode}) {
+export default function ProjectView({ children }: { children?: ReactNode }) {
     const { openDrawer } = useAppContext();
     const { project, createSection, openProjectDialog } = useProjectContext();
 
@@ -20,7 +20,11 @@ export default function ProjectView({ children }: {children?: ReactNode}) {
             <div className={styles.main}>
                 <Tabs defaultValue="tasks">
                     <div className={styles.header}>
-                        <Flex align="center" gap="m" className={styles.heading}>
+                        <Flex
+                            className={styles.heading}
+                            align="center"
+                            gap="m"
+                        >
                             <Button
                                 className={styles.menu}
                                 icon="menu"
@@ -68,11 +72,17 @@ export default function ProjectView({ children }: {children?: ReactNode}) {
                         </ButtonGroup>
                     </div>
 
-                    <TabPanel className={styles.body} value="tasks">
+                    <TabPanel
+                        className={styles.body}
+                        value="tasks"
+                    >
                         <ProjectTasks />
                     </TabPanel>
 
-                    <TabPanel className={styles.body} value="content">
+                    <TabPanel
+                        className={styles.body}
+                        value="content"
+                    >
                         <ProjectContent />
                     </TabPanel>
                 </Tabs>

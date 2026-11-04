@@ -23,7 +23,11 @@ export default function ProjectForm({
     };
 
     return (
-        <Flex column gap="s">
+        <Flex
+            column
+            gap="s"
+            fluid
+        >
             <Input
                 placeholder="Name"
                 value={name}

@@ -1,4 +1,5 @@
-import { Button, ButtonGroup, Checkbox, Drawer } from '@olegpolyakov/ui';
+import { Checkbox, Drawer } from '@olegpolyakov/ui';
+import ConfirmButton from '@olegpolyakov/frontend/components/ConfirmButton';
 import Editable from '@olegpolyakov/frontend/components/Editable';
 import { useIsMobile } from '@olegpolyakov/frontend/hooks/mq';
 
@@ -46,16 +47,21 @@ export default function TaskView() {
                     task={task}
                     onUpdate={(id, data) => updateTask(data)}
                 >
-                    <ButtonGroup className={styles.actions}>
-                        <Button 
+                    <div className={styles.actions}>
+                        <ConfirmButton
                             icon="delete"
+                            title={`${t('tasks.delete')}?`}
+                            description={task.hasChildren
+                                ? `${t('tasks.delete.subtasks')}.`
+                                : undefined
+                            }
                             content={t('delete')}
                             color="danger"
                             variant="tinted"
                             fluid
-                            onClick={() => deleteTask()}
+                            onConfirm={() => deleteTask()}
                         />
-                    </ButtonGroup>
+                    </div>
                 </TaskDetails>
             }
         </Drawer>
