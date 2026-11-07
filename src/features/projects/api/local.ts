@@ -30,8 +30,8 @@ export default (): ProjectsApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Project',
-                action: 'insert',
+                model: 'project',
+                action: 'create',
                 documentId: id,
                 data: project.toData()
             })
@@ -50,7 +50,7 @@ export default (): ProjectsApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Project',
+                model: 'project',
                 action: 'update',
                 documentId: id,
                 data: updatedProject
@@ -65,7 +65,7 @@ export default (): ProjectsApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Project',
+                model: 'project',
                 action: 'delete',
                 documentId: id,
                 data: null

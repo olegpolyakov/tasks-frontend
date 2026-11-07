@@ -30,8 +30,8 @@ export default (): TagsApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Tag',
-                action: 'insert',
+                model: 'tag',
+                action: 'create',
                 documentId: id,
                 data: tag
             })
@@ -49,7 +49,7 @@ export default (): TagsApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Tag',
+                model: 'tag',
                 action: 'update',
                 documentId: id,
                 data: updatedTag
@@ -64,7 +64,7 @@ export default (): TagsApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Tag',
+                model: 'tag',
                 action: 'delete',
                 documentId: id,
                 data: null

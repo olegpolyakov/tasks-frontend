@@ -22,8 +22,8 @@ export default (): TasksApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Task',
-                action: 'insert',
+                model: 'task',
+                action: 'create',
                 documentId: id,
                 data: task
             })
@@ -43,7 +43,7 @@ export default (): TasksApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Task',
+                model: 'task',
                 action: 'update',
                 documentId: id,
                 data: updatedTask
@@ -64,7 +64,7 @@ export default (): TasksApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Task',
+                model: 'task',
                 action: 'update',
                 documentId: id,
                 data: updatedTask
@@ -87,7 +87,7 @@ export default (): TasksApi => ({
 
         this.events.dispatchEvent(new MessageEvent('message', {
             data: JSON.stringify({
-                model: 'Task',
+                model: 'task',
                 action: 'delete',
                 documentId: id,
                 data: null
