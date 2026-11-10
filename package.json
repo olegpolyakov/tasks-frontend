@@ -9,8 +9,8 @@
         "dev": "vite",
         "build": "vite build",
         "lint": "eslint ./src",
-        "preversion": "npm install --workspaces=false && npm run build && git add package-lock.json",
-        "postversion": "git tag $npm_package_version && git push origin $npm_package_version && rm -rf node_modules"
+        "preversion": "npm update --workspaces=false && npm run build && git add package-lock.json",
+        "postversion": "git push origin v$npm_package_version"
     },
     "dependencies": {
         "@olegpolyakov/core": "^0.11.0",
